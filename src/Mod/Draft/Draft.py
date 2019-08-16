@@ -4637,46 +4637,6 @@ class _Circle(_DraftObject):
         obj.Placement = plm
         obj.positionBySupport()
 
-class _Ellipse(_DraftObject):
-    """The Circle object"""
-
-    def __init__(self, obj):
-        _DraftObject.__init__(self,obj,"Ellipse")
-        obj.addProperty("App::PropertyAngle","FirstAngle","Draft",QT_TRANSLATE_NOOP("App::Property","Start angle of the arc"))
-        obj.addProperty("App::PropertyAngle","LastAngle","Draft",QT_TRANSLATE_NOOP("App::Property","End angle of the arc (for a full circle, give it same value as First Angle)"))
-        obj.addProperty("App::PropertyLength","MinorRadius","Draft",QT_TRANSLATE_NOOP("App::Property","The minor radius of the ellipse"))
-        obj.addProperty("App::PropertyLength","MajorRadius","Draft",QT_TRANSLATE_NOOP("App::Property","The major radius of the ellipse"))
-        obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face"))
-        obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
-        obj.MakeFace = getParam("fillmode",True)
-
-    def execute(self, obj):
-        import Part
-        plm = obj.Placement
-        if obj.MajorRadius.Value < obj.MinorRadius.Value:
-            FreeCAD.Console.PrintMessage(translate("Error: Major radius is smaller than the minor radius"))
-            return
-        if obj.MajorRadius.Value and obj.MinorRadius.Value:
-            ell = Part.Ellipse(Vector(0,0,0),obj.MajorRadius.Value,obj.MinorRadius.Value)
-            shape = ell.toShape()
-            if hasattr(obj,"FirstAngle"):
-                if obj.FirstAngle.Value != obj.LastAngle.Value:
-                    a1 = obj.FirstAngle.getValueAs(FreeCAD.Units.Radian)
-                    a2 = obj.LastAngle.getValueAs(FreeCAD.Units.Radian)
-                    shape = Part.ArcOfEllipse(ell,a1,a2).toShape()
-            shape = Part.Wire(shape)
-            if shape.isClosed():
-                if hasattr(obj,"MakeFace"):
-                    if obj.MakeFace:
-                        shape = Part.Face(shape)
-                else:
-                    shape = Part.Face(shape)
-            obj.Shape = shape
-            if hasattr(obj,"Area") and hasattr(shape,"Area"):
-                obj.Area = shape.Area
-            obj.Placement = plm
-        obj.positionBySupport()
-
 
 class _DrawingView(_DraftObject):
     """The Draft DrawingView object"""
