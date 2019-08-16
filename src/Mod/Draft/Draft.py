@@ -4436,13 +4436,6 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
             self.setDisplayMode(state)
 
 
-
-class _ViewProviderRectangle(_ViewProviderDraft):
-    def __init__(self,vobj):
-        _ViewProviderDraft.__init__(self,vobj)
-        vobj.addProperty("App::PropertyFile","TextureImage","Draft",QT_TRANSLATE_NOOP("App::Property","Defines a texture image (overrides hatch patterns)"))
-
-
 class _DrawingView(_DraftObject):
     """The Draft DrawingView object"""
     def __init__(self, obj):
