@@ -4702,60 +4702,6 @@ class _Ellipse(_DraftObject):
         obj.positionBySupport()
 
 
-class _Polygon(_DraftObject):
-    """The Polygon object"""
-
-    def __init__(self, obj):
-        _DraftObject.__init__(self,obj,"Polygon")
-        obj.addProperty("App::PropertyInteger","FacesNumber","Draft",QT_TRANSLATE_NOOP("App::Property","Number of faces"))
-        obj.addProperty("App::PropertyLength","Radius","Draft",QT_TRANSLATE_NOOP("App::Property","Radius of the control circle"))
-        obj.addProperty("App::PropertyEnumeration","DrawMode","Draft",QT_TRANSLATE_NOOP("App::Property","How the polygon must be drawn from the control circle"))
-        obj.addProperty("App::PropertyLength","FilletRadius","Draft",QT_TRANSLATE_NOOP("App::Property","Radius to use to fillet the corners"))
-        obj.addProperty("App::PropertyLength","ChamferSize","Draft",QT_TRANSLATE_NOOP("App::Property","Size of the chamfer to give to the corners"))
-        obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face"))
-        obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
-        obj.MakeFace = getParam("fillmode",True)
-        obj.DrawMode = ['inscribed','circumscribed']
-        obj.FacesNumber = 0
-        obj.Radius = 1
-
-    def execute(self, obj):
-        if (obj.FacesNumber >= 3) and (obj.Radius.Value > 0):
-            import Part, DraftGeomUtils
-            plm = obj.Placement
-            angle = (math.pi*2)/obj.FacesNumber
-            if obj.DrawMode == 'inscribed':
-                delta = obj.Radius.Value
-            else:
-                delta = obj.Radius.Value/math.cos(angle/2.0)
-            pts = [Vector(delta,0,0)]
-            for i in range(obj.FacesNumber-1):
-                ang = (i+1)*angle
-                pts.append(Vector(delta*math.cos(ang),delta*math.sin(ang),0))
-            pts.append(pts[0])
-            shape = Part.makePolygon(pts)
-            if "ChamferSize" in obj.PropertiesList:
-                if obj.ChamferSize.Value != 0:
-                    w = DraftGeomUtils.filletWire(shape,obj.ChamferSize.Value,chamfer=True)
-                    if w:
-                        shape = w
-            if "FilletRadius" in obj.PropertiesList:
-                if obj.FilletRadius.Value != 0:
-                    w = DraftGeomUtils.filletWire(shape,obj.FilletRadius.Value)
-                    if w:
-                        shape = w
-            if hasattr(obj,"MakeFace"):
-                if obj.MakeFace:
-                    shape = Part.Face(shape)
-            else:
-                shape = Part.Face(shape)
-            obj.Shape = shape
-            if hasattr(obj,"Area") and hasattr(shape,"Area"):
-                obj.Area = shape.Area
-            obj.Placement = plm
-        obj.positionBySupport()
-
-
 class _DrawingView(_DraftObject):
     """The Draft DrawingView object"""
     def __init__(self, obj):
