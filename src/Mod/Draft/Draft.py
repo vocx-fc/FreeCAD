@@ -952,49 +952,6 @@ def makePolygon(nfaces,radius=1,inscribed=True,placement=None,face=None,support=
     return obj
 
 
-def makeBSpline(pointslist,closed=False,placement=None,face=None,support=None):
-    """makeBSpline(pointslist,[closed],[placement]): Creates a B-Spline object
-    from the given list of vectors. If closed is True or first
-    and last points are identical, the wire is closed. If face is
-    true (and wire is closed), the wire will appear filled. Instead of
-    a pointslist, you can also pass a Part Wire."""
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    if not isinstance(pointslist,list):
-        nlist = []
-        for v in pointslist.Vertexes:
-            nlist.append(v.Point)
-        pointslist = nlist
-    if len(pointslist) < 2:
-        FreeCAD.Console.PrintError(translate("draft","Draft.makeBSpline: not enough points")+"\n")
-        return
-    if (pointslist[0] == pointslist[-1]):
-        if len(pointslist) > 2:
-            closed = True
-            pointslist.pop()
-            FreeCAD.Console.PrintWarning(translate("draft","Draft.makeBSpline: Equal endpoints forced Closed")+"\n")
-        else:                                                                            # len == 2 and first == last   GIGO
-            FreeCAD.Console.PrintError(translate("draft","Draft.makeBSpline: Invalid pointslist")+"\n")
-            return
-    # should have sensible parms from here on
-    if placement: typecheck([(placement,FreeCAD.Placement)], "makeBSpline")
-    if len(pointslist) == 2: fname = "Line"
-    else: fname = "BSpline"
-    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",fname)
-    _BSpline(obj)
-    obj.Closed = closed
-    obj.Points = pointslist
-    obj.Support = support
-    if face != None:
-        obj.MakeFace = face
-    if placement: obj.Placement = placement
-    if gui:
-        _ViewProviderWire(obj.ViewObject)
-        formatObject(obj)
-        select(obj)
-
-    return obj
 
 def makeBezCurve(pointslist,closed=False,placement=None,face=None,support=None,degree=None):
     """makeBezCurve(pointslist,[closed],[placement]): Creates a Bezier Curve object
