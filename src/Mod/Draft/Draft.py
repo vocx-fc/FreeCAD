@@ -921,37 +921,6 @@ def makeAngularDimension(center,angles,p3,normal=None):
     return obj
 
 
-def makePolygon(nfaces,radius=1,inscribed=True,placement=None,face=None,support=None):
-    """makePolgon(nfaces,[radius],[inscribed],[placement],[face]): Creates a
-    polygon object with the given number of faces and the radius.
-    if inscribed is False, the polygon is circumscribed around a circle
-    with the given radius, otherwise it is inscribed. If face is True,
-    the resulting shape is displayed as a face, otherwise as a wireframe.
-    """
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    if nfaces < 3: return None
-    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Polygon")
-    _Polygon(obj)
-    obj.FacesNumber = nfaces
-    obj.Radius = radius
-    if face != None:
-        obj.MakeFace = face
-    if inscribed:
-        obj.DrawMode = "inscribed"
-    else:
-        obj.DrawMode = "circumscribed"
-    obj.Support = support
-    if placement: obj.Placement = placement
-    if gui:
-        _ViewProviderDraft(obj.ViewObject)
-        formatObject(obj)
-        select(obj)
-
-    return obj
-
-
 def makeText(stringslist,point=Vector(0,0,0),screen=False):
     """makeText(strings,[point],[screen]): Creates a Text object at the given point,
     containing the strings given in the strings list, one string by line (strings
