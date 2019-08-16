@@ -952,45 +952,6 @@ def makePolygon(nfaces,radius=1,inscribed=True,placement=None,face=None,support=
     return obj
 
 
-
-def makeBezCurve(pointslist,closed=False,placement=None,face=None,support=None,degree=None):
-    """makeBezCurve(pointslist,[closed],[placement]): Creates a Bezier Curve object
-    from the given list of vectors.   Instead of a pointslist, you can also pass a Part Wire."""
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    if not isinstance(pointslist,list):
-        nlist = []
-        for v in pointslist.Vertexes:
-            nlist.append(v.Point)
-        pointslist = nlist
-    if placement: typecheck([(placement,FreeCAD.Placement)], "makeBezCurve")
-    if len(pointslist) == 2: fname = "Line"
-    else: fname = "BezCurve"
-    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",fname)
-    _BezCurve(obj)
-    obj.Points = pointslist
-    if degree:
-        obj.Degree = degree
-    else:
-        import Part
-        obj.Degree = min((len(pointslist)-(1 * (not closed))),
-                         Part.BezierCurve().MaxDegree)
-    obj.Closed = closed
-    obj.Support = support
-    if face != None:
-        obj.MakeFace = face
-    obj.Proxy.resetcontinuity(obj)
-    if placement: obj.Placement = placement
-    if gui:
-        _ViewProviderWire(obj.ViewObject)
-#        if not face: obj.ViewObject.DisplayMode = "Wireframe"
-#        obj.ViewObject.DisplayMode = "Wireframe"
-        formatObject(obj)
-        select(obj)
-
-    return obj
-
 def makeText(stringslist,point=Vector(0,0,0),screen=False):
     """makeText(strings,[point],[screen]): Creates a Text object at the given point,
     containing the strings given in the strings list, one string by line (strings
