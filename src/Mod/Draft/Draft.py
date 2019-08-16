@@ -732,31 +732,6 @@ def getMovableChildren(objectslist,recursive=True):
     return added
 
 
-def makeRectangle(length, height, placement=None, face=None, support=None):
-    """makeRectangle(length,width,[placement],[face]): Creates a Rectangle
-    object with length in X direction and height in Y direction.
-    If a placement is given, it is used. If face is False, the
-    rectangle is shown as a wireframe, otherwise as a face."""
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    if placement: typecheck([(placement,FreeCAD.Placement)], "makeRectangle")
-    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Rectangle")
-    _Rectangle(obj)
-
-    obj.Length = length
-    obj.Height = height
-    obj.Support = support
-    if face != None:
-        obj.MakeFace = face
-    if placement: obj.Placement = placement
-    if gui:
-        _ViewProviderRectangle(obj.ViewObject)
-        formatObject(obj)
-        select(obj)
-
-    return obj
-
 def makeDimension(p1,p2,p3=None,p4=None):
     """makeDimension(p1,p2,[p3]) or makeDimension(object,i1,i2,p3)
     or makeDimension(objlist,indices,p3): Creates a Dimension object with
