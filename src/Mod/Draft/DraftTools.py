@@ -1021,20 +1021,6 @@ class Arc(Creator):
             self.drawArc()
 
 
-class Circle(Arc):
-    """The Draft_Circle FreeCAD command definition"""
-
-    def __init__(self):
-        self.closedCircle=True
-        self.featureName = "Circle"
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Circle',
-                'Accel' : "C, I",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Circle", "Circle"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Circle", "Creates a circle. CTRL to snap, ALT to select tangent objects")}
-
-
 class Text(Creator):
     """This class creates an annotation feature."""
 
@@ -4887,7 +4873,7 @@ class Draft_Snap_WorkingPlane():
 FreeCADGui.addCommand('Draft_SelectPlane',SelectPlane())
 
 
-FreeCADGui.addCommand('Draft_Circle',Circle())
+
 class CommandArcGroup:
     def GetCommands(self):
         return tuple(['Draft_Arc','Draft_Arc_3Points'])
