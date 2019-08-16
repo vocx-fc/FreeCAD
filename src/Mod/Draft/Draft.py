@@ -1192,30 +1192,6 @@ def makePointArray(base, ptlst):
         select(obj)
     return obj
 
-def makeEllipse(majradius,minradius,placement=None,face=True,support=None):
-    """makeEllipse(majradius,minradius,[placement],[face],[support]): makes
-    an ellipse with the given major and minor radius, and optionally
-    a placement."""
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Ellipse")
-    _Ellipse(obj)
-    if minradius > majradius:
-        majradius,minradius = minradius,majradius
-    obj.MajorRadius = majradius
-    obj.MinorRadius = minradius
-    obj.Support = support
-    if placement:
-        obj.Placement = placement
-    if gui:
-        _ViewProviderDraft(obj.ViewObject)
-        #if not face:
-        #    obj.ViewObject.DisplayMode = "Wireframe"
-        formatObject(obj)
-        select(obj)
-
-    return obj
 
 def extrude(obj,vector,solid=False):
     """makeExtrusion(object,vector): extrudes the given object
