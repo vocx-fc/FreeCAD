@@ -2334,25 +2334,6 @@ def calculatePlacementsOnPath(shapeRotation, pathwire, count, xlate, align):
 # Python Features definitions
 #---------------------------------------------------------------------------
 
-class _DraftObject:
-    """The base class for Draft objects"""
-    def __init__(self,obj,tp="Unknown"):
-        if obj:
-            obj.Proxy = self
-        self.Type = tp
-
-    def __getstate__(self):
-        return self.Type
-
-    def __setstate__(self,state):
-        if state:
-            self.Type = state
-
-    def execute(self,obj):
-        pass
-
-    def onChanged(self, obj, prop):
-        pass
 
 class _ViewProviderDraft:
     """The base class for Draft Viewproviders"""
