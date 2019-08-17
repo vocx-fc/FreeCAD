@@ -819,42 +819,6 @@ class Join(Modifier):
                 ['Draft.joinWires(FreeCADGui.Selection.getSelection())', 'FreeCAD.ActiveDocument.recompute()'])
         self.finish()
 
-class Split(Modifier):
-    '''The Draft_Split FreeCAD command definition.'''
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Split',
-                'Accel' : "S, P",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Split", "Split"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Split", "Splits a wire into two wires")}
-
-    def Activated(self):
-        Modifier.Activated(self,"Split")
-        if not self.ui:
-            return
-        FreeCAD.Console.PrintMessage(translate("draft", "Select an object to split")+"\n")
-        self.call = self.view.addEventCallback("SoEvent", self.action)
-
-    def action(self, arg):
-        "scene event handler"
-        if arg["Type"] == "SoKeyboardEvent":
-            if arg["Key"] == "ESCAPE":
-                self.finish()
-        elif arg["Type"] == "SoLocation2Event":
-            getPoint(self, arg)
-            redraw3DView()
-        elif arg["Type"] == "SoMouseButtonEvent" and arg["State"] == "DOWN" and arg["Button"] == "BUTTON1":
-            self.point, ctrlPoint, info = getPoint(self, arg)
-            if "Edge" in info["Component"]:
-                return self.proceed(info)
-
-    def proceed(self, info):
-        Draft.split(FreeCAD.ActiveDocument.getObject(info["Object"]),
-            self.point, int(info["Component"][4:]))
-        if self.call:
-            self.view.removeEventCallback("SoEvent", self.call)
-        self.finish()
-
 
 class ToggleConstructionMode():
     """The Draft_ToggleConstructionMode FreeCAD command definition"""
@@ -1623,7 +1587,7 @@ FreeCADGui.addCommand('Draft_SelectPlane',SelectPlane())
 
 
 FreeCADGui.addCommand('Draft_Join',Join())
-FreeCADGui.addCommand('Draft_Split',Split())
+
 
 
 
