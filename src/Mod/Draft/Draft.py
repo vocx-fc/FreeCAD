@@ -979,46 +979,6 @@ def extrude(obj,vector,solid=False):
 
     return newobj
 
-def joinWires(wires, joinAttempts = 0):
-    """joinWires(objects): merges a set of wires where possible, if any of those
-    wires have a coincident start and end point"""
-    if joinAttempts > len(wires):
-        return
-    joinAttempts += 1
-    for wire1Index, wire1 in enumerate(wires):
-        for wire2Index, wire2 in enumerate(wires):
-            if wire2Index <= wire1Index:
-                continue
-            if joinTwoWires(wire1, wire2):
-                wires.pop(wire2Index)
-                break
-    joinWires(wires, joinAttempts)
-
-def joinTwoWires(wire1, wire2):
-    """joinTwoWires(object, object): joins two wires if they share a common
-    point as a start or an end"""
-    wire1AbsPoints = [wire1.Placement.multVec(point) for point in wire1.Points]
-    wire2AbsPoints = [wire2.Placement.multVec(point) for point in wire2.Points]
-    if (wire1AbsPoints[0] == wire2AbsPoints[-1] and wire1AbsPoints[-1] == wire2AbsPoints[0]) \
-        or (wire1AbsPoints[0] == wire2AbsPoints[0] and wire1AbsPoints[-1] == wire2AbsPoints[-1]):
-        wire2AbsPoints.pop()
-        wire1.Closed = True
-    elif wire1AbsPoints[0] == wire2AbsPoints[0]:
-        wire1AbsPoints = list(reversed(wire1AbsPoints))
-    elif wire1AbsPoints[0] == wire2AbsPoints[-1]:
-        wire1AbsPoints = list(reversed(wire1AbsPoints))
-        wire2AbsPoints = list(reversed(wire2AbsPoints))
-    elif wire1AbsPoints[-1] == wire2AbsPoints[-1]:
-        wire2AbsPoints = list(reversed(wire2AbsPoints))
-    elif wire1AbsPoints[-1] == wire2AbsPoints[0]:
-        pass
-    else:
-        return False
-    wire2AbsPoints.pop(0)
-    wire1.Points = [wire1.Placement.inverse().multVec(point) for point in wire1AbsPoints] + [wire1.Placement.inverse().multVec(point) for point in wire2AbsPoints]
-    FreeCAD.ActiveDocument.removeObject(wire2.Name)
-    return True
-
 
 def fuse(object1,object2):
     """fuse(oject1,object2): returns an object made from
