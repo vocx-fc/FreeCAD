@@ -3021,66 +3021,6 @@ class Draft_AddConstruction():
                     obrep.Transparency = 80
 
 
-class Draft_Arc_3Points:
-
-
-    def GetResources(self):
-
-        return {'Pixmap'  : "Draft_Arc_3Points.svg",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Arc 3 points"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Creates an arc by 3 points"),
-                'Accel'   : 'A,T'}
-
-    def IsActive(self):
-
-        if FreeCAD.ActiveDocument:
-            return True
-        else:
-            return False
-
-    def Activated(self):
-
-        import DraftTrackers
-        self.points = []
-        self.normal = None
-        self.tracker = DraftTrackers.arcTracker()
-        self.tracker.autoinvert = False
-        if hasattr(FreeCAD,"DraftWorkingPlane"):
-            FreeCAD.DraftWorkingPlane.setup()
-        FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.drawArc)
-
-    def getPoint(self,point,info):
-        if not point: # cancelled
-            self.tracker.off()
-            return
-        if not(point in self.points): # avoid same point twice
-            self.points.append(point)
-        if len(self.points) < 3:
-            if len(self.points) == 2:
-                self.tracker.on()
-            FreeCADGui.Snapper.getPoint(last=self.points[-1],callback=self.getPoint,movecallback=self.drawArc)
-        else:
-            import Part
-            e = Part.Arc(self.points[0],self.points[1],self.points[2]).toShape()
-            if Draft.getParam("UsePartPrimitives",False):
-                o = FreeCAD.ActiveDocument.addObject("Part::Feature","Arc")
-                o.Shape = e
-            else:
-                radius = e.Curve.Radius
-                rot = FreeCAD.Rotation(e.Curve.XAxis,e.Curve.YAxis,e.Curve.Axis,"ZXY")
-                placement = FreeCAD.Placement(e.Curve.Center,rot)
-                start = e.FirstParameter
-                end = e.LastParameter/math.pi*180
-                c = Draft.makeCircle(radius,placement,startangle=start,endangle=end)
-                Draft.autogroup(c)
-            self.tracker.off()
-            FreeCAD.ActiveDocument.recompute()
-
-    def drawArc(self,point,info):
-        if len(self.points) == 2:
-            if point.sub(self.points[1]).Length > 0.001:
-                self.tracker.setBy3Points(self.points[0],self.points[1],point)
-
 
 #---------------------------------------------------------------------------
 # Snap tools
