@@ -1996,35 +1996,6 @@ class Split(Modifier):
         self.finish()
 
 
-class Downgrade(Modifier):
-    '''The Draft_Downgrade FreeCAD command definition.'''
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Downgrade',
-                'Accel' : "D, N",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Downgrade", "Downgrade"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Downgrade", "Explodes the selected objects into simpler objects, or subtracts faces")}
-
-    def Activated(self):
-        Modifier.Activated(self,"Downgrade")
-        if self.ui:
-            if not FreeCADGui.Selection.getSelection():
-                self.ui.selectUi()
-                FreeCAD.Console.PrintMessage(translate("draft", "Select an object to upgrade")+"\n")
-                self.call = self.view.addEventCallback("SoEvent",selectObject)
-            else:
-                self.proceed()
-
-    def proceed(self):
-        if self.call:
-            self.view.removeEventCallback("SoEvent",self.call)
-        if FreeCADGui.Selection.getSelection():
-            FreeCADGui.addModule("Draft")
-            self.commit(translate("draft","Downgrade"),
-                        ['Draft.downgrade(FreeCADGui.Selection.getSelection(),delete=True)',
-                         'FreeCAD.ActiveDocument.recompute()'])
-        self.finish()
-
 class Trimex(Modifier):
     """The Draft_Trimex FreeCAD command definition.
     This tool trims or extends lines, wires and arcs,
@@ -3671,7 +3642,7 @@ FreeCADGui.addCommand('Draft_Offset',Offset())
 FreeCADGui.addCommand('Draft_Join',Join())
 FreeCADGui.addCommand('Draft_Split',Split())
 
-FreeCADGui.addCommand('Draft_Downgrade',Downgrade())
+
 FreeCADGui.addCommand('Draft_Trimex',Trimex())
 FreeCADGui.addCommand('Draft_Scale',Scale())
 
