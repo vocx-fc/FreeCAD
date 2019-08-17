@@ -3712,27 +3712,6 @@ class _ShapeString(_DraftObject):
         return ret
 
 
-def makeLabel(targetpoint=None,target=None,direction=None,distance=None,labeltype=None,placement=None):
-    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","dLabel")
-    DraftLabel(obj)
-    if FreeCAD.GuiUp:
-        ViewProviderDraftLabel(obj.ViewObject)
-    if targetpoint:
-        obj.TargetPoint = targetpoint
-    if target:
-        obj.Target = target
-    if direction:
-        obj.StraightDirection = direction
-    if distance:
-        obj.StraightDistance = distance
-    if labeltype:
-        obj.LabelType = labeltype
-    if placement:
-        obj.Placement = placement
-
-    return obj
-
-
 class DraftLabel:
     """The Draft Label object"""
 
