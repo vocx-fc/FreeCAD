@@ -2336,14 +2336,6 @@ def calculatePlacementsOnPath(shapeRotation, pathwire, count, xlate, align):
 
 
 
-class _ViewProviderDraftAlt(_ViewProviderDraft):
-    """a view provider that doesn't swallow its base object"""
-
-    def __init__(self,vobj):
-        _ViewProviderDraft.__init__(self,vobj)
-
-    def claimChildren(self):
-        return []
 
 class _ViewProviderDraftPart(_ViewProviderDraftAlt):
     """a view provider that displays a Part icon instead of a Draft icon"""
