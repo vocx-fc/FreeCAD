@@ -2858,77 +2858,6 @@ class ToggleContinueMode():
         FreeCADGui.draftToolBar.toggleContinue()
 
 
-class Drawing(Modifier):
-    """The Draft Drawing command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Drawing',
-                'Accel' : "D, D",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Drawing", "Drawing"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Drawing", "Puts the selected objects on a Drawing sheet")}
-
-    def Activated(self):
-        Modifier.Activated(self,"Drawing")
-        if not FreeCADGui.Selection.getSelection():
-            self.ghost = None
-            self.ui.selectUi()
-            FreeCAD.Console.PrintMessage(translate("draft", "Select an object to project")+"\n")
-            self.call = self.view.addEventCallback("SoEvent",selectObject)
-        else:
-            self.proceed()
-
-    def proceed(self):
-        if self.call:
-            self.view.removeEventCallback("SoEvent",self.call)
-        sel = FreeCADGui.Selection.getSelection()
-        if not sel:
-            self.page = self.createDefaultPage()
-        else:
-            self.page = None
-            # if the user selected a page, put the objects on that page
-            for obj in sel:
-                if obj.isDerivedFrom("Drawing::FeaturePage"):
-                    self.page = obj
-                    break
-            if not self.page:
-                # no page selected, default to the first page in the document
-                for obj in self.doc.Objects:
-                    if obj.isDerivedFrom("Drawing::FeaturePage"):
-                        self.page = obj
-                        break
-            if not self.page:
-                # no page in the document, create a default page.
-                self.page = self.createDefaultPage()
-            otherProjection = None
-            # if an existing projection is selected, reuse its projection properties
-            for obj in sel:
-                if obj.isDerivedFrom("Drawing::FeatureView"):
-                    otherProjection = obj
-                    break
-            sel.reverse()
-            for obj in sel:
-                if ( obj.ViewObject.isVisible() and not obj.isDerivedFrom("Drawing::FeatureView")
-                        and not obj.isDerivedFrom("Drawing::FeaturePage") ):
-                    name = 'View'+obj.Name
-                    # no reason to remove the old one...
-                    #oldobj = self.page.getObject(name)
-                    #if oldobj:
-                    #    self.doc.removeObject(oldobj.Name)
-                    Draft.makeDrawingView(obj,self.page,otherProjection=otherProjection)
-            self.doc.recompute()
-
-    def createDefaultPage(self):
-        """created a default page"""
-        template = Draft.getParam("template",FreeCAD.getResourceDir()+'Mod/Drawing/Templates/A3_Landscape.svg')
-        page = self.doc.addObject('Drawing::FeaturePage','Page')
-        page.ViewObject.HintOffsetX = 200
-        page.ViewObject.HintOffsetY = 100
-        page.ViewObject.HintScale = 20
-        page.Template = template
-        self.doc.recompute()
-        return page
-
-
 class ToggleDisplayMode():
     """The ToggleDisplayMode FreeCAD command definition"""
 
@@ -4321,8 +4250,8 @@ FreeCADGui.addCommand('Draft_Upgrade',Upgrade())
 FreeCADGui.addCommand('Draft_Downgrade',Downgrade())
 FreeCADGui.addCommand('Draft_Trimex',Trimex())
 FreeCADGui.addCommand('Draft_Scale',Scale())
-FreeCADGui.addCommand('Draft_Drawing',Drawing())
-FreeCADGui.addCommand('Draft_SubelementModify', SubelementModify())
+
+FreeCADGui.addCommand('Draft_Edit_Improved',EditImproved())
 FreeCADGui.addCommand('Draft_AddPoint',AddPoint())
 FreeCADGui.addCommand('Draft_DelPoint',DelPoint())
 FreeCADGui.addCommand('Draft_WireToBSpline',WireToBSpline())
