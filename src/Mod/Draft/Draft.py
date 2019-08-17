@@ -1180,28 +1180,6 @@ def filterObjectsForModifiers(objects, isCopied=False):
     return filteredObjects
 
 
-def copyScaledEdges(arguments):
-    copied_edges = []
-    for argument in arguments:
-        copied_edges.append(copyScaledEdge(argument[0], argument[1],
-            argument[2], argument[3]))
-    joinWires(copied_edges)
-
-def copyScaledEdge(object, edge_index, scale, center):
-    vertex1 = scaleVectorFromCenter(
-        object.Placement.multVec(object.Points[edge_index]),
-        scale, center)
-    if isClosedEdge(edge_index, object):
-        vertex2 = scaleVectorFromCenter(
-            object.Placement.multVec(object.Points[0]),
-            scale, center)
-    else:
-        vertex2 = scaleVectorFromCenter(
-            object.Placement.multVec(object.Points[edge_index+1]),
-            scale, center)
-    return makeLine(vertex1, vertex2)
-
-
 def draftify(objectslist,makeblock=False,delete=True):
     """draftify(objectslist,[makeblock],[delete]): turns each object of the given list
     (objectslist can also be a single object) into a Draft parametric
