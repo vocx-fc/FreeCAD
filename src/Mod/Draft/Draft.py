@@ -870,20 +870,6 @@ def makeCopy(obj,force=None,reparent=False):
     formatObject(newobj,obj)
     return newobj
 
-def makeBlock(objectslist):
-    """makeBlock(objectslist): Creates a Draft Block from the given objects"""
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Block")
-    _Block(obj)
-    obj.Components = objectslist
-    if gui:
-        _ViewProviderDraftPart(obj.ViewObject)
-        for o in objectslist:
-            o.ViewObject.Visibility = False
-        select(obj)
-    return obj
 
 def makeArray(baseobject,arg1,arg2,arg3,arg4=None,arg5=None,arg6=None,name="Array",useLink=False):
     """makeArray(object,xvector,yvector,xnum,ynum,[name]) for rectangular array, or
