@@ -3214,18 +3214,9 @@ FreeCADGui.addCommand('Draft_SelectPlane',SelectPlane())
 
 
 
-class CommandArcGroup:
-    def GetCommands(self):
-        return tuple(['Draft_Arc','Draft_Arc_3Points'])
-    def GetResources(self):
-        return { 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ArcTools",'Arc tools'),
-                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ArcTools",'Arc tools')
-               }
-    def IsActive(self):
-        return not FreeCAD.ActiveDocument is None
 
-FreeCADGui.addCommand('Draft_Arc_3Points',Draft_Arc_3Points())
-FreeCADGui.addCommand('Draft_ArcTools', CommandArcGroup())
+
+
 
 
 
