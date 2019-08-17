@@ -2046,28 +2046,6 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
 
     return nobj
 
-def makeShapeString(String,FontFile,Size = 100,Tracking = 0):
-    """ShapeString(Text,FontFile,Height,Track): Turns a text string
-    into a Compound Shape"""
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","ShapeString")
-    _ShapeString(obj)
-    obj.String = String
-    obj.FontFile = FontFile
-    obj.Size = Size
-    obj.Tracking = Tracking
-
-    if gui:
-        _ViewProviderDraft(obj.ViewObject)
-        formatObject(obj)
-        obrep = obj.ViewObject
-        if "PointSize" in obrep.PropertiesList: obrep.PointSize = 1             # hide the segment end points
-        select(obj)
-    obj.recompute()
-    return obj
-
 
 def getCloneBase(obj,strict=False):
     """getCloneBase(obj,[strict]): returns the object cloned by this object, if
