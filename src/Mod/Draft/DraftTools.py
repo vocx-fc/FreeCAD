@@ -3498,7 +3498,6 @@ class SetAutoGroup():
                 self.ui.setAutoGroup(self.groups[i])
 
 
-
 class Draft_Label(Creator):
     """The Draft_Label command definition"""
 
