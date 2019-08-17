@@ -3492,36 +3492,6 @@ class _ViewProviderDraftLink:
         else:
             return obj.ElementList
 
-class _AngularDimension(_DraftObject):
-    """The Draft AngularDimension object"""
-    def __init__(self, obj):
-        _DraftObject.__init__(self,obj,"AngularDimension")
-        obj.addProperty("App::PropertyAngle","FirstAngle","Draft",QT_TRANSLATE_NOOP("App::Property","Start angle of the dimension"))
-        obj.addProperty("App::PropertyAngle","LastAngle","Draft",QT_TRANSLATE_NOOP("App::Property","End angle of the dimension"))
-        obj.addProperty("App::PropertyVectorDistance","Dimline","Draft",QT_TRANSLATE_NOOP("App::Property","Point through which the dimension line passes"))
-        obj.addProperty("App::PropertyVectorDistance","Center","Draft",QT_TRANSLATE_NOOP("App::Property","The center point of this dimension"))
-        obj.addProperty("App::PropertyVector","Normal","Draft",QT_TRANSLATE_NOOP("App::Property","The normal direction of this dimension"))
-        obj.addProperty("App::PropertyLink","Support","Draft",QT_TRANSLATE_NOOP("App::Property","The object measured by this dimension"))
-        obj.addProperty("App::PropertyLinkSubList","LinkedGeometry","Draft",QT_TRANSLATE_NOOP("App::Property","The geometry this dimension is linked to"))
-        obj.addProperty("App::PropertyAngle","Angle","Draft",QT_TRANSLATE_NOOP("App::Property","The measurement of this dimension"))
-        obj.FirstAngle = 0
-        obj.LastAngle = 90
-        obj.Dimline = FreeCAD.Vector(0,1,0)
-        obj.Center = FreeCAD.Vector(0,0,0)
-        obj.Normal = FreeCAD.Vector(0,0,1)
-
-    def onChanged(self,obj,prop):
-        if hasattr(obj,"Angle"):
-            obj.setEditorMode('Angle',1)
-        if hasattr(obj,"Normal"):
-            obj.setEditorMode('Normal',2)
-        if hasattr(obj,"Support"):
-            obj.setEditorMode('Support',2)
-
-    def execute(self, fp):
-        if fp.ViewObject:
-            fp.ViewObject.update()
-
 class _ViewProviderAngularDimension(_ViewProviderDraft):
     """A View Provider for the Draft Angular Dimension object"""
     def __init__(self, obj):
