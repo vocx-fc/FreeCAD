@@ -1816,27 +1816,6 @@ def makeDrawingView(obj,page,lwmod=None,tmod=None,otherProjection=None):
             viewobj.LineColor = obj.ViewObject.TextColor
     return viewobj
 
-def makeShape2DView(baseobj,projectionVector=None,facenumbers=[]):
-    """
-    makeShape2DView(object,[projectionVector,facenumbers]) - adds a 2D shape to the document, which is a
-    2D projection of the given object. A specific projection vector can also be given. You can also
-    specify a list of face numbers to be considered in individual faces mode.
-    """
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Shape2DView")
-    _Shape2DView(obj)
-    if gui:
-        _ViewProviderDraftAlt(obj.ViewObject)
-    obj.Base = baseobj
-    if projectionVector:
-        obj.Projection = projectionVector
-    if facenumbers:
-        obj.FaceNumbers = facenumbers
-    select(obj)
-
-    return obj
 
 def makeSketch(objectslist,autoconstraints=False,addTo=None,
         delete=False,name="Sketch",radiusPrecision=-1):
