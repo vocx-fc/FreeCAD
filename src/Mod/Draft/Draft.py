@@ -4235,41 +4235,6 @@ class _ViewProviderClone:
         if colors:
             vobj.DiffuseColor = colors
 
-class _ViewProviderDraftArray(_ViewProviderDraft):
-    """a view provider that displays a Array icon instead of a Draft icon"""
-
-    def __init__(self,vobj):
-        _ViewProviderDraft.__init__(self,vobj)
-
-    def getIcon(self):
-        if hasattr(self.Object,"ArrayType"):
-            return ":/icons/Draft_Array.svg"
-        elif hasattr(self.Object,"PointList"):
-            return ":/icons/Draft_PointArray.svg"
-        return ":/icons/Draft_PathArray.svg"
-
-    def resetColors(self, vobj):
-        colors = []
-        if vobj.Object.Base:
-            if vobj.Object.Base.isDerivedFrom("Part::Feature"):
-                if len(vobj.Object.Base.ViewObject.DiffuseColor) > 1:
-                    colors = vobj.Object.Base.ViewObject.DiffuseColor
-                else:
-                    c = vobj.Object.Base.ViewObject.ShapeColor
-                    c = (c[0],c[1],c[2],vobj.Object.Base.ViewObject.Transparency/100.0)
-                    for f in vobj.Object.Base.Shape.Faces:
-                        colors.append(c)
-        if colors:
-            n = 1
-            if hasattr(vobj.Object,"ArrayType"):
-                if vobj.Object.ArrayType == "ortho":
-                    n = vobj.Object.NumberX * vobj.Object.NumberY * vobj.Object.NumberZ
-                else:
-                    n = vobj.Object.NumberPolar
-            elif hasattr(vobj.Object,"Count"):
-                n = vobj.Object.Count
-            colors = colors * n
-            vobj.DiffuseColor = colors
 
 class _ShapeString(_DraftObject):
     """The ShapeString object"""
