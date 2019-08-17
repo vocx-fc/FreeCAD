@@ -4069,53 +4069,6 @@ class _Clone(_DraftObject):
                     return obj.Objects[0].Proxy.getSubVolume(obj.Objects[0],placement)
         return None
 
-class _ViewProviderClone:
-    """a view provider that displays a Clone icon instead of a Draft icon"""
-
-    def __init__(self,vobj):
-        vobj.Proxy = self
-
-    def getIcon(self):
-        return ":/icons/Draft_Clone.svg"
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
-
-    def getDisplayModes(self, vobj):
-        modes=[]
-        return modes
-
-    def setDisplayMode(self, mode):
-        return mode
-
-    def resetColors(self, vobj):
-        colors = []
-        for o in getGroupContents(vobj.Object.Objects):
-            if o.isDerivedFrom("Part::Feature"):
-                if len(o.ViewObject.DiffuseColor) > 1:
-                    colors.extend(o.ViewObject.DiffuseColor)
-                else:
-                    c = o.ViewObject.ShapeColor
-                    c = (c[0],c[1],c[2],o.ViewObject.Transparency/100.0)
-                    for f in o.Shape.Faces:
-                        colors.append(c)
-            elif o.hasExtension("App::GeoFeatureGroupExtension"):
-                for so in vobj.Object.Group:
-                    if so.isDerivedFrom("Part::Feature"):
-                        if len(so.ViewObject.DiffuseColor) > 1:
-                            colors.extend(so.ViewObject.DiffuseColor)
-                        else:
-                            c = so.ViewObject.ShapeColor
-                            c = (c[0],c[1],c[2],so.ViewObject.Transparency/100.0)
-                            for f in so.Shape.Faces:
-                                colors.append(c)
-        if colors:
-            vobj.DiffuseColor = colors
-
-
 class _ShapeString(_DraftObject):
     """The ShapeString object"""
 
