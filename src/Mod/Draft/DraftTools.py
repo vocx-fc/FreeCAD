@@ -3283,7 +3283,7 @@ class CommandArcGroup:
                }
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
-FreeCADGui.addCommand('Draft_Arc',Arc())
+
 FreeCADGui.addCommand('Draft_Arc_3Points',Draft_Arc_3Points())
 FreeCADGui.addCommand('Draft_ArcTools', CommandArcGroup())
 
