@@ -1107,26 +1107,6 @@ def cut(object1,object2):
 
     return obj
 
-def copyRotatedEdges(arguments):
-    copied_edges = []
-    for argument in arguments:
-        copied_edges.append(copyRotatedEdge(argument[0], argument[1],
-            argument[2], argument[3], argument[4]))
-    joinWires(copied_edges)
-
-def copyRotatedEdge(object, edge_index, angle, center, axis):
-    vertex1 = rotateVectorFromCenter(
-        object.Placement.multVec(object.Points[edge_index]),
-        angle, axis, center)
-    if isClosedEdge(edge_index, object):
-        vertex2 = rotateVectorFromCenter(
-            object.Placement.multVec(object.Points[0]),
-            angle, axis, center)
-    else:
-        vertex2 = rotateVectorFromCenter(
-            object.Placement.multVec(object.Points[edge_index+1]),
-            angle, axis, center)
-    return makeLine(vertex1, vertex2)
 
 def isClosedEdge(edge_index, object):
     return edge_index + 1 >= len(object.Points)
