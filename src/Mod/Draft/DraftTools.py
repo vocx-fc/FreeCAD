@@ -3057,15 +3057,6 @@ FreeCADGui.addCommand('Draft_SelectPlane',SelectPlane())
 
 
 
-class CommandBezierGroup:
-    def GetCommands(self):
-        return tuple(['Draft_CubicBezCurve', 'Draft_BezCurve'])
-    def GetResources(self):
-        return { 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_BezierTools",'Bezier tools'),
-                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_BezierTools",'Bezier tools')
-               }
-    def IsActive(self):
-        return not FreeCAD.ActiveDocument is None
 
 FreeCADGui.addCommand('Draft_CubicBezCurve',CubicBezCurve())
 FreeCADGui.addCommand('Draft_BezierTools', CommandBezierGroup())
