@@ -3724,26 +3724,6 @@ class _ShapeString(_DraftObject):
         return ret
 
 
-class _ViewProviderFacebinder(_ViewProviderDraft):
-    def __init__(self,vobj):
-        _ViewProviderDraft.__init__(self,vobj)
-
-    def getIcon(self):
-        return ":/icons/Draft_Facebinder_Provider.svg"
-
-    def setEdit(self,vobj,mode):
-        import DraftGui
-        taskd = DraftGui.FacebinderTaskPanel()
-        taskd.obj = vobj.Object
-        taskd.update()
-        FreeCADGui.Control.showDialog(taskd)
-        return True
-
-    def unsetEdit(self,vobj,mode):
-        FreeCADGui.Control.closeDialog()
-        return False
-
-
 class WorkingPlaneProxy:
     """The Draft working plane proxy object"""
 
