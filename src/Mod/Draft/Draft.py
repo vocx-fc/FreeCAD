@@ -5063,19 +5063,6 @@ class ViewProviderDraftLabel:
         return None
 
 
-class DraftText:
-    """The Draft Text object"""
-
-    def __init__(self,obj):
-        obj.Proxy = self
-        obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
-        obj.addProperty("App::PropertyStringList","Text","Base",QT_TRANSLATE_NOOP("App::Property","The text displayed by this object"))
-        self.Type = "DraftText"
-
-    def execute(self,obj):
-        pass
-
-
 class ViewProviderDraftText:
     """A View Provider for the Draft Label"""
 
