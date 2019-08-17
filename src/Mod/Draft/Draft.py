@@ -2814,18 +2814,6 @@ def downgrade(objects,delete=False,force=None):
     return [addList,deleteList]
 
 
-def makeWorkingPlaneProxy(placement):
-    """creates a Working Plane proxy object in the current document"""
-    if FreeCAD.ActiveDocument:
-        obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","WPProxy")
-        WorkingPlaneProxy(obj)
-        if FreeCAD.GuiUp:
-            ViewProviderWorkingPlaneProxy(obj.ViewObject)
-            obj.ViewObject.Proxy.writeCamera()
-            obj.ViewObject.Proxy.writeState()
-        obj.Placement = placement
-        return obj
-
 def getParameterFromV0(edge, offset):
     """return parameter at distance offset from edge.Vertexes[0]
     sb method in Part.TopoShapeEdge???"""
