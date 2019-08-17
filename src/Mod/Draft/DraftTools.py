@@ -3212,50 +3212,6 @@ class SelectGroup():
                     FreeCADGui.Selection.addSelection(child)
 
 
-class Shape2DView(Modifier):
-    """The Shape2DView FreeCAD command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_2DShapeView',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Shape2DView", "Shape 2D view"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Shape2DView", "Creates Shape 2D views of selected objects")}
-
-    def Activated(self):
-        Modifier.Activated(self)
-        if not FreeCADGui.Selection.getSelection():
-            if self.ui:
-                self.ui.selectUi()
-                FreeCAD.Console.PrintMessage(translate("draft", "Select an object to project")+"\n")
-                self.call = self.view.addEventCallback("SoEvent",selectObject)
-        else:
-            self.proceed()
-
-    def proceed(self):
-        if self.call:
-            self.view.removeEventCallback("SoEvent",self.call)
-        faces = []
-        objs = []
-        vec = FreeCADGui.ActiveDocument.ActiveView.getViewDirection().negative()
-        sel = FreeCADGui.Selection.getSelectionEx()
-        for s in sel:
-            objs.append(s.Object)
-            for e in s.SubElementNames:
-                if "Face" in e:
-                    faces.append(int(e[4:])-1)
-        #print(objs,faces)
-        commitlist = []
-        FreeCADGui.addModule("Draft")
-        if (len(objs) == 1) and faces:
-            commitlist.append("Draft.makeShape2DView(FreeCAD.ActiveDocument."+objs[0].Name+",FreeCAD.Vector"+str(tuple(vec))+",facenumbers="+str(faces)+")")
-        else:
-            for o in objs:
-                commitlist.append("Draft.makeShape2DView(FreeCAD.ActiveDocument."+o.Name+",FreeCAD.Vector"+str(tuple(vec))+")")
-        if commitlist:
-            commitlist.append("FreeCAD.ActiveDocument.recompute()")
-            self.commit(translate("draft","Create 2D view"),commitlist)
-        self.finish()
-
-
 class Draft2Sketch(Modifier):
     """The Draft2Sketch FreeCAD command definition"""
 
@@ -4392,7 +4348,7 @@ FreeCADGui.addCommand('Draft_ApplyStyle',ApplyStyle())
 FreeCADGui.addCommand('Draft_ToggleDisplayMode',ToggleDisplayMode())
 FreeCADGui.addCommand('Draft_AddToGroup',AddToGroup())
 FreeCADGui.addCommand('Draft_SelectGroup',SelectGroup())
-FreeCADGui.addCommand('Draft_Shape2DView',Shape2DView())
+
 FreeCADGui.addCommand('Draft_ShowSnapBar',ShowSnapBar())
 FreeCADGui.addCommand('Draft_ToggleGrid',ToggleGrid())
 FreeCADGui.addCommand('Draft_FlipDimension',Draft_FlipDimension())
