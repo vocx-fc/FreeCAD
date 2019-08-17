@@ -3991,6 +3991,7 @@ FreeCADGui.addCommand('Draft_ShowSnapBar',ShowSnapBar())
 FreeCADGui.addCommand('Draft_ToggleGrid',ToggleGrid())
 FreeCADGui.addCommand('Draft_FlipDimension',Draft_FlipDimension())
 FreeCADGui.addCommand('Draft_AutoGroup',SetAutoGroup())
+
 FreeCADGui.addCommand('Draft_AddConstruction',Draft_AddConstruction())
 
 # snap commands
