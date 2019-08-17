@@ -2558,23 +2558,6 @@ class ToggleGrid():
                     FreeCADGui.Snapper.grid.on()
                     FreeCADGui.Snapper.forceGridOff=False
 
-class Heal():
-    """The Draft Heal command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Heal',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Heal", "Heal"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Heal", "Heal faulty Draft objects saved from an earlier FreeCAD version")}
-
-    def Activated(self):
-        s = FreeCADGui.Selection.getSelection()
-        FreeCAD.ActiveDocument.openTransaction("Heal")
-        if s:
-            Draft.heal(s)
-        else:
-            Draft.heal()
-        FreeCAD.ActiveDocument.commitTransaction()
-
 
 class Draft_FlipDimension():
     def GetResources(self):
@@ -3083,7 +3066,7 @@ FreeCADGui.addCommand('Draft_Draft2Sketch',Draft2Sketch())
 
 
 
-FreeCADGui.addCommand('Draft_Heal',Heal())
+
 FreeCADGui.addCommand('Draft_Mirror',Mirror())
 FreeCADGui.addCommand('Draft_Slope',Draft_Slope())
 FreeCADGui.addCommand('Draft_Stretch',Stretch())
