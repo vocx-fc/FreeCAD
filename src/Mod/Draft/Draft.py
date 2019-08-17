@@ -2061,41 +2061,6 @@ def getCloneBase(obj,strict=False):
     return obj
 
 
-def mirror(objlist,p1,p2):
-    """mirror(objlist,p1,p2,[clone]): creates a mirrored version of the given object(s)
-    along an axis that passes through the two vectors p1 and p2."""
-
-    if not objlist:
-        FreeCAD.Console.PrintError(translate("draft","No object given")+"\n")
-        return
-    if p1 == p2:
-        FreeCAD.Console.PrintError(translate("draft","The two points are coincident")+"\n")
-        return
-    if not isinstance(objlist,list):
-        objlist = [objlist]
-
-    result = []
-
-    for obj in objlist:
-        mir = FreeCAD.ActiveDocument.addObject("Part::Mirroring","mirror")
-        mir.Label = "Mirror of "+obj.Label
-        mir.Source = obj
-        if gui:
-            norm = FreeCADGui.ActiveDocument.ActiveView.getViewDirection().negative()
-        else:
-            norm = FreeCAD.Vector(0,0,1)
-        pnorm = p2.sub(p1).cross(norm).normalize()
-        mir.Base = p1
-        mir.Normal = pnorm
-        formatObject(mir,obj)
-        result.append(mir)
-
-    if len(result) == 1:
-        result = result[0]
-        select(result)
-    return result
-
-
 def getParameterFromV0(edge, offset):
     """return parameter at distance offset from edge.Vertexes[0]
     sb method in Part.TopoShapeEdge???"""
