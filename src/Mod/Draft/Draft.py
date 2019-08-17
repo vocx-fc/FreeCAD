@@ -2046,42 +2046,6 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,
 
     return nobj
 
-def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
-    """ makePoint(x,y,z ,[color(r,g,b),point_size]) or
-        makePoint(Vector,color(r,g,b),point_size]) -
-        creates a Point in the current document.
-        example usage:
-        p1 = makePoint()
-        p1.ViewObject.Visibility= False # make it invisible
-        p1.ViewObject.Visibility= True  # make it visible
-        p1 = makePoint(-1,0,0) #make a point at -1,0,0
-        p1 = makePoint(1,0,0,(1,0,0)) # color = red
-        p1.X = 1 #move it in x
-        p1.ViewObject.PointColor =(0.0,0.0,1.0) #change the color-make sure values are floats
-    """
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    obj=FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
-    if isinstance(X,FreeCAD.Vector):
-        Z = X.z
-        Y = X.y
-        X = X.x
-    _Point(obj,X,Y,Z)
-    obj.X = X
-    obj.Y = Y
-    obj.Z = Z
-    if gui:
-        _ViewProviderPoint(obj.ViewObject)
-        if hasattr(FreeCADGui,"draftToolBar") and (not color):
-            color = FreeCADGui.draftToolBar.getDefaultColor('ui')
-        obj.ViewObject.PointColor = (float(color[0]), float(color[1]), float(color[2]))
-        obj.ViewObject.PointSize = point_size
-        obj.ViewObject.Visibility = True
-    select(obj)
-
-    return obj
-
 def makeShapeString(String,FontFile,Size = 100,Tracking = 0):
     """ShapeString(Text,FontFile,Height,Track): Turns a text string
     into a Compound Shape"""
