@@ -2337,15 +2337,6 @@ def calculatePlacementsOnPath(shapeRotation, pathwire, count, xlate, align):
 
 
 
-class _ViewProviderDraftPart(_ViewProviderDraftAlt):
-    """a view provider that displays a Part icon instead of a Draft icon"""
-
-    def __init__(self,vobj):
-        _ViewProviderDraftAlt.__init__(self,vobj)
-
-    def getIcon(self):
-        return ":/icons/Tree_Part.svg"
-
 class _ViewProviderDraftLink:
     "a view provider for link type object"
 
