@@ -732,35 +732,6 @@ def getMovableChildren(objectslist,recursive=True):
     return added
 
 
-def makeText(stringslist,point=Vector(0,0,0),screen=False):
-    """makeText(strings,[point],[screen]): Creates a Text object at the given point,
-    containing the strings given in the strings list, one string by line (strings
-    can also be one single string). The current color and text height and font
-    specified in preferences are used.
-    If screen is True, the text always faces the view direction."""
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    typecheck([(point,Vector)], "makeText")
-    if not isinstance(stringslist,list): stringslist = [stringslist]
-    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Text")
-    DraftText(obj)
-    obj.Text = stringslist
-    obj.Placement.Base = point
-    if FreeCAD.GuiUp:
-        ViewProviderDraftText(obj.ViewObject)
-        if screen:
-            obj.ViewObject.DisplayMode = "3D text"
-        h = getParam("textheight",0.20)
-        if screen:
-            h = h*10
-        obj.ViewObject.FontSize = h
-        obj.ViewObject.FontName = getParam("textfont","")
-        obj.ViewObject.LineSpacing = 1
-        formatObject(obj)
-        select(obj)
-    return obj
-
 def makeCopy(obj,force=None,reparent=False):
     """makeCopy(object): returns an exact copy of an object"""
     if not FreeCAD.ActiveDocument:
