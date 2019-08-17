@@ -3712,42 +3712,6 @@ class _ShapeString(_DraftObject):
         return ret
 
 
-class WorkingPlaneProxy:
-    """The Draft working plane proxy object"""
-
-    def __init__(self,obj):
-        obj.Proxy = self
-        obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
-        obj.addProperty("Part::PropertyPartShape","Shape","Base","")
-        self.Type = "WorkingPlaneProxy"
-
-    def execute(self,obj):
-        import Part
-        l = 1
-        if obj.ViewObject:
-            if hasattr(obj.ViewObject,"DisplaySize"):
-                l = obj.ViewObject.DisplaySize.Value
-        p = Part.makePlane(l,l,Vector(l/2,-l/2,0),Vector(0,0,-1))
-        # make sure the normal direction is pointing outwards, you never know what OCC will decide...
-        if p.normalAt(0,0).getAngle(obj.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))) > 1:
-            p.reverse()
-        p.Placement = obj.Placement
-        obj.Shape = p
-
-    def onChanged(self,obj,prop):
-        pass
-
-    def getNormal(self,obj):
-        return obj.Shape.Faces[0].normalAt(0,0)
-
-    def __getstate__(self):
-        return self.Type
-
-    def __setstate__(self,state):
-        if state:
-            self.Type = state
-
-
 class ViewProviderWorkingPlaneProxy:
     """A View Provider for working plane proxies"""
 
