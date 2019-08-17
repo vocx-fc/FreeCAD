@@ -1180,24 +1180,6 @@ def filterObjectsForModifiers(objects, isCopied=False):
     return filteredObjects
 
 
-def scaleVectorFromCenter(vector, scale, center):
-    return vector.sub(center).scale(scale.x, scale.y, scale.z).add(center)
-
-def scaleVertex(object, vertex_index, scale, center):
-    points = object.Points
-    points[vertex_index] = object.Placement.inverse().multVec(
-        scaleVectorFromCenter(
-            object.Placement.multVec(points[vertex_index]),
-            scale, center))
-    object.Points = points
-
-def scaleEdge(object, edge_index, scale, center):
-    scaleVertex(object, edge_index, scale, center)
-    if isClosedEdge(edge_index, object):
-        scaleVertex(object, 0, scale, center)
-    else:
-        scaleVertex(object, edge_index+1, scale, center)
-
 def copyScaledEdges(arguments):
     copied_edges = []
     for argument in arguments:
