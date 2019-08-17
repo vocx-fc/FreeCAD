@@ -3249,39 +3249,6 @@ class Heal():
         FreeCAD.ActiveDocument.commitTransaction()
 
 
-class Draft_Facebinder(Creator):
-    """The Draft Facebinder command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Facebinder',
-                'Accel' : "F,F",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Facebinder", "Facebinder"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Facebinder", "Creates a facebinder object from selected face(s)")}
-
-    def Activated(self):
-        Creator.Activated(self)
-        if not FreeCADGui.Selection.getSelection():
-            if self.ui:
-                self.ui.selectUi()
-                FreeCAD.Console.PrintMessage(translate("draft", "Select face(s) on existing object(s)")+"\n")
-                self.call = self.view.addEventCallback("SoEvent",selectObject)
-        else:
-            self.proceed()
-
-    def proceed(self):
-        if self.call:
-            self.view.removeEventCallback("SoEvent",self.call)
-        if FreeCADGui.Selection.getSelection():
-            FreeCAD.ActiveDocument.openTransaction("Facebinder")
-            FreeCADGui.addModule("Draft")
-            FreeCADGui.doCommand("s = FreeCADGui.Selection.getSelectionEx()")
-            FreeCADGui.doCommand("f = Draft.makeFacebinder(s)")
-            FreeCADGui.doCommand('Draft.autogroup(f)')
-            FreeCADGui.doCommand('FreeCAD.ActiveDocument.recompute()')
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
-        self.finish()
-
 class Draft_FlipDimension():
     def GetResources(self):
         return {'Pixmap'  : 'Draft_FlipDimension',
@@ -3982,7 +3949,7 @@ FreeCADGui.addCommand('Draft_BezierTools', CommandBezierGroup())
 FreeCADGui.addCommand('Draft_Point',Point())
 
 FreeCADGui.addCommand('Draft_ShapeString',ShapeString())
-FreeCADGui.addCommand('Draft_Facebinder',Draft_Facebinder())
+
 FreeCADGui.addCommand('Draft_Label',Draft_Label())
 
 # modification commands
