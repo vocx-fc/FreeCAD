@@ -2186,23 +2186,6 @@ def heal(objlist=None,delete=True,reparent=True):
         for n in dellist:
             FreeCAD.ActiveDocument.removeObject(n)
 
-def makeFacebinder(selectionset,name="Facebinder"):
-    """makeFacebinder(selectionset,[name]): creates a Facebinder object from a selection set.
-    Only faces will be added."""
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    if not isinstance(selectionset,list):
-        selectionset = [selectionset]
-    fb = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
-    _Facebinder(fb)
-    if gui:
-        _ViewProviderFacebinder(fb.ViewObject)
-    faces = []
-    fb.Proxy.addSubobjects(fb,selectionset)
-    select(fb)
-    return fb
-
 
 def upgrade(objects,delete=False,force=None):
     """upgrade(objects,delete=False,force=None): Upgrades the given object(s) (can be
