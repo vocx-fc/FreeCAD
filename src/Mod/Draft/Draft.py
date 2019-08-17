@@ -3592,21 +3592,6 @@ class _PathArray(_DraftLink):
 
         return (Part.makeCompound(base))
 
-class _Point(_DraftObject):
-    """The Draft Point object"""
-    def __init__(self, obj,x=0,y=0,z=0):
-        _DraftObject.__init__(self,obj,"Point")
-        obj.addProperty("App::PropertyDistance","X","Draft",QT_TRANSLATE_NOOP("App::Property","X Location")).X = x
-        obj.addProperty("App::PropertyDistance","Y","Draft",QT_TRANSLATE_NOOP("App::Property","Y Location")).Y = y
-        obj.addProperty("App::PropertyDistance","Z","Draft",QT_TRANSLATE_NOOP("App::Property","Z Location")).Z = z
-        mode = 2
-        obj.setEditorMode('Placement',mode)
-
-    def execute(self, obj):
-        import Part
-        shape = Part.Vertex(Vector(0,0,0))
-        obj.Shape = shape
-        obj.Placement.Base = FreeCAD.Vector(obj.X.Value,obj.Y.Value,obj.Z.Value)
 
 class _ViewProviderPoint(_ViewProviderDraft):
     """A viewprovider for the Draft Point object"""
