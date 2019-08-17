@@ -2042,7 +2042,7 @@ FreeCADGui.addCommand('Draft_SelectPlane',SelectPlane())
 
 # modification commands
 
-FreeCADGui.addCommand('Draft_Rotate',Rotate())
+
 
 FreeCADGui.addCommand('Draft_Join',Join())
 FreeCADGui.addCommand('Draft_Split',Split())
