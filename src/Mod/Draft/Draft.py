@@ -1761,62 +1761,6 @@ import getSVG as svg
 getSVG = svg.getSVG
 
 
-def makeDrawingView(obj,page,lwmod=None,tmod=None,otherProjection=None):
-    """
-    makeDrawingView(object,page,[lwmod,tmod]) - adds a View of the given object to the
-    given page. lwmod modifies lineweights (in percent), tmod modifies text heights
-    (in percent). The Hint scale, X and Y of the page are used.
-    """
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    if getType(obj) == "SectionPlane":
-        import ArchSectionPlane
-        viewobj = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython","View")
-        page.addObject(viewobj)
-        ArchSectionPlane._ArchDrawingView(viewobj)
-        viewobj.Source = obj
-        viewobj.Label = "View of "+obj.Name
-    elif getType(obj) == "Panel":
-        import ArchPanel
-        viewobj = ArchPanel.makePanelView(obj,page)
-    else:
-        viewobj = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython","View"+obj.Name)
-        _DrawingView(viewobj)
-        page.addObject(viewobj)
-        if (otherProjection):
-            if hasattr(otherProjection,"Scale"):
-                viewobj.Scale = otherProjection.Scale
-            if hasattr(otherProjection,"X"):
-                viewobj.X = otherProjection.X
-            if hasattr(otherProjection,"Y"):
-                viewobj.Y = otherProjection.Y
-            if hasattr(otherProjection,"Rotation"):
-                viewobj.Rotation = otherProjection.Rotation
-            if hasattr(otherProjection,"Direction"):
-                viewobj.Direction = otherProjection.Direction
-        else:
-            if hasattr(page.ViewObject,"HintScale"):
-                viewobj.Scale = page.ViewObject.HintScale
-            if hasattr(page.ViewObject,"HintOffsetX"):
-                viewobj.X = page.ViewObject.HintOffsetX
-            if hasattr(page.ViewObject,"HintOffsetY"):
-                viewobj.Y = page.ViewObject.HintOffsetY
-        viewobj.Source = obj
-        if lwmod: viewobj.LineweightModifier = lwmod
-        if tmod: viewobj.TextModifier = tmod
-        if hasattr(obj.ViewObject,"Pattern"):
-            if str(obj.ViewObject.Pattern) in list(svgpatterns().keys()):
-                viewobj.FillStyle = str(obj.ViewObject.Pattern)
-        if hasattr(obj.ViewObject,"DrawStyle"):
-            viewobj.LineStyle = obj.ViewObject.DrawStyle
-        if hasattr(obj.ViewObject,"LineColor"):
-            viewobj.LineColor = obj.ViewObject.LineColor
-        elif hasattr(obj.ViewObject,"TextColor"):
-            viewobj.LineColor = obj.ViewObject.TextColor
-    return viewobj
-
-
 def makeSketch(objectslist,autoconstraints=False,addTo=None,
         delete=False,name="Sketch",radiusPrecision=-1):
     """makeSketch(objectslist,[autoconstraints],[addTo],[delete],[name],[radiusPrecision]):
