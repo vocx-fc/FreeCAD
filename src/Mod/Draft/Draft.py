@@ -732,41 +732,6 @@ def getMovableChildren(objectslist,recursive=True):
     return added
 
 
-def makeAngularDimension(center,angles,p3,normal=None):
-    """makeAngularDimension(center,angle1,angle2,p3,[normal]): creates an angular Dimension
-    from the given center, with the given list of angles, passing through p3.
-    """
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython","Dimension")
-    _AngularDimension(obj)
-    obj.Center = center
-    for a in range(len(angles)):
-        if angles[a] > 2*math.pi:
-            angles[a] = angles[a]-(2*math.pi)
-    obj.FirstAngle = math.degrees(angles[1])
-    obj.LastAngle = math.degrees(angles[0])
-    obj.Dimline = p3
-    if not normal:
-        if hasattr(FreeCAD,"DraftWorkingPlane"):
-            normal = FreeCAD.DraftWorkingPlane.axis
-        else:
-            normal = Vector(0,0,1)
-    if gui:
-        # invert the normal if we are viewing it from the back
-        vnorm = get3DView().getViewDirection()
-        if vnorm.getAngle(normal) < math.pi/2:
-            normal = normal.negative()
-    obj.Normal = normal
-    if gui:
-        _ViewProviderAngularDimension(obj.ViewObject)
-        formatObject(obj)
-        select(obj)
-
-    return obj
-
-
 def makeText(stringslist,point=Vector(0,0,0),screen=False):
     """makeText(strings,[point],[screen]): Creates a Text object at the given point,
     containing the strings given in the strings list, one string by line (strings
