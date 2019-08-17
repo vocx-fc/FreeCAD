@@ -3058,9 +3058,6 @@ FreeCADGui.addCommand('Draft_SelectPlane',SelectPlane())
 
 
 
-FreeCADGui.addCommand('Draft_CubicBezCurve',CubicBezCurve())
-FreeCADGui.addCommand('Draft_BezierTools', CommandBezierGroup())
-FreeCADGui.addCommand('Draft_Point',Point())
 
 
 
