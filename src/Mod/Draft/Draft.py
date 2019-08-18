@@ -1154,67 +1154,6 @@ def calculatePlacement(globalRotation, edge, offset, RefPt, xlate, align, normal
     return placement
 
 
-def calculatePlacementsOnPath(shapeRotation, pathwire, count, xlate, align):
-    """Calculates the placements of a shape along a given path so that each copy will be distributed evenly"""
-    import Part
-    import DraftGeomUtils
-
-    closedpath = DraftGeomUtils.isReallyClosed(pathwire)
-    normal = DraftGeomUtils.getNormal(pathwire)
-    path = Part.__sortEdges__(pathwire.Edges)
-    ends = []
-    cdist = 0
-
-    for e in path:                                                 # find cumulative edge end distance
-        cdist += e.Length
-        ends.append(cdist)
-
-    placements = []
-
-    # place the start shape
-    pt = path[0].Vertexes[0].Point
-    placements.append(calculatePlacement(
-        shapeRotation, path[0], 0, pt, xlate, align, normal))
-
-    # closed path doesn't need shape on last vertex
-    if not(closedpath):
-        # place the end shape
-        pt = path[-1].Vertexes[-1].Point
-        placements.append(calculatePlacement(
-            shapeRotation, path[-1], path[-1].Length, pt, xlate, align, normal))
-
-    if count < 3:
-        return placements
-
-    # place the middle shapes
-    if closedpath:
-        stop = count
-    else:
-        stop = count - 1
-    step = float(cdist) / stop
-    remains = 0
-    travel = step
-    for i in range(1, stop):
-        # which edge in path should contain this shape?
-        # avoids problems with float math travel > ends[-1]
-        iend = len(ends) - 1
-
-        for j in range(0, len(ends)):
-            if travel <= ends[j]:
-                iend = j
-                break
-
-        # place shape at proper spot on proper edge
-        remains = ends[iend] - travel
-        offset = path[iend].Length - remains
-        pt = path[iend].valueAt(getParameterFromV0(path[iend], offset))
-
-        placements.append(calculatePlacement(
-            shapeRotation, path[iend], offset, pt, xlate, align, normal))
-
-        travel += step
-
-    return placements
 
 #---------------------------------------------------------------------------
 # Python Features definitions
