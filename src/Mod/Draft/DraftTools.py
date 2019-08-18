@@ -1305,41 +1305,7 @@ class Draft_AddConstruction():
 
 
 
-class Draft_Snap_Extension():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Extension',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Extension", "Extension"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Extension", "Snaps to extension of edges")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonextension":
-                        b.toggle()
 
-class Draft_Snap_Near():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Near',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Near", "Nearest"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Near", "Snaps to nearest point on edges")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonpassive":
-                        b.toggle()
-
-class Draft_Snap_Ortho():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Ortho',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Ortho", "Ortho"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Ortho", "Snaps to orthogonal and 45 degrees directions")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonortho":
-                        b.toggle()
 
 class Draft_Snap_Special():
     def GetResources(self):
@@ -1447,9 +1413,7 @@ FreeCADGui.addCommand('Draft_AddConstruction',Draft_AddConstruction())
 
 
 
-FreeCADGui.addCommand('Draft_Snap_Extension',Draft_Snap_Extension())
-FreeCADGui.addCommand('Draft_Snap_Near',Draft_Snap_Near())
-FreeCADGui.addCommand('Draft_Snap_Ortho',Draft_Snap_Ortho())
+
 FreeCADGui.addCommand('Draft_Snap_Special',Draft_Snap_Special())
 FreeCADGui.addCommand('Draft_Snap_Dimensions',Draft_Snap_Dimensions())
 FreeCADGui.addCommand('Draft_Snap_WorkingPlane',Draft_Snap_WorkingPlane())
