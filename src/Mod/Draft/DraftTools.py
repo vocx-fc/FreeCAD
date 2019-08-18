@@ -1136,21 +1136,6 @@ class ToggleGrid():
                     FreeCADGui.Snapper.forceGridOff=False
 
 
-class Draft_FlipDimension():
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_FlipDimension',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_FlipDimension", "Flip Dimension"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_FlipDimension", "Flip the normal direction of a dimension")}
-
-    def Activated(self):
-        for o in FreeCADGui.Selection.getSelection():
-            if Draft.getType(o) in ["Dimension","AngularDimension"]:
-                FreeCAD.ActiveDocument.openTransaction("Flip dimension")
-                FreeCADGui.doCommand("FreeCAD.ActiveDocument."+o.Name+".Normal = FreeCAD.ActiveDocument."+o.Name+".Normal.negative()")
-                FreeCAD.ActiveDocument.commitTransaction()
-                FreeCAD.ActiveDocument.recompute()
-
-
 class Draft_Slope():
 
     def GetResources(self):
@@ -1368,7 +1353,7 @@ FreeCADGui.addCommand('Draft_SelectGroup',SelectGroup())
 
 FreeCADGui.addCommand('Draft_ShowSnapBar',ShowSnapBar())
 FreeCADGui.addCommand('Draft_ToggleGrid',ToggleGrid())
-FreeCADGui.addCommand('Draft_FlipDimension',Draft_FlipDimension())
+
 FreeCADGui.addCommand('Draft_AutoGroup',SetAutoGroup())
 
 FreeCADGui.addCommand('Draft_AddConstruction',Draft_AddConstruction())
