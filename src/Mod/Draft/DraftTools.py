@@ -1297,40 +1297,11 @@ class Draft_AddConstruction():
 # Snap tools
 #---------------------------------------------------------------------------
 
-class Draft_Snap_Lock():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Lock',
-                'Accel' : "Shift+S",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Lock", "Toggle On/Off"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Lock", "Activates/deactivates all snap tools at once")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"masterbutton"):
-                FreeCADGui.Snapper.masterbutton.toggle()
 
-class Draft_Snap_Midpoint():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Midpoint',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Midpoint", "Midpoint"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Midpoint", "Snaps to midpoints of edges")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonmidpoint":
-                        b.toggle()
 
-class Draft_Snap_Perpendicular():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Perpendicular',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Perpendicular", "Perpendicular"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Perpendicular", "Snaps to perpendicular points on edges")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonperpendicular":
-                        b.toggle()
+
+
+
 
 class Draft_Snap_Grid():
     def GetResources(self):
@@ -1543,9 +1514,7 @@ FreeCADGui.addCommand('Draft_AutoGroup',SetAutoGroup())
 FreeCADGui.addCommand('Draft_AddConstruction',Draft_AddConstruction())
 
 # snap commands
-FreeCADGui.addCommand('Draft_Snap_Lock',Draft_Snap_Lock())
-FreeCADGui.addCommand('Draft_Snap_Midpoint',Draft_Snap_Midpoint())
-FreeCADGui.addCommand('Draft_Snap_Perpendicular',Draft_Snap_Perpendicular())
+
 FreeCADGui.addCommand('Draft_Snap_Grid',Draft_Snap_Grid())
 FreeCADGui.addCommand('Draft_Snap_Intersection',Draft_Snap_Intersection())
 FreeCADGui.addCommand('Draft_Snap_Parallel',Draft_Snap_Parallel())
