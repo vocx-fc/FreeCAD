@@ -1103,39 +1103,6 @@ class SelectGroup():
                     FreeCADGui.Selection.addSelection(child)
 
 
-class ShowSnapBar():
-    """The ShowSnapBar FreeCAD command definition"""
-
-    def GetResources(self):
-        return {'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ShowSnapBar", "Show Snap Bar"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ShowSnapBar", "Shows Draft snap toolbar")}
-
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            FreeCADGui.Snapper.show()
-
-
-class ToggleGrid():
-    """The Draft ToggleGrid command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Grid',
-                'Accel' : "G,R",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggle Grid"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggles the Draft grid on/off")}
-
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            FreeCADGui.Snapper.setTrackers()
-            if FreeCADGui.Snapper.grid:
-                if FreeCADGui.Snapper.grid.Visible:
-                    FreeCADGui.Snapper.grid.off()
-                    FreeCADGui.Snapper.forceGridOff=True
-                else:
-                    FreeCADGui.Snapper.grid.on()
-                    FreeCADGui.Snapper.forceGridOff=False
-
-
 class SetAutoGroup():
     """The SetAutoGroup FreeCAD command definition"""
 
@@ -1297,8 +1264,7 @@ FreeCADGui.addCommand('Draft_ToggleDisplayMode',ToggleDisplayMode())
 FreeCADGui.addCommand('Draft_AddToGroup',AddToGroup())
 FreeCADGui.addCommand('Draft_SelectGroup',SelectGroup())
 
-FreeCADGui.addCommand('Draft_ShowSnapBar',ShowSnapBar())
-FreeCADGui.addCommand('Draft_ToggleGrid',ToggleGrid())
+
 
 FreeCADGui.addCommand('Draft_AutoGroup',SetAutoGroup())
 
