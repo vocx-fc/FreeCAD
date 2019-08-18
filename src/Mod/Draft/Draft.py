@@ -952,42 +952,6 @@ def filterObjectsForModifiers(objects, isCopied=False):
     return filteredObjects
 
 
-def draftify(objectslist,makeblock=False,delete=True):
-    """draftify(objectslist,[makeblock],[delete]): turns each object of the given list
-    (objectslist can also be a single object) into a Draft parametric
-    wire. If makeblock is True, multiple objects will be grouped in a block.
-    If delete = False, old objects are not deleted"""
-    import DraftGeomUtils, Part
-
-    if not isinstance(objectslist,list):
-        objectslist = [objectslist]
-    newobjlist = []
-    for obj in objectslist:
-        if hasattr(obj,'Shape'):
-            for cluster in Part.getSortedClusters(obj.Shape.Edges):
-                w = Part.Wire(cluster)
-                if DraftGeomUtils.hasCurves(w):
-                    if (len(w.Edges) == 1) and (DraftGeomUtils.geomType(w.Edges[0]) == "Circle"):
-                        nobj = makeCircle(w.Edges[0])
-                    else:
-                        nobj = FreeCAD.ActiveDocument.addObject("Part::Feature",obj.Name)
-                        nobj.Shape = w
-                else:
-                    nobj = makeWire(w)
-                newobjlist.append(nobj)
-                formatObject(nobj,obj)
-                # sketches are always in wireframe mode. In Draft we don't like that!
-                nobj.ViewObject.DisplayMode = "Flat Lines"
-            if delete:
-                FreeCAD.ActiveDocument.removeObject(obj.Name)
-
-    if makeblock:
-        return makeBlock(newobjlist)
-    else:
-        if len(newobjlist) == 1:
-            return newobjlist[0]
-        return newobjlist
-
 def getDXF(obj,direction=None):
     """getDXF(object,[direction]): returns a DXF entity from the given
     object. If direction is given, the object is projected in 2D."""
