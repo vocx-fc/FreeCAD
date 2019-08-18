@@ -1304,41 +1304,6 @@ class Draft_AddConstruction():
 
 
 
-class Draft_Snap_Endpoint():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Endpoint',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Endpoint", "Endpoint"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Endpoint", "Snaps to endpoints of edges")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonendpoint":
-                        b.toggle()
-
-class Draft_Snap_Angle():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Angle',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Angle", "Angles"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Angle", "Snaps to 45 and 90 degrees points on arcs and circles")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonangle":
-                        b.toggle()
-
-class Draft_Snap_Center():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Center',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Center", "Center"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Center", "Snaps to center of circles and arcs")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtoncenter":
-                        b.toggle()
 
 class Draft_Snap_Extension():
     def GetResources(self):
@@ -1481,9 +1446,7 @@ FreeCADGui.addCommand('Draft_AddConstruction',Draft_AddConstruction())
 # snap commands
 
 
-FreeCADGui.addCommand('Draft_Snap_Endpoint',Draft_Snap_Endpoint())
-FreeCADGui.addCommand('Draft_Snap_Angle',Draft_Snap_Angle())
-FreeCADGui.addCommand('Draft_Snap_Center',Draft_Snap_Center())
+
 FreeCADGui.addCommand('Draft_Snap_Extension',Draft_Snap_Extension())
 FreeCADGui.addCommand('Draft_Snap_Near',Draft_Snap_Near())
 FreeCADGui.addCommand('Draft_Snap_Ortho',Draft_Snap_Ortho())
