@@ -1303,41 +1303,6 @@ class Draft_AddConstruction():
 
 
 
-class Draft_Snap_Grid():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Grid',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Grid", "Grid"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Grid", "Snaps to grid points")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtongrid":
-                        b.toggle()
-
-class Draft_Snap_Intersection():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Intersection',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Intersection", "Intersection"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Intersection", "Snaps to edges intersections")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonintersection":
-                        b.toggle()
-
-class Draft_Snap_Parallel():
-    def GetResources(self):
-        return {'Pixmap'  : 'Snap_Parallel',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Parallel", "Parallel"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Snap_Parallel", "Snaps to parallel directions of edges")}
-    def Activated(self):
-        if hasattr(FreeCADGui,"Snapper"):
-            if hasattr(FreeCADGui.Snapper,"toolbarButtons"):
-                for b in FreeCADGui.Snapper.toolbarButtons:
-                    if b.objectName() == "SnapButtonparallel":
-                        b.toggle()
 
 class Draft_Snap_Endpoint():
     def GetResources(self):
@@ -1515,9 +1480,7 @@ FreeCADGui.addCommand('Draft_AddConstruction',Draft_AddConstruction())
 
 # snap commands
 
-FreeCADGui.addCommand('Draft_Snap_Grid',Draft_Snap_Grid())
-FreeCADGui.addCommand('Draft_Snap_Intersection',Draft_Snap_Intersection())
-FreeCADGui.addCommand('Draft_Snap_Parallel',Draft_Snap_Parallel())
+
 FreeCADGui.addCommand('Draft_Snap_Endpoint',Draft_Snap_Endpoint())
 FreeCADGui.addCommand('Draft_Snap_Angle',Draft_Snap_Angle())
 FreeCADGui.addCommand('Draft_Snap_Center',Draft_Snap_Center())
