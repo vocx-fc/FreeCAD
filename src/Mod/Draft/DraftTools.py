@@ -1098,64 +1098,6 @@ class SelectGroup():
                     FreeCADGui.Selection.addSelection(child)
 
 
-class Draft2Sketch(Modifier):
-    """The Draft2Sketch FreeCAD command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Draft2Sketch',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Draft2Sketch", "Draft to Sketch"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Draft2Sketch", "Convert bidirectionally between Draft and Sketch objects")}
-
-    def Activated(self):
-        Modifier.Activated(self)
-        if not FreeCADGui.Selection.getSelection():
-            if self.ui:
-                self.ui.selectUi()
-                FreeCAD.Console.PrintMessage(translate("draft", "Select an object to convert")+"\n")
-                self.call = self.view.addEventCallback("SoEvent",selectObject)
-        else:
-            self.proceed()
-
-    def proceed(self):
-        if self.call:
-            self.view.removeEventCallback("SoEvent",self.call)
-        sel = FreeCADGui.Selection.getSelection()
-        allSketches = True
-        allDraft = True
-        FreeCADGui.addModule("Draft")
-        for obj in sel:
-            if obj.isDerivedFrom("Sketcher::SketchObject"):
-                allDraft = False
-            elif obj.isDerivedFrom("Part::Part2DObjectPython"):
-                allSketches = False
-            else:
-                allDraft = False
-                allSketches = False
-        if not sel:
-            return
-        elif allDraft:
-            lines = ["Draft.makeSketch(FreeCADGui.Selection.getSelection(),autoconstraints=True)"]
-            self.commit(translate("draft","Convert to Sketch"),
-                        lines + ['FreeCAD.ActiveDocument.recompute()'])
-        elif allSketches:
-            lines = ["Draft.draftify(FreeCAD.ActiveDocument."+o.Name+",delete=False)" for o in sel]
-            self.commit(translate("draft","Convert to Draft"),
-                        lines + ['FreeCAD.ActiveDocument.recompute()'])
-        else:
-            lines = []
-            for obj in sel:
-                if obj.isDerivedFrom("Sketcher::SketchObject"):
-                    lines.append("Draft.draftify(FreeCAD.ActiveDocument."+obj.Name+",delete=False)")
-                elif obj.isDerivedFrom("Part::Part2DObjectPython"):
-                    lines.append("Draft.makeSketch(FreeCAD.ActiveDocument."+obj.Name+",autoconstraints=True)")
-                elif obj.isDerivedFrom("Part::Feature"):
-                    #if (len(obj.Shape.Wires) == 1) or (len(obj.Shape.Edges) == 1):
-                    lines.append("Draft.makeSketch(FreeCAD.ActiveDocument."+obj.Name+",autoconstraints=True)")
-            self.commit(translate("draft","Convert"),
-                        lines + ['FreeCAD.ActiveDocument.recompute()'])
-        self.finish()
-
-
 class ShowSnapBar():
     """The ShowSnapBar FreeCAD command definition"""
 
@@ -1567,7 +1509,7 @@ FreeCADGui.addCommand('Draft_Edit_Improved',EditImproved())
 FreeCADGui.addCommand('Draft_AddPoint',AddPoint())
 FreeCADGui.addCommand('Draft_DelPoint',DelPoint())
 FreeCADGui.addCommand('Draft_WireToBSpline',WireToBSpline())
-FreeCADGui.addCommand('Draft_Draft2Sketch',Draft2Sketch())
+
 
 
 
