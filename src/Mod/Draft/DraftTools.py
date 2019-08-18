@@ -406,19 +406,6 @@ class ApplyStyle(Modifier):
                 c.append('Draft.formatObject(FreeCAD.ActiveDocument.'+ob.Name+')')
 
 
-class ToggleConstructionMode():
-    """The Draft_ToggleConstructionMode FreeCAD command definition"""
-
-    def GetResources(self):
-        return {'Pixmap'  : 'Draft_Construction',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode", "Toggle Construction Mode"),
-                'Accel' : "C, M",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleConstructionMode", "Toggles the Construction Mode for next objects.")}
-
-    def Activated(self):
-        FreeCADGui.draftToolBar.constrButton.toggle()
-
-
 class ToggleContinueMode():
     """The Draft_ToggleContinueMode FreeCAD command definition"""
 
@@ -656,7 +643,7 @@ FreeCADGui.addCommand('Draft_WireToBSpline',WireToBSpline())
 
 # context commands
 
-FreeCADGui.addCommand('Draft_ToggleConstructionMode',ToggleConstructionMode())
+
 FreeCADGui.addCommand('Draft_ToggleContinueMode',ToggleContinueMode())
 FreeCADGui.addCommand('Draft_ApplyStyle',ApplyStyle())
 FreeCADGui.addCommand('Draft_ToggleDisplayMode',ToggleDisplayMode())
