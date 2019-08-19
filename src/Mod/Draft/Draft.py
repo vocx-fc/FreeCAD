@@ -1075,39 +1075,6 @@ def getParameterFromV0(edge, offset):
 
 
 
-class _ViewProviderDraftLink:
-    "a view provider for link type object"
-
-    def __init__(self,vobj):
-        self.Object = vobj.Object
-        vobj.Proxy = self
-
-    def attach(self,vobj):
-        self.Object = vobj.Object
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
-
-    def getIcon(self):
-        tp = self.Object.Proxy.Type
-        if tp == 'Array':
-            return ":/icons/Draft_LinkArray.svg"
-        elif tp == 'PathArray':
-            return ":/icons/Draft_PathLinkArray.svg"
-
-    def claimChildren(self):
-        obj = self.Object
-        if hasattr(obj,'ExpandArray'):
-            expand = obj.ExpandArray
-        else:
-            expand = obj.ShowElement
-        if not expand:
-            return [obj.Base]
-        else:
-            return obj.ElementList
 
 class _DrawingView(_DraftObject):
     """The Draft DrawingView object"""
