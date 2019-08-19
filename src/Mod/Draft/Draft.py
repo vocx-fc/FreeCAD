@@ -1171,111 +1171,424 @@ class _DrawingView(_DraftObject):
         "returns a DXF fragment"
         return getDXF(obj)
 
-class _DraftLink(_DraftObject):
+class _BSpline(_DraftObject):
+    """The BSpline object"""
 
-    def __init__(self,obj,tp):
-        self.useLink = False if obj else True
-        _DraftObject.__init__(self,obj,tp)
-        if obj:
-            self.attach(obj)
+    def __init__(self, obj):
+        _DraftObject.__init__(self,obj,"BSpline")
+        obj.addProperty("App::PropertyVectorList","Points","Draft", QT_TRANSLATE_NOOP("App::Property","The points of the B-spline"))
+        obj.addProperty("App::PropertyBool","Closed","Draft",QT_TRANSLATE_NOOP("App::Property","If the B-spline is closed or not"))
+        obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face if this spline is closed"))
+        obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
+        obj.MakeFace = getParam("fillmode",True)
+        obj.Closed = False
+        obj.Points = []
+        self.assureProperties(obj)
 
-    def __getstate__(self):
-        return self.__dict__
+    def assureProperties(self, obj): # for Compatibility with older versions
+        if not hasattr(obj, "Parameterization"):
+            obj.addProperty("App::PropertyFloat","Parameterization","Draft",QT_TRANSLATE_NOOP("App::Property","Parameterization factor"))
+            obj.Parameterization = 1.0
+            self.knotSeq = []
 
-    def __setstate__(self,state):
-        if isinstance(state,dict):
-            self.__dict__ = state
-        else:
-            self.useLink = False
-            _DraftObject.__setstate__(self,state)
+    def parameterization (self, pts, a, closed):
+        # Computes a knot Sequence for a set of points
+        # fac (0-1) : parameterization factor
+        # fac=0 -> Uniform / fac=0.5 -> Centripetal / fac=1.0 -> Chord-Length
+        if closed: # we need to add the first point as the end point
+            pts.append(pts[0])
+        params = [0]
+        for i in range(1,len(pts)):
+            p = pts[i].sub(pts[i-1])
+            pl = pow(p.Length,a)
+            params.append(params[-1] + pl)
+        return params
 
-    def attach(self,obj):
-        if self.useLink:
-            obj.addExtension('App::LinkExtensionPython', None)
-            self.linkSetup(obj)
+    def onChanged(self, fp, prop):
+        if prop == "Parameterization":
+            if fp.Parameterization < 0.:
+                fp.Parameterization = 0.
+            if fp.Parameterization > 1.0:
+                fp.Parameterization = 1.0
 
-    def canLinkProperties(self,_obj):
-        return False
-
-    def linkSetup(self,obj):
-        obj.configLinkProperty('Placement',LinkedObject='Base')
-        if hasattr(obj,'ShowElement'):
-            # rename 'ShowElement' property to 'ExpandArray' to avoid conflict
-            # with native App::Link
-            obj.configLinkProperty('ShowElement')
-            showElement = obj.ShowElement
-            obj.addProperty("App::PropertyBool","ExpandArray","Draft",
-                    QT_TRANSLATE_NOOP("App::Property","Show array element as children object"))
-            obj.ExpandArray = showElement
-            obj.configLinkProperty(ShowElement='ExpandArray')
-            obj.removeProperty('ShowElement')
-        else:
-            obj.configLinkProperty(ShowElement='ExpandArray')
-        if getattr(obj,'ExpandArray',False):
-            obj.setPropertyStatus('PlacementList','Immutable')
-        else:
-            obj.setPropertyStatus('PlacementList','-Immutable')
-
-    def getViewProviderName(self,_obj):
-        if self.useLink:
-            return 'Gui::ViewProviderLinkPython'
-        return ''
-
-    def onDocumentRestored(self, obj):
-        if self.useLink:
-            self.linkSetup(obj)
-            if obj.Shape.isNull():
-                self.buildShape(obj,obj.Placement,obj.PlacementList)
-
-    def buildShape(self,obj,pl,pls):
+    def execute(self, obj):
         import Part
-        import DraftGeomUtils
+        self.assureProperties(obj)
+        if obj.Points:
+            self.knotSeq = self.parameterization(obj.Points, obj.Parameterization, obj.Closed)
+            plm = obj.Placement
+            if obj.Closed and (len(obj.Points) > 2):
+                if obj.Points[0] == obj.Points[-1]:  # should not occur, but OCC will crash
+                    FreeCAD.Console.PrintError(translate('draft',  "_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.")+"\n")
+                    return
+                spline = Part.BSplineCurve()
+                spline.interpolate(obj.Points, PeriodicFlag = True, Parameters = self.knotSeq)
+                # DNC: bug fix: convert to face if closed
+                shape = Part.Wire(spline.toShape())
+                # Creating a face from a closed spline cannot be expected to always work
+                # Usually, if the spline is not flat the call of Part.Face() fails
+                try:
+                    if hasattr(obj,"MakeFace"):
+                        if obj.MakeFace:
+                            shape = Part.Face(shape)
+                    else:
+                        shape = Part.Face(shape)
+                except Part.OCCError:
+                    pass
+                obj.Shape = shape
+                if hasattr(obj,"Area") and hasattr(shape,"Area"):
+                    obj.Area = shape.Area
+            else:
+                spline = Part.BSplineCurve()
+                spline.interpolate(obj.Points, PeriodicFlag = False, Parameters = self.knotSeq)
+                shape = spline.toShape()
+                obj.Shape = shape
+                if hasattr(obj,"Area") and hasattr(shape,"Area"):
+                    obj.Area = shape.Area
+            obj.Placement = plm
+        obj.positionBySupport()
 
-        if self.useLink:
-            if not getattr(obj,'ExpandArray',True) or obj.Count != len(pls):
-                obj.setPropertyStatus('PlacementList','-Immutable')
-                obj.PlacementList = pls
-                obj.setPropertyStatus('PlacementList','Immutable')
-                obj.Count = len(pls)
+# for compatibility with older versions
+_ViewProviderBSpline = _ViewProviderWire
 
+class _BezCurve(_DraftObject):
+    """The BezCurve object"""
+
+    def __init__(self, obj):
+        _DraftObject.__init__(self,obj,"BezCurve")
+        obj.addProperty("App::PropertyVectorList","Points","Draft",QT_TRANSLATE_NOOP("App::Property","The points of the Bezier curve"))
+        obj.addProperty("App::PropertyInteger","Degree","Draft",QT_TRANSLATE_NOOP("App::Property","The degree of the Bezier function"))
+        obj.addProperty("App::PropertyIntegerList","Continuity","Draft",QT_TRANSLATE_NOOP("App::Property","Continuity"))
+        obj.addProperty("App::PropertyBool","Closed","Draft",QT_TRANSLATE_NOOP("App::Property","If the Bezier curve should be closed or not"))
+        obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face if this curve is closed"))
+        obj.addProperty("App::PropertyLength","Length","Draft",QT_TRANSLATE_NOOP("App::Property","The length of this object"))
+        obj.addProperty("App::PropertyArea","Area","Draft",QT_TRANSLATE_NOOP("App::Property","The area of this object"))
+        obj.MakeFace = getParam("fillmode",True)
+        obj.Closed = False
+        obj.Degree = 3
+        obj.Continuity = []
+        #obj.setEditorMode("Degree",2)#hide
+        obj.setEditorMode("Continuity",1)#ro
+
+    def execute(self, fp):
+        self.createGeometry(fp)
+        fp.positionBySupport()
+
+    def _segpoleslst(self,fp):
+        """split the points into segments"""
+        if not fp.Closed and len(fp.Points) >= 2: #allow lower degree segment
+            poles=fp.Points[1:]
+        elif fp.Closed and len(fp.Points) >= fp.Degree: #drawable
+            #poles=fp.Points[1:(fp.Degree*(len(fp.Points)//fp.Degree))]+fp.Points[0:1]
+            poles=fp.Points[1:]+fp.Points[0:1]
+        else:
+            poles=[]
+        return [poles[x:x+fp.Degree] for x in \
+            range(0, len(poles), (fp.Degree or 1))]
+
+    def resetcontinuity(self,fp):
+        fp.Continuity = [0]*(len(self._segpoleslst(fp))-1+1*fp.Closed)
+        #nump= len(fp.Points)-1+fp.Closed*1
+        #numsegments = (nump // fp.Degree) + 1 * (nump % fp.Degree > 0) -1
+        #fp.Continuity = [0]*numsegments
+
+    def onChanged(self, fp, prop):
+        if prop == 'Closed': # if remove the last entry when curve gets opened
+            oldlen = len(fp.Continuity)
+            newlen = (len(self._segpoleslst(fp))-1+1*fp.Closed)
+            if oldlen > newlen:
+                fp.Continuity = fp.Continuity[:newlen]
+            if oldlen < newlen:
+                fp.Continuity = fp.Continuity + [0]*(newlen-oldlen)
+        if hasattr(fp,'Closed') and fp.Closed and prop in  ['Points','Degree','Closed'] and\
+                len(fp.Points) % fp.Degree: # the curve editing tools can't handle extra points
+            fp.Points=fp.Points[:(fp.Degree*(len(fp.Points)//fp.Degree))] #for closed curves
+        if prop in ["Degree"] and fp.Degree >= 1: #reset Continuity
+            self.resetcontinuity(fp)
+        if prop in ["Points","Degree","Continuity","Closed"]:
+            self.createGeometry(fp)
+
+    def createGeometry(self,fp):
+        import Part
+        plm = fp.Placement
+        if fp.Points:
+            startpoint=fp.Points[0]
+            edges = []
+            for segpoles in self._segpoleslst(fp):
+#                if len(segpoles) == fp.Degree # would skip additional poles
+                 c = Part.BezierCurve() #last segment may have lower degree
+                 c.increase(len(segpoles))
+                 c.setPoles([startpoint]+segpoles)
+                 edges.append(Part.Edge(c))
+                 startpoint = segpoles[-1]
+            w = Part.Wire(edges)
+            if fp.Closed and w.isClosed():
+                try:
+                    if hasattr(fp,"MakeFace"):
+                        if fp.MakeFace:
+                            w = Part.Face(w)
+                    else:
+                        w = Part.Face(w)
+                except Part.OCCError:
+                    pass
+            fp.Shape = w
+            if hasattr(fp,"Area") and hasattr(w,"Area"):
+                fp.Area = w.Area
+            if hasattr(fp,"Length") and hasattr(w,"Length"):
+                fp.Length = w.Length            
+        fp.Placement = plm
+
+    @classmethod
+    def symmetricpoles(cls,knot, p1, p2):
+        """make two poles symmetric respective to the knot"""
+        p1h=FreeCAD.Vector(p1)
+        p2h=FreeCAD.Vector(p2)
+        p1h.multiply(0.5)
+        p2h.multiply(0.5)
+        return ( knot+p1h-p2h , knot+p2h-p1h)
+
+    @classmethod
+    def tangentpoles(cls,knot, p1, p2,allowsameside=False):
+        """make two poles have the same tangent at knot"""
+        p12n=p2.sub(p1)
+        p12n.normalize()
+        p1k=knot-p1
+        p2k=knot-p2
+        p1k_= FreeCAD.Vector(p12n)
+        kon12=(p1k*p12n)
+        if allowsameside or not (kon12 < 0 or p2k*p12n > 0):# instead of moving
+            p1k_.multiply(kon12)
+            pk_k=knot-p1-p1k_
+            return (p1+pk_k,p2+pk_k)
+        else:
+            return cls.symmetricpoles(knot, p1, p2)
+
+    @staticmethod
+    def modifysymmetricpole(knot,p1):
+        """calculate the coordinates of the opposite pole
+        of a symmetric knot"""
+        return knot+knot-p1
+
+    @staticmethod
+    def modifytangentpole(knot,p1,oldp2):
+        """calculate the coordinates of the opposite pole
+        of a tangent knot"""
+        pn=knot-p1
+        pn.normalize()
+        pn.multiply((knot-oldp2).Length)
+        return pn+knot
+
+# for compatibility with older versions ???????
+_ViewProviderBezCurve = _ViewProviderWire
+
+class _Block(_DraftObject):
+    """The Block object"""
+
+    def __init__(self, obj):
+        _DraftObject.__init__(self,obj,"Block")
+        obj.addProperty("App::PropertyLinkList","Components","Draft",QT_TRANSLATE_NOOP("App::Property","The components of this block"))
+
+    def execute(self, obj):
+        import Part
+        plm = obj.Placement
+        shps = []
+        for c in obj.Components:
+            shps.append(c.Shape)
+        if shps:
+            shape = Part.makeCompound(shps)
+            obj.Shape = shape
+        obj.Placement = plm
+        obj.positionBySupport()
+
+class _Shape2DView(_DraftObject):
+    """The Shape2DView object"""
+
+    def __init__(self,obj):
+        obj.addProperty("App::PropertyLink","Base","Draft",QT_TRANSLATE_NOOP("App::Property","The base object this 2D view must represent"))
+        obj.addProperty("App::PropertyVector","Projection","Draft",QT_TRANSLATE_NOOP("App::Property","The projection vector of this object"))
+        obj.addProperty("App::PropertyEnumeration","ProjectionMode","Draft",QT_TRANSLATE_NOOP("App::Property","The way the viewed object must be projected"))
+        obj.addProperty("App::PropertyIntegerList","FaceNumbers","Draft",QT_TRANSLATE_NOOP("App::Property","The indices of the faces to be projected in Individual Faces mode"))
+        obj.addProperty("App::PropertyBool","HiddenLines","Draft",QT_TRANSLATE_NOOP("App::Property","Show hidden lines"))
+        obj.addProperty("App::PropertyBool","FuseArch","Draft",QT_TRANSLATE_NOOP("App::Property","Fuse wall and structure objects of same type and material"))
+        obj.addProperty("App::PropertyBool","Tessellation","Draft",QT_TRANSLATE_NOOP("App::Property","Tessellate Ellipses and B-splines into line segments"))
+        obj.addProperty("App::PropertyBool","InPlace","Draft",QT_TRANSLATE_NOOP("App::Property","For Cutlines and Cutfaces modes, this leaves the faces at the cut location"))
+        obj.addProperty("App::PropertyFloat","SegmentLength","Draft",QT_TRANSLATE_NOOP("App::Property","Length of line segments if tessellating Ellipses or B-splines into line segments"))
+        obj.addProperty("App::PropertyBool","VisibleOnly","Draft",QT_TRANSLATE_NOOP("App::Property","If this is True, this object will be recomputed only if it is visible"))
+        obj.Projection = Vector(0,0,1)
+        obj.ProjectionMode = ["Solid","Individual Faces","Cutlines","Cutfaces"]
+        obj.HiddenLines = False
+        obj.Tessellation = False
+        obj.VisibleOnly = False
+        obj.InPlace = True
+        obj.SegmentLength = .05
+        _DraftObject.__init__(self,obj,"Shape2DView")
+
+    def getProjected(self,obj,shape,direction):
+        "returns projected edges from a shape and a direction"
+        import Part,Drawing,DraftGeomUtils
+        edges = []
+        groups = Drawing.projectEx(shape,direction)
+        for g in groups[0:5]:
+            if g:
+                edges.append(g)
+        if hasattr(obj,"HiddenLines"):
+            if obj.HiddenLines:
+                for g in groups[5:]:
+                    edges.append(g)
+        #return Part.makeCompound(edges)
+        if hasattr(obj,"Tessellation") and obj.Tessellation:
+            return DraftGeomUtils.cleanProjection(Part.makeCompound(edges),obj.Tessellation,obj.SegmentLength)
+        else:
+            return Part.makeCompound(edges)
+            #return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
+
+    def execute(self,obj):
+        if hasattr(obj,"VisibleOnly"):
+            if obj.VisibleOnly:
+                if obj.ViewObject:
+                    if obj.ViewObject.Visibility == False:
+                        return False
+        import Part, DraftGeomUtils
+        obj.positionBySupport()
+        pl = obj.Placement
         if obj.Base:
-            shape = Part.getShape(obj.Base)
-            if shape.isNull():
-                raise RuntimeError("'{}' cannot build shape of '{}'\n".format(
-                        obj.Name,obj.Base.Name))
-            else:
-                shape = shape.copy()
-                shape.Placement = FreeCAD.Placement()
-                base = []
-                for i,pla in enumerate(pls):
-                    vis = getattr(obj,'VisibilityList',[])
-                    if len(vis)>i and not vis[i]:
-                        continue;
-                    # 'I' is a prefix for disambiguation when mapping element names
-                    base.append(shape.transformed(pla.toMatrix(),op='I{}'.format(i)))
-                if getattr(obj,'Fuse',False) and len(base) > 1:
-                    obj.Shape = base[0].multiFuse(base[1:]).removeSplitter()
+            if getType(obj.Base) in ["BuildingPart","SectionPlane"]:
+                objs = []
+                if getType(obj.Base) == "SectionPlane":
+                    objs = obj.Base.Objects
+                    cutplane = obj.Base.Shape
                 else:
-                    obj.Shape = Part.makeCompound(base)
+                    objs = obj.Base.Group
+                    cutplane = Part.makePlane(1000,1000,FreeCAD.Vector(-500,-500,0))
+                    m = 1
+                    if obj.Base.ViewObject and hasattr(obj.Base.ViewObject,"CutMargin"):
+                        m = obj.Base.ViewObject.CutMargin.Value
+                    cutplane.translate(FreeCAD.Vector(0,0,m))
+                    cutplane.Placement = cutplane.Placement.multiply(obj.Base.Placement)
+                if objs:
+                    onlysolids = True
+                    if hasattr(obj.Base,"OnlySolids"):
+                        onlysolids = obj.Base.OnlySolids
+                    import Arch, Part, Drawing
+                    objs = getGroupContents(objs,walls=True)
+                    objs = removeHidden(objs)
+                    shapes = []
+                    if hasattr(obj,"FuseArch") and obj.FuseArch:
+                        shtypes = {}
+                        for o in objs:
+                            if getType(o) in ["Wall","Structure"]:
+                                if onlysolids:
+                                    shtypes.setdefault(o.Material.Name if (hasattr(o,"Material") and o.Material) else "None",[]).extend(o.Shape.Solids)
+                                else:
+                                    shtypes.setdefault(o.Material.Name if (hasattr(o,"Material") and o.Material) else "None",[]).append(o.Shape.copy())
+                            elif o.isDerivedFrom("Part::Feature"):
+                                if onlysolids:
+                                    shapes.extend(o.Shape.Solids)
+                                else:
+                                    shapes.append(o.Shape.copy())
+                        for k,v in shtypes.items():
+                            v1 = v.pop()
+                            if v:
+                                v1 = v1.multiFuse(v)
+                                v1 = v1.removeSplitter()
+                            if v1.Solids:
+                                shapes.extend(v1.Solids)
+                            else:
+                                print("Shape2DView: Fusing Arch objects produced non-solid results")
+                                shapes.append(v1)
+                    else:
+                        for o in objs:
+                            if o.isDerivedFrom("Part::Feature"):
+                                if onlysolids:
+                                    shapes.extend(o.Shape.Solids)
+                                else:
+                                    shapes.append(o.Shape.copy())
+                    clip = False
+                    if hasattr(obj.Base,"Clip"):
+                        clip = obj.Base.Clip
+                    cutp,cutv,iv = Arch.getCutVolume(cutplane,shapes,clip)
+                    cuts = []
+                    opl = FreeCAD.Placement(obj.Base.Placement)
+                    proj = opl.Rotation.multVec(FreeCAD.Vector(0,0,1))
+                    if obj.ProjectionMode == "Solid":
+                        for sh in shapes:
+                            if cutv:
+                                if sh.Volume < 0:
+                                    sh.reverse()
+                                #if cutv.BoundBox.intersect(sh.BoundBox):
+                                #    c = sh.cut(cutv)
+                                #else:
+                                #    c = sh.copy()
+                                c = sh.cut(cutv)
+                                if onlysolids:
+                                    cuts.extend(c.Solids)
+                                else:
+                                    cuts.append(c)
+                            else:
+                                if onlysolids:
+                                    cuts.extend(sh.Solids)
+                                else:
+                                    cuts.append(sh.copy())
+                        comp = Part.makeCompound(cuts)
+                        obj.Shape = self.getProjected(obj,comp,proj)
+                    elif obj.ProjectionMode in ["Cutlines","Cutfaces"]:
+                        for sh in shapes:
+                            if sh.Volume < 0:
+                                sh.reverse()
+                            c = sh.section(cutp)
+                            faces = []
+                            if (obj.ProjectionMode == "Cutfaces") and (sh.ShapeType == "Solid"):
+                                if hasattr(obj,"InPlace"):
+                                    if not obj.InPlace:
+                                        c = self.getProjected(obj,c,proj)
+                                wires = DraftGeomUtils.findWires(c.Edges)
+                                for w in wires:
+                                    if w.isClosed():
+                                        faces.append(Part.Face(w))
+                            if faces:
+                                cuts.extend(faces)
+                            else:
+                                cuts.append(c)
+                        comp = Part.makeCompound(cuts)
+                        opl = FreeCAD.Placement(obj.Base.Placement)
+                        comp.Placement = opl.inverse()
+                        if comp:
+                            obj.Shape = comp
 
-                if not DraftGeomUtils.isNull(pl):
-                    obj.Placement = pl
+            elif obj.Base.isDerivedFrom("App::DocumentObjectGroup"):
+                shapes = []
+                objs = getGroupContents(obj.Base)
+                for o in objs:
+                    if o.isDerivedFrom("Part::Feature"):
+                        if o.Shape:
+                            if not o.Shape.isNull():
+                                shapes.append(o.Shape)
+                if shapes:
+                    import Part
+                    comp = Part.makeCompound(shapes)
+                    obj.Shape = self.getProjected(obj,comp,obj.Projection)
 
-        if self.useLink:
-            return False # return False to call LinkExtension::execute()
+            elif obj.Base.isDerivedFrom("Part::Feature"):
+                if not DraftVecUtils.isNull(obj.Projection):
+                    if obj.ProjectionMode == "Solid":
+                        obj.Shape = self.getProjected(obj,obj.Base.Shape,obj.Projection)
+                    elif obj.ProjectionMode == "Individual Faces":
+                        import Part
+                        if obj.FaceNumbers:
+                            faces = []
+                            for i in obj.FaceNumbers:
+                                if len(obj.Base.Shape.Faces) > i:
+                                    faces.append(obj.Base.Shape.Faces[i])
+                            views = []
+                            for f in faces:
+                                views.append(self.getProjected(obj,f,obj.Projection))
+                            if views:
+                                obj.Shape = Part.makeCompound(views)
+                    else:
+                        FreeCAD.Console.PrintWarning(obj.ProjectionMode+" mode not implemented\n")
+        if not DraftGeomUtils.isNull(pl):
+            obj.Placement = pl
 
-    def onChanged(self, obj, prop):
-        if getattr(obj,'useLink',False):
-            return
-        elif prop == 'Fuse':
-            if obj.Fuse:
-                obj.setPropertyStatus('Shape','-Transient')
-            else:
-                obj.setPropertyStatus('Shape','Transient')
-        elif prop == 'ExpandArray':
-            if hasattr(obj,'PlacementList'):
-                obj.setPropertyStatus('PlacementList',
-                        '-Immutable' if obj.ExpandArray else 'Immutable')
 
 
 class _Array(_DraftLink):
