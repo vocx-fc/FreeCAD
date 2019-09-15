@@ -67,7 +67,7 @@ unittest.TextTestRunner().run(all_tests)
 """
 
 
-class TestDraftImport(unittest.TestCase):
+class DraftImport(unittest.TestCase):
     """Import the Draft modules."""
     # No document is needed to test 'import Draft' or other modules
     # thus 'setUp' just draws a line, and 'tearDown' isn't defined.
@@ -109,7 +109,19 @@ class TestDraftImport(unittest.TestCase):
             _msg("  {0}".format(exc))
         self.assertTrue(imported, "Problem importing '{0}'".format(module))
 
+    def test_import_Draft_SVG(self):
+        """Import Draft SVG utilities."""
+        module = "getSVG"
+        _msg("  Try importing '{0}'".format(module))
+        try:
+            imported = __import__("{0}".format(module))
+        except ImportError as exc:
+            imported = False
+            _msg("  {0}".format(exc))
+        self.assertTrue(imported, "Problem importing '{0}'".format(module))
+
     def test_import_GUI_DraftGui(self):
+        """Import Draft TaskView GUI tools."""
         module = "DraftGui"
         if App.GuiUp:
             _msg("  Try importing '{0}'".format(module))
@@ -165,7 +177,7 @@ class TestDraftImport(unittest.TestCase):
             _msg("No GUI. Cannot test for '{0}'".format(module))
 
 
-class TestDraftPivy(unittest.TestCase):
+class DraftPivy(unittest.TestCase):
     """Test for the presence of Pivy."""
 
     def setUp(self):
@@ -186,24 +198,119 @@ class TestDraftPivy(unittest.TestCase):
         self.doc = App.ActiveDocument
 
     def test_Pivy(self):
-        """Import Pivy, and draw a cube on the scene."""
-        App.Console.PrintLog('Checking Pivy...\n')
-        from pivy import coin
-        c = coin.SoCube()
-        Gui.ActiveDocument.ActiveView.getSceneGraph().addChild(c)
-        self.failUnless(c, "Pivy is not working properly")
+        """Import Pivy."""
+        module = "pivy.coin"
+        _msg("  Try importing '{0}'".format(module))
+
+        try:
+            imported = __import__("{0}".format(module))
+        except ImportError as exc:
+            imported = False
+            _msg("  {0}".format(exc))
+        self.assertTrue(imported, "Problem importing '{0}'".format(module))
+
+    def test_Pivy_draw(self):
+        """Use Pivy to draw a cube on the active view."""
+        module = "pivy.coin"
+        if App.GuiUp:
+            import pivy.coin
+            cube = pivy.coin.SoCube()
+            Gui.ActiveDocument.ActiveView.getSceneGraph().addChild(cube)
+            self.failUnless(cube, "Pivy is not working properly.")
+        else:
+            _msg("No GUI. Cannot test that '{0}' "
+                 "is working properly".format(module))
 
     def tearDown(self):
         App.closeDocument(self.doc_name)
 
 
-class TestDraftCreation(unittest.TestCase):
+class DraftImportTools(unittest.TestCase):
+    """Test for each individual module that defines a tool."""
+    # No document is needed to test 'import' of other modules
+    # thus 'setUp' just draws a line, and 'tearDown' isn't defined.
+    def setUp(self):
+        _msg("\n"
+             "{0}".format(78*"-"))
+
+    def test_import_GUI_DraftEdit(self):
+        """Import Draft Edit."""
+        module = "DraftEdit"
+        if App.GuiUp:
+            _msg("  Try importing '{0}'".format(module))
+            try:
+                imported = __import__("{0}".format(module))
+            except ImportError as exc:
+                imported = False
+                _msg("  {0}".format(exc))
+            self.assertTrue(imported, "Problem importing '{0}'".format(module))
+        else:
+            _msg("No GUI. Cannot test for '{0}'".format(module))
+
+    def test_import_GUI_DraftFillet(self):
+        """Import Draft Fillet."""
+        module = "DraftFillet"
+        if App.GuiUp:
+            _msg("  Try importing '{0}'".format(module))
+            try:
+                imported = __import__("{0}".format(module))
+            except ImportError as exc:
+                imported = False
+                _msg("  {0}".format(exc))
+            self.assertTrue(imported, "Problem importing '{0}'".format(module))
+        else:
+            _msg("No GUI. Cannot test for '{0}'".format(module))
+
+    def test_import_GUI_DraftLayer(self):
+        """Import Draft Layer."""
+        module = "DraftLayer"
+        if App.GuiUp:
+            _msg("  Try importing '{0}'".format(module))
+            try:
+                imported = __import__("{0}".format(module))
+            except ImportError as exc:
+                imported = False
+                _msg("  {0}".format(exc))
+            self.assertTrue(imported, "Problem importing '{0}'".format(module))
+        else:
+            _msg("No GUI. Cannot test for '{0}'".format(module))
+
+    def test_import_GUI_DraftPlane(self):
+        """Import Draft SelectPlane."""
+        module = "DraftSelectPlane"
+        if App.GuiUp:
+            _msg("  Try importing '{0}'".format(module))
+            try:
+                imported = __import__("{0}".format(module))
+            except ImportError as exc:
+                imported = False
+                _msg("  {0}".format(exc))
+            self.assertTrue(imported, "Problem importing '{0}'".format(module))
+        else:
+            _msg("No GUI. Cannot test for '{0}'".format(module))
+
+    def test_import_WorkingPlane(self):
+        """Import Draft WorkingPlane."""
+        module = "WorkingPlane"
+        if App.GuiUp:
+            _msg("  Try importing '{0}'".format(module))
+            try:
+                imported = __import__("{0}".format(module))
+            except ImportError as exc:
+                imported = False
+                _msg("  {0}".format(exc))
+            self.assertTrue(imported, "Problem importing '{0}'".format(module))
+        else:
+            _msg("No GUI. Cannot test for '{0}'".format(module))
+
+
+class DraftCreation(unittest.TestCase):
     """Test Draft creation functions."""
 
     def setUp(self):
         """Set up a new document to hold the tests.
 
-        It is executed before every test class, so we create a document
+        It is executed before every test, so we create a document
         to hold the objects.
         """
         _msg("\n"
@@ -217,7 +324,6 @@ class TestDraftCreation(unittest.TestCase):
         App.setActiveDocument(self.doc_name)
         self.doc = App.ActiveDocument
 
-    # Creation tools
     def test_line(self):
         """Create a line."""
         App.Console.PrintLog('Checking Draft Line...\n')
@@ -237,130 +343,138 @@ class TestDraftCreation(unittest.TestCase):
     def test_fillet(self):
         """Create a fillet between two lines."""
         App.Console.PrintLog("Checking Draft Fillet...\n")
-        L1 = Draft.makeLine(Vector(0, 0, 0), Vector(10, 0, 0))
-        L2 = Draft.makeLine(Vector(10, 0, 0), Vector(10, 10, 0))
+        L1 = Draft.makeLine(Vector(0, 0, 0), Vector(8, 0, 0))
+        L2 = Draft.makeLine(Vector(8, 0, 0), Vector(8, 8, 0))
         App.ActiveDocument.recompute()
         import DraftFillet
-        import DraftTools
-        DraftFillet.makeFillet([L1, L2], 5)
+        DraftFillet.makeFillet([L1, L2], 4)
         self.failUnless(App.ActiveDocument.getObject("Fillet"),
                         "Draft Fillet failed")
 
-    def testCircle(self):
+    def test_circle(self):
         """Create a circle."""
         App.Console.PrintLog('Checking Draft Circle...\n')
         Draft.makeCircle(3)
         self.failUnless(App.ActiveDocument.getObject("Circle"),
                         "Draft Circle failed")
 
-    def testArc(self):
+    def test_arc(self):
         """Create a circular arc."""
         App.Console.PrintLog('Checking Draft Arc...\n')
         Draft.makeCircle(2, startangle=0, endangle=90)
         self.failUnless(App.ActiveDocument.getObject("Arc"),
                         "Draft Arc failed")
 
-    def testArc3(self):
-        """Create a circular arc from three points."""
-        App.Console.PrintLog('Checking Draft Arc 3Points...\n')
+    def test_arc_3_points(self):
+        """Create a circular arc from three points. NOT IMPLEMENTED CURRENTLY."""
+        # App.Console.PrintLog('Checking Draft Arc 3Points...\n')
         # Draft.make_arc_3()
         # self.failUnless(App.ActiveDocument.getObject("Arc"),
         #                 "Draft Arc 3Points failed")
-        App.Console.PrintLog('Currently no test!\n')
+        App.Console.PrintLog('Test currently not implemented\n')
         self.failUnless(True,
                         "Draft Arc 3Points failed")
 
-    def testEllipse(self):
+    def test_ellipse(self):
         """Create an ellipse."""
         App.Console.PrintLog('Checking Draft Ellipse...\n')
         Draft.makeEllipse(5, 3)
         self.failUnless(App.ActiveDocument.getObject("Ellipse"),
                         "Draft Ellipse failed")
 
-    def testPolygon(self):
+    def test_polygon(self):
         """Create a regular polygon."""
         App.Console.PrintLog('Checking Draft Polygon...\n')
         Draft.makePolygon(5, 5)
         self.failUnless(App.ActiveDocument.getObject("Polygon"),
                         "Draft Polygon failed")
 
-    def testRectangle(self):
+    def test_rectangle(self):
         """Create a rectangle."""
         App.Console.PrintLog('Checking Draft Rectangle...\n')
         Draft.makeRectangle(4, 2)
         self.failUnless(App.ActiveDocument.getObject("Rectangle"),
                         "Draft Rectangle failed")
 
-    def testText(self):
+    def test_text(self):
         """Create a text object."""
         App.Console.PrintLog('Checking Draft Text...\n')
         Draft.makeText("Testing Draft")
         self.failUnless(App.ActiveDocument.getObject("Text"),
                         "Draft Text failed")
 
-    def testDimension(self):
+    def test_dimension_linear(self):
         """Create a linear dimension."""
         App.Console.PrintLog('Checking Draft Dimension...\n')
-        Draft.makeDimension(Vector(0, 0, 0), Vector(2, 0, 0),
+        Draft.makeDimension(Vector(0, 0, 0),
+                            Vector(2, 0, 0),
                             Vector(1, -1, 0))
         self.failUnless(App.ActiveDocument.getObject("Dimension"),
                         "Draft Dimension failed")
 
-    def test_radial_dimension(self):
-        """Create a radial dimension."""
+    def test_dimension_radial(self):
+        """Create a radial dimension. NOT IMPLEMENTED CURRENTLY."""
         pass
 
-    def testBSpline(self):
+    def test_bspline(self):
         """Create a BSpline of three points."""
         App.Console.PrintLog('Checking Draft BSpline...\n')
-        Draft.makeBSpline([Vector(0, 0, 0), Vector(2, 0, 0),
+        Draft.makeBSpline([Vector(0, 0, 0),
+                           Vector(2, 0, 0),
                            Vector(2, 2, 0)])
         self.failUnless(App.ActiveDocument.getObject("BSpline"),
                         "Draft BSpline failed")
 
-    def testPoint(self):
+    def test_point(self):
         """Create a point."""
         App.Console.PrintLog('Checking Draft Point...\n')
         Draft.makePoint(5, 3, 2)
         self.failUnless(App.ActiveDocument.getObject("Point"),
                         "Draft Point failed")
 
-    def testShapeString(self):
-        """Create a ShapeString. NOT IMPLEMENTED because it needs a font file."""
+    def test_shapestring(self):
+        """Create a ShapeString. NOT IMPLEMENTED CURRENTLY."""
         App.Console.PrintLog('Checking Draft ShapeString...\n')
-        # Draft.makeShapeString("Testing Draft")
+        _msg("This test doesn't do anything at the moment. "
+             "In order to test this, a font file is needed.")
+        # Draft.makeShapeString("Text", FontFile="")
         # self.failUnless(App.ActiveDocument.getObject("ShapeString"),
         #                 "Draft ShapeString failed")
-        App.Console.PrintLog('Currently no test! A font file is needed\n')
         self.failUnless(True,
                         "Draft ShapeString failed")
 
     def test_facebinder(self):
-        """Create a Facebinder."""
+        """Create a Facebinder. NOT IMPLEMENTED CURRENTLY."""
         App.Console.PrintLog('Checking Draft FaceBinder...\n')
-        # Draft.makeFacebinder()
-        # self.failUnless(App.ActiveDocument.getObject("FaceBinder"),
+        _msg("This test doesn't do anything at the moment. "
+             "In order to test this, a selection is needed.")
+        # Draft.makeFacebinder(selectionset)
+        # self.failUnless(App.ActiveDocument.getObject("Facebinder"),
         #                 "Draft FaceBinder failed")
-        App.Console.PrintLog('Currently no test!\n')
         self.failUnless(True,
                         "Draft FaceBinder failed")
 
-    def test_CubicBezCurve(self):
+    def test_cubicbezcurve(self):
         """Create a cubic bezier curve of four points."""
         App.Console.PrintLog('Checking Draft CubicBezCurve...\n')
-        # Draft.makeCubicBezCurve()
-        # self.failUnless(App.ActiveDocument.getObject("BezCurve"),
-        #                 "Draft CubicBezCurve failed")
-        App.Console.PrintLog('Currently no test!\n')
-        self.failUnless(True,
+        Draft.makeBezCurve([Vector(0, 0, 0),
+                            Vector(2, 2, 0),
+                            Vector(5, 3, 0),
+                            Vector(9, 0, 0)], Degree=3)
+        self.failUnless(App.ActiveDocument.getObject("BezCurve"),
                         "Draft CubicBezCurve failed")
 
-    def test_BezCurve(self):
+    def test_bezcurve(self):
         """Create a bezier curve of six points, degree five."""
         App.Console.PrintLog('Checking Draft BezCurve...\n')
-        # Draft.makeBezCurve()
-        # self.failUnless(App.ActiveDocument.getObject("BezCurve"),
-        #                 "Draft BezCurve failed")
+        Draft.makeBezCurve([Vector(0, 0, 0),
+                            Vector(2, 2, 0),
+                            Vector(5, 3, 0),
+                            Vector(9, 0, 0),
+                            Vector(12, 5, 0),
+                            Vector(12, 8, 0)])
+        self.failUnless(App.ActiveDocument.getObject("BezCurve"),
+                        "Draft BezCurve failed")
         App.Console.PrintLog('Currently no test!\n')
         self.failUnless(True,
                         "Draft BezCurve failed")
@@ -368,11 +482,11 @@ class TestDraftCreation(unittest.TestCase):
     def test_label(self):
         """Create a label."""
         App.Console.PrintLog('Checking Draft Label...\n')
-        # Draft.makeBezCurve()
-        # self.failUnless(App.ActiveDocument.getObject("Label"),
-        #                 "Draft Label failed")
-        App.Console.PrintLog('Currently no test!\n')
-        self.failUnless(True,
+        place = App.Placement(Vector(50, 50, 0), App.Rotation())
+        Draft.makeLabel(targetpoint=Vector(0, 0, 0),
+                        distance=-25,
+                        placement=place)
+        self.failUnless(App.ActiveDocument.getObject("dLabel"),
                         "Draft Label failed")
 
     def tearDown(self):
@@ -380,7 +494,7 @@ class TestDraftCreation(unittest.TestCase):
         App.closeDocument(self.doc_name)
 
 
-class TestDraftModification(unittest.TestCase):
+class DraftModification(unittest.TestCase):
     """Test Draft modification tools."""
 
     def setUp(self):
@@ -1107,7 +1221,7 @@ class DraftModification(unittest.TestCase):
         App.closeDocument("DraftTest")
 
 
-class TestDraftSVG(unittest.TestCase):
+class DraftSVG(unittest.TestCase):
     """Test reading and writing of SVGs with Draft."""
     def setUp(self):
         """Set up a new document to hold the tests"""
@@ -1129,8 +1243,77 @@ class TestDraftSVG(unittest.TestCase):
         pass
 
 
-class TestDraftDXF(unittest.TestCase):
+class DraftDXF(unittest.TestCase):
     """Test reading and writing of DXF with Draft."""
+
+    def setUp(self):
+        """Set up a new document to hold the tests"""
+        if App.ActiveDocument:
+            if App.ActiveDocument.Name != "DraftDXFTest":
+                App.newDocument("DraftDXFTest")
+        else:
+            App.newDocument("DraftDXFTest")
+        App.setActiveDocument("DraftDXFTest")
+
+    def test_read_DXF(self):
+        """Read a DXF."""
+        _msg("Test currently not implemented")
+        pass
+
+    def test_export_DXF(self):
+        """Export a DXF."""
+        _msg("Test currently not implemented")
+        pass
+
+
+class DraftDWG(unittest.TestCase):
+    """Test reading and writing of DWG with Draft."""
+
+    def setUp(self):
+        """Set up a new document to hold the tests"""
+        if App.ActiveDocument:
+            if App.ActiveDocument.Name != "DraftDXFTest":
+                App.newDocument("DraftDXFTest")
+        else:
+            App.newDocument("DraftDXFTest")
+        App.setActiveDocument("DraftDXFTest")
+
+    def test_read_DXF(self):
+        """Read a DXF."""
+        _msg("Test currently not implemented")
+        pass
+
+    def test_export_DXF(self):
+        """Export a DXF."""
+        _msg("Test currently not implemented")
+        pass
+
+
+class DraftOCA(unittest.TestCase):
+    """Test reading and writing of OCA with Draft."""
+
+    def setUp(self):
+        """Set up a new document to hold the tests"""
+        if App.ActiveDocument:
+            if App.ActiveDocument.Name != "DraftDXFTest":
+                App.newDocument("DraftDXFTest")
+        else:
+            App.newDocument("DraftDXFTest")
+        App.setActiveDocument("DraftDXFTest")
+
+    def test_read_DXF(self):
+        """Read a DXF."""
+        _msg("Test currently not implemented")
+        pass
+
+    def test_export_DXF(self):
+        """Export a DXF."""
+        _msg("Test currently not implemented")
+        pass
+
+
+class DraftAirfoilDAT(unittest.TestCase):
+    """Test reading and writing of AirfoilDAT with Draft."""
 
     def setUp(self):
         """Set up a new document to hold the tests"""
