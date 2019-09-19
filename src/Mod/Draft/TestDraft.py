@@ -1,7 +1,7 @@
 """Unit test for the Draft module.
 
 From the terminal, run the following:
-FreeCADCmd --run-test TestDraft
+FreeCAD --run-test TestDraft
 
 From within FreeCAD, run the following:
 import Test, TestDraft
