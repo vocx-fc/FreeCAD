@@ -66,8 +66,8 @@ class TaskPanel_PolarArray:
     def create_object(self, selection):
         """Create the actual array"""
         self.number = self.form.spinbox_number.value()
-        if self.number == 0:
-            _Wrn("Number must be at least 1\n")
+        if self.number < 2:
+            _Wrn("Number must be at least 2\n")
             return False
 
         self.angle_str = self.form.spinbox_angle.text()
@@ -100,3 +100,27 @@ class TaskPanel_PolarArray:
         """Function that executes when clicking Cancel"""
         _Msg("Aborted: {}\n".format(self.name))
         Gui.Control.closeDialog()
+
+
+class CommandPolarArray(DraftTools.Creator):
+    """Polar array command"""
+
+    def __init__(self):
+        super().__init__()
+        self.featureName = "PolarArray"
+
+    def GetResources(self):
+        d = {'Pixmap': 'Draft_PolarArray',
+             'MenuText': QT_TRANSLATE_NOOP("Draft_PolarArray", "PolarArray"),
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_PolarArray",
+                                          "Creates copies of a selected object in a polar pattern.")}
+        return d
+
+    def Activated(self):
+        panel = TaskPanel_PolarArray()
+        Gui.Control.showDialog(panel)
+
+
+if App.GuiUp:
+    Gui.addCommand('Draft_PolarArray', CommandPolarArray())
+
