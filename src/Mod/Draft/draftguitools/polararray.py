@@ -50,6 +50,16 @@ class TaskPanel_PolarArray:
         self.form.spinbox_c_Y.setProperty('unit', length_unit)
         self.form.spinbox_c_Z.setProperty('rawValue', start_point.Value)
         self.form.spinbox_c_Z.setProperty('unit', length_unit)
+        self.valid = True
+
+        self.angle_str = ""
+        self.angle = start_angle.Value
+        self.number = int(2)
+        self.c_X_str = ""
+        self.c_Y_str = ""
+        self.c_Z_str = ""
+        self.center = App.Vector(0, 0, 0)
+        self.fuse = False
 
     def accept(self):
         """Function that executes when clicking OK"""
@@ -58,18 +68,19 @@ class TaskPanel_PolarArray:
             _Wrn("At least one element must be selected\n")
             return False
         self.create_object(selection)
-        self.print_messages(selection)
-        Gui.Control.closeDialog()
-        App.ActiveDocument.commitTransaction()
-        App.ActiveDocument.recompute()
+        if self.valid:
+            self.print_messages(selection)
+            self.finish()
 
     def create_object(self, selection):
         """Create the actual array"""
         self.number = self.form.spinbox_number.value()
         if self.number < 2:
             _Wrn("Number must be at least 2\n")
+            self.valid = False
             return False
 
+        self.valid = True
         self.angle_str = self.form.spinbox_angle.text()
         self.angle = _Quantity(self.angle_str).Value
 
@@ -87,6 +98,10 @@ class TaskPanel_PolarArray:
         obj.Fuse = self.fuse
 
     def print_messages(self, selection):
+        """Print messages about the operation"""
+        if not self.valid:
+            return False
+        _Msg("{}\n".format(16*"-"))
         _Msg("{0}\n".format(self.name))
         _Msg("Object: {0}\n".format(selection[0].Label))
         _Msg("Start angle: {}\n".format(self.angle_str))
@@ -100,6 +115,11 @@ class TaskPanel_PolarArray:
         """Function that executes when clicking Cancel"""
         _Msg("Aborted: {}\n".format(self.name))
         Gui.Control.closeDialog()
+
+    def finish(self):
+        Gui.Control.closeDialog()
+        App.ActiveDocument.commitTransaction()
+        App.ActiveDocument.recompute()
 
 
 class CommandPolarArray(DraftTools.Creator):
@@ -123,4 +143,3 @@ class CommandPolarArray(DraftTools.Creator):
 
 if App.GuiUp:
     Gui.addCommand('Draft_PolarArray', CommandPolarArray())
-

@@ -5,7 +5,7 @@ IF (BUILD_GUI)
 ENDIF (BUILD_GUI)
 
 SET(Draft_GUI_tools
-    draftguitools/draft_polararray.py
+    draftguitools/polararray.py
 )
 
 SET(Draft_SRCS
