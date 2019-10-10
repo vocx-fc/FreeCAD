@@ -11,6 +11,7 @@ import Draft_rc
 
 if App.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
+    import PySide.QtGui as QtGui
     import DraftTools
     from DraftGui import translate
 else:
@@ -60,6 +61,10 @@ class TaskPanel_PolarArray:
         self.c_Z_str = ""
         self.center = App.Vector(0, 0, 0)
         self.fuse = False
+
+        svg = "Draft_PolarArray"
+        pix = QtGui.QPixmap(svg)
+        self.form.label_icon.setPixmap(pix.scaled(32, 32))
 
     def accept(self):
         """Function that executes when clicking OK"""
