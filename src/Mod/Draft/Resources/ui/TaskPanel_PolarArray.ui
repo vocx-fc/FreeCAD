@@ -53,6 +53,9 @@
       </item>
       <item row="5" column="0">
        <widget class="QGroupBox" name="group_center">
+        <property name="toolTip">
+         <string>The coordinates of the point through which the axis of rotation passes.</string>
+        </property>
         <property name="title">
          <string>Center of rotation</string>
         </property>
@@ -124,6 +127,9 @@
        <layout class="QGridLayout" name="grid_values">
         <item row="0" column="0">
          <widget class="QLabel" name="label_angle">
+          <property name="toolTip">
+           <string>Sweeping angle of the polar distribution</string>
+          </property>
           <property name="text">
            <string>Angle</string>
           </property>
@@ -132,7 +138,7 @@
         <item row="0" column="1">
          <widget class="Gui::QuantitySpinBox" name="spinbox_angle">
           <property name="toolTip">
-           <string>Sweeping angle of the array</string>
+           <string>Sweeping angle of the polar distribution</string>
           </property>
           <property name="unit" stdset="0">
            <string notr="true"/>
@@ -144,6 +150,9 @@
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_number">
+          <property name="toolTip">
+           <string>Number of elements in the array, including a copy of the original object. It must be at least 2.</string>
+          </property>
           <property name="text">
            <string>Number of elements</string>
           </property>
@@ -151,6 +160,9 @@
         </item>
         <item row="1" column="1">
          <widget class="QSpinBox" name="spinbox_number">
+          <property name="toolTip">
+           <string>Number of elements in the array, including a copy of the original object. It must be at least 2.</string>
+          </property>
           <property name="value">
            <number>4</number>
           </property>
