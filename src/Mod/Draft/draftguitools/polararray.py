@@ -99,6 +99,7 @@ class TaskPanel_PolarArray:
             self.finish()
 
     def validate_input(self, selection, number):
+        """Check that the input is valid"""
         if not selection:
             _Wrn(_tr("At least one element must be selected") + "\n")
             return False
@@ -108,7 +109,7 @@ class TaskPanel_PolarArray:
         return True
 
     def create_object(self, selection):
-        """Create the actual array"""
+        """Create the actual object"""
         self.angle_str = self.form.spinbox_angle.text()
         self.angle = _Quantity(self.angle_str).Value
 
@@ -132,6 +133,7 @@ class TaskPanel_PolarArray:
         obj.Fuse = self.fuse
 
     def print_fuse_state(self):
+        """Print the state translated"""
         if self.fuse:
             translated_state = _tr("True")
         else:
@@ -139,12 +141,12 @@ class TaskPanel_PolarArray:
         _Msg(_tr("Fuse:") + " {}\n".format(translated_state))
 
     def set_fuse(self):
-        """This function is called when the fuse checkbox changes."""
+        """This function is called when the fuse checkbox changes"""
         self.fuse = self.form.checkbox_fuse.isChecked()
         self.print_fuse_state()
 
     def print_messages(self, selection):
-        """Print messages about the operation."""
+        """Print messages about the operation"""
         if len(selection) == 1:
             sel_obj = selection[0]
         else:
@@ -176,7 +178,8 @@ class TaskPanel_PolarArray:
             is a vector that arrives by the callback.
         plane :
             is a `WorkingPlane` instance, for example,
-            `App.DraftWorkingPlane`.
+            `App.DraftWorkingPlane`. It is not used at the moment,
+            but could be used to set up the grid.
         mask :
             is a string that specifies which coordinate is being
             edited. It is used to restrict edition of a single coordinate.
@@ -223,31 +226,32 @@ class TaskPanel_PolarArray:
             self.form.spinbox_c_X.setEnabled(True)
             self.form.spinbox_c_Y.setEnabled(False)
             self.form.spinbox_c_Z.setEnabled(False)
-            self.setFocus("x")
+            self.set_focus("x")
         elif (mask == "y") or (self.mask == "y"):
             self.form.spinbox_c_X.setEnabled(False)
             self.form.spinbox_c_Y.setEnabled(True)
             self.form.spinbox_c_Z.setEnabled(False)
-            self.setFocus("y")
+            self.set_focus("y")
         elif (mask == "z") or (self.mask == "z"):
             self.form.spinbox_c_X.setEnabled(False)
             self.form.spinbox_c_Y.setEnabled(False)
             self.form.spinbox_c_Z.setEnabled(True)
-            self.setFocus("z")
+            self.set_focus("z")
         else:
             self.form.spinbox_c_X.setEnabled(True)
             self.form.spinbox_c_Y.setEnabled(True)
             self.form.spinbox_c_Z.setEnabled(True)
-            self.setFocus()
+            self.set_focus()
 
-    def setFocus(self, f=None):
-        if f is None or f == "x":
+    def set_focus(self, key=None):
+        """Set the focus on the widget that receives the key signal"""
+        if key is None or key == "x":
             self.form.spinbox_c_X.setFocus()
             self.form.spinbox_c_X.selectAll()
-        elif f == "y":
+        elif key == "y":
             self.form.spinbox_c_Y.setFocus()
             self.form.spinbox_c_Y.selectAll()
-        elif f == "z":
+        elif key == "z":
             self.form.spinbox_c_Z.setFocus()
             self.form.spinbox_c_Z.selectAll()
 
@@ -268,7 +272,7 @@ class CommandPolarArray:
     """Polar array command"""
 
     def __init__(self):
-        self.featureName = "PolarArray"
+        self.command_name = "PolarArray"
 
     def GetResources(self):
         d = {'Pixmap': 'Draft_PolarArray',
@@ -288,9 +292,13 @@ class CommandPolarArray:
         the widgets of the task panel. However, since they don't work
         correctly currently, they are not used at the moment.
         """
-        # self.view = Draft.get3DView()
-        # self.callbackMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.move)
-        # self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.click)
+        self.location = coin.SoLocation2Event.getClassTypeId()
+        self.mouse_event = coin.SoMouseButtonEvent.getClassTypeId()
+        self.view = Draft.get3DView()
+        self.callback_move = \
+            self.view.addEventCallbackPivy(self.location, self.move)
+        # self.callback_click = \
+        #   self.view.addEventCallbackPivy(self.mouse_event, self.click)
         self.ui = TaskPanel_PolarArray()
         self.ui.source_command = self
         Gui.Control.showDialog(self.ui)
@@ -332,8 +340,8 @@ class CommandPolarArray:
 
         CURRENTLY THE CALLBACKS ARE NOT USED.
         """
-        # self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
-        # self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
+        self.view.removeEventCallbackPivy(self.location, self.callback_move)
+        # self.view.removeEventCallbackPivy(self.mouse_event, self.callback_click)
         if Gui.Control.activeDialog():
             Gui.Snapper.off()
             Gui.Control.closeDialog()
