@@ -106,6 +106,10 @@ class TaskPanel_PolarArray:
         if number < 2:
             _Wrn(_tr("Number of elements must be at least 2") + "\n")
             return False
+        if selection[0].isDerivedFrom("App::FeaturePython"):
+            _Wrn(_tr("Selection is not suitable for array") + "\n")
+            _Wrn(_tr("Object:") + " {}\n".format(selection[0].Label))
+            return False
         return True
 
     def create_object(self, selection):
@@ -127,10 +131,11 @@ class TaskPanel_PolarArray:
             # selected objects is produced
             sel_obj = selection[0]
 
-        self.fuse = self.form.checkbox_fuse.isChecked()
         obj = Draft.makeArray(sel_obj,
                               self.center, self.angle, self.number)
-        obj.Fuse = self.fuse
+        if obj:
+            self.fuse = self.form.checkbox_fuse.isChecked()
+            obj.Fuse = self.fuse
 
     def print_fuse_state(self):
         """Print the state translated"""
@@ -167,7 +172,6 @@ class TaskPanel_PolarArray:
     def display_point(self, point=None, plane=None, mask=None):
         """Displays the coordinates in the x, y, and z widgets.
 
-        NOTE: This function is currently disabled.
         This function should be used in a Coin callback so that
         the coordinate values are automatically updated when the
         mouse pointer moves.
@@ -264,8 +268,8 @@ class TaskPanel_PolarArray:
         """Function that runs at the end after OK or Cancel"""
         App.ActiveDocument.commitTransaction()
         Gui.ActiveDocument.resetEdit()
-        # Runs the parent command to finish
-        self.source_command.finish()
+        # Runs the parent command to complete the call
+        self.source_command.completed()
 
 
 class CommandPolarArray:
@@ -275,38 +279,39 @@ class CommandPolarArray:
         self.command_name = "PolarArray"
 
     def GetResources(self):
+        _msg = ("Creates copies of a selected object, "
+                "and places the copies in a polar pattern.\n"
+                "The properties of the array can be further modified after "
+                "the new object is created, including turning it into "
+                "a different type of array.")
         d = {'Pixmap': 'Draft_PolarArray',
              'MenuText': QT_TRANSLATE_NOOP("Draft", "Polar array"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft",
-                                          "Creates copies in a polar pattern "
-                                          "of a selected object.\n"
-                                          "The properties of the array "
-                                          "can be modified after "
-                                          "the new object is created.")}
+             'ToolTip': QT_TRANSLATE_NOOP("Draft", _msg)}
         return d
 
     def Activated(self):
         """This is called when the command is executed.
 
-        We should be able to add callbacks that connect the 3D view with
-        the widgets of the task panel. However, since they don't work
-        correctly currently, they are not used at the moment.
+        We add callbacks that connect the 3D view with
+        the widgets of the task panel.
         """
         self.location = coin.SoLocation2Event.getClassTypeId()
         self.mouse_event = coin.SoMouseButtonEvent.getClassTypeId()
         self.view = Draft.get3DView()
         self.callback_move = \
             self.view.addEventCallbackPivy(self.location, self.move)
-        # self.callback_click = \
-        #   self.view.addEventCallbackPivy(self.mouse_event, self.click)
+        self.callback_click = \
+            self.view.addEventCallbackPivy(self.mouse_event, self.click)
+
         self.ui = TaskPanel_PolarArray()
+        # The calling class (this one) is saved in the object
+        # of the interface, to be able to call a function from within it.
         self.ui.source_command = self
         Gui.Control.showDialog(self.ui)
 
     def move(self, event_cb):
         """This is a callback for when the mouse pointer moves in the 3D view.
 
-        IT IS NOT USED AT THE MOMENT because it doesn't work.
         It should automatically update the coordinates in the widgets
         of the task panel.
         """
@@ -320,7 +325,6 @@ class CommandPolarArray:
     def click(self, event_cb=None):
         """This is a callback for when the mouse pointer clicks on the 3D view.
 
-        IT IS NOT USED AT THE MOMENT because it doesn't work.
         It should act as if the Enter key was pressed, or the OK button
         was pressed in the task panel.
         """
@@ -328,20 +332,22 @@ class CommandPolarArray:
             event = event_cb.getEvent()
             if event.getState() != coin.SoMouseButtonEvent.DOWN:
                 return
-        if self.point:
+        if self.ui and self.point:
+            # The accept function of the interface
+            # should call the completed function
+            # of the calling class (this one).
             self.ui.accept()
-            self.finish()
 
-    def finish(self):
+    def completed(self):
         """This is called when the command is terminated.
 
         We should remove the callbacks that were added to the widgets
         and then close the task panel.
-
-        CURRENTLY THE CALLBACKS ARE NOT USED.
         """
-        self.view.removeEventCallbackPivy(self.location, self.callback_move)
-        # self.view.removeEventCallbackPivy(self.mouse_event, self.callback_click)
+        self.view.removeEventCallbackPivy(self.location,
+                                          self.callback_move)
+        self.view.removeEventCallbackPivy(self.mouse_event,
+                                          self.callback_click)
         if Gui.Control.activeDialog():
             Gui.Snapper.off()
             Gui.Control.closeDialog()
