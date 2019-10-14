@@ -65,7 +65,7 @@ class DraftWorkbench(Workbench):
         # Import Draft tools, icons
         try:
             import os, Draft_rc, DraftTools, DraftGui, DraftFillet
-            from draftguitools import polararray
+            from draftguitools import polararray, heal
             from DraftTools import translate
             FreeCADGui.addLanguagePath(":/translations")
             FreeCADGui.addIconPath(":/icons")

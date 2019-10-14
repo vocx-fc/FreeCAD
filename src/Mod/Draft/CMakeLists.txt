@@ -5,6 +5,7 @@ IF (BUILD_GUI)
 ENDIF (BUILD_GUI)
 
 SET(Draft_GUI_tools
+    draftguitools/heal.py
     draftguitools/polararray.py
 )
 
