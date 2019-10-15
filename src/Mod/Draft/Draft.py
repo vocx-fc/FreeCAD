@@ -973,68 +973,6 @@ def getParameterFromV0(edge, offset):
 
 
 
-class _DrawingView(_DraftObject):
-    """The Draft DrawingView object"""
-    def __init__(self, obj):
-        _DraftObject.__init__(self,obj,"DrawingView")
-        obj.addProperty("App::PropertyVector","Direction","Shape View",QT_TRANSLATE_NOOP("App::Property","Projection direction"))
-        obj.addProperty("App::PropertyFloat","LineWidth","View Style",QT_TRANSLATE_NOOP("App::Property","The width of the lines inside this object"))
-        obj.addProperty("App::PropertyLength","FontSize","View Style",QT_TRANSLATE_NOOP("App::Property","The size of the texts inside this object"))
-        obj.addProperty("App::PropertyLength","LineSpacing","View Style",QT_TRANSLATE_NOOP("App::Property","The spacing between lines of text"))
-        obj.addProperty("App::PropertyColor","LineColor","View Style",QT_TRANSLATE_NOOP("App::Property","The color of the projected objects"))
-        obj.addProperty("App::PropertyLink","Source","Base",QT_TRANSLATE_NOOP("App::Property","The linked object"))
-        obj.addProperty("App::PropertyEnumeration","FillStyle","View Style",QT_TRANSLATE_NOOP("App::Property","Shape Fill Style"))
-        obj.addProperty("App::PropertyEnumeration","LineStyle","View Style",QT_TRANSLATE_NOOP("App::Property","Line Style"))
-        obj.addProperty("App::PropertyBool","AlwaysOn","View Style",QT_TRANSLATE_NOOP("App::Property","If checked, source objects are displayed regardless of being visible in the 3D model"))
-        obj.FillStyle = ['shape color'] + list(svgpatterns().keys())
-        obj.LineStyle = ['Solid','Dashed','Dotted','Dashdot']
-        obj.LineWidth = 0.35
-        obj.FontSize = 12
-
-    def execute(self, obj):
-        result = ""
-        if hasattr(obj,"Source"):
-            if obj.Source:
-                if hasattr(obj,"LineStyle"):
-                    ls = obj.LineStyle
-                else:
-                    ls = None
-                if hasattr(obj,"LineColor"):
-                    lc = obj.LineColor
-                else:
-                    lc = None
-                if hasattr(obj,"LineSpacing"):
-                    lp = obj.LineSpacing
-                else:
-                    lp = None
-                if obj.Source.isDerivedFrom("App::DocumentObjectGroup"):
-                    svg = ""
-                    shapes = []
-                    others = []
-                    objs = getGroupContents([obj.Source])
-                    for o in objs:
-                        v = o.ViewObject.isVisible()
-                        if hasattr(obj,"AlwaysOn"):
-                            if obj.AlwaysOn:
-                                v = True
-                        if v:
-                            svg += getSVG(o,obj.Scale,obj.LineWidth,obj.FontSize.Value,obj.FillStyle,obj.Direction,ls,lc,lp)
-                else:
-                    svg = getSVG(obj.Source,obj.Scale,obj.LineWidth,obj.FontSize.Value,obj.FillStyle,obj.Direction,ls,lc,lp)
-                result += '<g id="' + obj.Name + '"'
-                result += ' transform="'
-                result += 'rotate('+str(obj.Rotation)+','+str(obj.X)+','+str(obj.Y)+') '
-                result += 'translate('+str(obj.X)+','+str(obj.Y)+') '
-                result += 'scale('+str(obj.Scale)+','+str(-obj.Scale)+')'
-                result += '">'
-                result += svg
-                result += '</g>'
-        obj.ViewResult = result
-
-    def getDXF(self,obj):
-        "returns a DXF fragment"
-        return getDXF(obj)
-
 class _BSpline(_DraftObject):
     """The BSpline object"""
 
