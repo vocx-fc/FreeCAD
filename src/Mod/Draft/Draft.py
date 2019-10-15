@@ -732,22 +732,6 @@ def getMovableChildren(objectslist,recursive=True):
     return added
 
 
-def makePointArray(base, ptlst):
-    """makePointArray(base,pointlist):"""
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","PointArray")
-    _PointArray(obj, base, ptlst)
-    obj.Base = base
-    obj.PointList = ptlst
-    if gui:
-        _ViewProviderDraftArray(obj.ViewObject)
-        base.ViewObject.hide()
-        formatObject(obj,obj.Base)
-        if len(obj.Base.ViewObject.DiffuseColor) > 1:
-            obj.ViewObject.Proxy.resetColors(obj.ViewObject)
-        select(obj)
-    return obj
-
-
 def extrude(obj,vector,solid=False):
     """makeExtrusion(object,vector): extrudes the given object
     in the direction given by the vector. The original object
