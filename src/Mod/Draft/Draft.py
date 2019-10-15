@@ -732,44 +732,6 @@ def getMovableChildren(objectslist,recursive=True):
     return added
 
 
-def makePathArray(baseobject,pathobject,count,xlate=None,align=False,pathobjsubs=[],useLink=False):
-    """makePathArray(docobj,path,count,xlate,align,pathobjsubs,useLink): distribute
-    count copies of a document baseobject along a pathobject or subobjects of a
-    pathobject. Optionally translates each copy by FreeCAD.Vector xlate direction
-    and distance to adjust for difference in shape centre vs shape reference point.
-    Optionally aligns baseobject to tangent/normal/binormal of path."""
-    if not FreeCAD.ActiveDocument:
-        FreeCAD.Console.PrintError("No active document. Aborting\n")
-        return
-    if useLink:
-        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","PathArray",_PathArray(None),None,True)
-    else:
-        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","PathArray")
-        _PathArray(obj)
-    obj.Base = baseobject
-    obj.PathObj = pathobject
-    if pathobjsubs:
-        sl = []
-        for sub in pathobjsubs:
-            sl.append((obj.PathObj,sub))
-        obj.PathSubs = list(sl)
-    if count > 1:
-        obj.Count = count
-    if xlate:
-        obj.Xlate = xlate
-    obj.Align = align
-    if gui:
-        if useLink:
-            _ViewProviderDraftLink(obj.ViewObject)
-        else:
-            _ViewProviderDraftArray(obj.ViewObject)
-            formatObject(obj,obj.Base)
-            if len(obj.Base.ViewObject.DiffuseColor) > 1:
-                obj.ViewObject.Proxy.resetColors(obj.ViewObject)
-        baseobject.ViewObject.hide()
-        select(obj)
-    return obj
-
 def makePointArray(base, ptlst):
     """makePointArray(base,pointlist):"""
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","PointArray")
