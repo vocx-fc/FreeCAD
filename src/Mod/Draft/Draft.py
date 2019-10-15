@@ -970,25 +970,6 @@ def getParameterFromV0(edge, offset):
 #---------------------------------------------------------------------------
 
 
-class _Block(_DraftObject):
-    """The Block object"""
-
-    def __init__(self, obj):
-        _DraftObject.__init__(self,obj,"Block")
-        obj.addProperty("App::PropertyLinkList","Components","Draft",QT_TRANSLATE_NOOP("App::Property","The components of this block"))
-
-    def execute(self, obj):
-        import Part
-        plm = obj.Placement
-        shps = []
-        for c in obj.Components:
-            shps.append(c.Shape)
-        if shps:
-            shape = Part.makeCompound(shps)
-            obj.Shape = shape
-        obj.Placement = plm
-        obj.positionBySupport()
-
 class _Shape2DView(_DraftObject):
     """The Shape2DView object"""
 
