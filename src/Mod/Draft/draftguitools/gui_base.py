@@ -30,6 +30,7 @@
 import FreeCAD as App
 import FreeCADGui as Gui
 import draftutils.todo as todo
+import DraftTrackers
 
 
 class GuiCommandBase:
@@ -83,6 +84,23 @@ class GuiCommandBase:
         else:
             return False
 
+    def Activated(self, name="None", no_plane_setup=False, is_subtool=False):
+        if App.activeDraftCommand and not is_subtool:
+            App.activeDraftCommand.finish()
+
+        self.doc = App.ActiveDocument
+        if not self.doc:
+            self.finish()
+            return
+
+        App.activeDraftCommand = self
+        self.view = Draft.get3DView()
+
+        if Draft.getParam("showPlaneTracker", False):
+            self.planetrack = DraftTrackers.PlaneTracker()
+        if hasattr(Gui, "Snapper"):
+            Gui.Snapper.setTrackers()
+
     def finish(self):
         """Terminate the active command by committing the list of commands.
 
@@ -118,3 +136,29 @@ class GuiCommandBase:
             that will be executed.
         """
         self.commit_list.append((name, func))
+
+
+class Creator(GuiCommandBase):
+    """Generic class for tools that create shapes, such as line or arc"""
+
+    def __init__(self):
+        super().__init__()
+
+    def Activated(self, name="None", no_plane_setup=False):
+        super().Activated(name, no_plane_setup)
+        if not no_plane_setup:
+            # self.support = getSupport()
+            pass
+
+
+class Modifier(GuiCommandBase):
+    """Generic class for tools that are modifiers, such as move and rotate
+
+    Attribute
+    ---------
+    copy_mode : bool
+        Defaults to `False`. Defines whether the tool will copies or not.
+    """
+    def __init__(self):
+        super().__init__()
+        self.copy_mode = False
