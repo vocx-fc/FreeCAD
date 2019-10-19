@@ -58,6 +58,7 @@ SET(Draft_utilities
 
 SET(Draft_objects
     draftobjects/__init__.py
+    draftobjects/base.py
     draftobjects/circulararray.py
     draftobjects/orthoarray.py
     draftobjects/polararray.py
@@ -67,6 +68,7 @@ SET(Draft_objects
 
 SET(Draft_view_providers
     draftviewproviders/__init__.py
+    draftviewproviders/view_base.py
     draftviewproviders/view_circulararray.py
     draftviewproviders/view_orthoarray.py
     draftviewproviders/view_polararray.py
