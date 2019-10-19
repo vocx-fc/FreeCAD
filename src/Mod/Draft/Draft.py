@@ -618,6 +618,11 @@ def makePointArray(base, ptlst):
     return obj
 
 
+from draftobjects.fillet import Fillet
+from draftviewproviders.view_fillet import ViewProviderFillet
+from draftmake.make_fillet import make_fillet
+
+
 def extrude(obj,vector,solid=False):
     """makeExtrusion(object,vector): extrudes the given object
     in the direction given by the vector. The original object
