@@ -503,6 +503,11 @@ def makePointArray(base, ptlst):
     return obj
 
 
+from draftobjects.fillet import Fillet
+from draftviewproviders.view_fillet import ViewProviderFillet
+from draftmake.make_fillet import make_fillet
+
+
 def moveVertex(object, vertex_index, vector):
     points = object.Points
     points[vertex_index] = points[vertex_index].add(vector)
