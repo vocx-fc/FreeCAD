@@ -63,6 +63,7 @@ SET(Draft_objects
     draftobjects/orthoarray.py
     draftobjects/polararray.py
     draftobjects/arc_3points.py
+    draftobjects/fillet.py
     draftobjects/README.md
 )
 
@@ -72,6 +73,7 @@ SET(Draft_view_providers
     draftviewproviders/view_circulararray.py
     draftviewproviders/view_orthoarray.py
     draftviewproviders/view_polararray.py
+    draftviewproviders/view_fillet.py
     draftviewproviders/README.md
 )
 

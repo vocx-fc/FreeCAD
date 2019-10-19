@@ -831,6 +831,11 @@ def makeEllipse(majradius,minradius,placement=None,face=True,support=None):
 
     return obj
 
+import draftobjects.fillet
+import draftviewproviders.view_fillet
+make_fillet = draftobjects.fillet.make_fillet
+ViewProviderFillet = draftviewproviders.view_fillet.ViewProviderFillet
+
 def extrude(obj,vector,solid=False):
     """makeExtrusion(object,vector): extrudes the given object
     in the direction given by the vector. The original object
