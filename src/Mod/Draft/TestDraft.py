@@ -600,7 +600,7 @@ class DraftModification(unittest.TestCase):
         pass
 
     def testCloneOfPart(self):
-        """Create a clone of a Part.Box.
+        """Create a clone of a Part.Box."""
 
     def test_text(self):
         """Create a text object."""
