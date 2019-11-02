@@ -85,30 +85,8 @@ import draftutils.utils
 arrowtypes = draftutils.utils.arrow_types
 stringencodecoin = draftutils.utils.string_encode_coin
 typecheck = draftutils.utils.type_check
+getParamType = draftutils.utils.get_param_type
 
-
-def getParamType(param):
-    if param in ["dimsymbol","dimPrecision","dimorientation","precision","defaultWP",
-                 "snapRange","gridEvery","linewidth","UiMode","modconstrain","modsnap",
-                 "maxSnapEdges","modalt","HatchPatternResolution","snapStyle",
-                 "dimstyle","gridSize"]:
-        return "int"
-    elif param in ["constructiongroupname","textfont","patternFile","template",
-                   "snapModes","FontFile","ClonePrefix","labeltype"] \
-        or "inCommandShortcut" in param:
-        return "string"
-    elif param in ["textheight","tolerance","gridSpacing","arrowsize","extlines","dimspacing",
-                   "dimovershoot","extovershoot"]:
-        return "float"
-    elif param in ["selectBaseObjects","alwaysSnap","grid","fillmode","saveonexit","maxSnap",
-                   "SvgLinesBlack","dxfStdSize","showSnapBar","hideSnapBar","alwaysShowGrid",
-                   "renderPolylineWidth","showPlaneTracker","UsePartPrimitives","DiscretizeEllipses",
-                   "showUnit"]:
-        return "bool"
-    elif param in ["color","constructioncolor","snapcolor","gridColor"]:
-        return "unsigned"
-    else:
-        return None
 
 def getParam(param,default=None):
     """getParam(parameterName): returns a Draft parameter value from the current config"""

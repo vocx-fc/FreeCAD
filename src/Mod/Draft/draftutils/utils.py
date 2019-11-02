@@ -73,3 +73,47 @@ def type_check(args_and_types, name="?"):
             w += str(v) + " is not " + str(t) + "\n"
             FreeCAD.Console.PrintWarning(w)
             raise TypeError("Draft." + str(name))
+
+
+def get_param_type(param):
+    """Return the type of the parameter entered.
+
+    Parameters
+    ----------
+    param : str
+        A string that indicates a parameter in the parameter database.
+
+    Returns
+    -------
+    str or None
+        The returned string could be `'int'`, `'string'`, `'float'`,
+        `'bool'`, `'unsigned'`, depending on the parameter.
+        It returns `None` for unhandled situations.
+    """
+    if param in ("dimsymbol", "dimPrecision", "dimorientation",
+                 "precision", "defaultWP", "snapRange", "gridEvery",
+                 "linewidth", "UiMode", "modconstrain", "modsnap",
+                 "maxSnapEdges", "modalt", "HatchPatternResolution",
+                 "snapStyle", "dimstyle", "gridSize"):
+        return "int"
+    elif param in ("constructiongroupname", "textfont",
+                   "patternFile", "template", "snapModes",
+                   "FontFile", "ClonePrefix",
+                   "labeltype") or "inCommandShortcut" in param:
+        return "string"
+    elif param in ("textheight", "tolerance", "gridSpacing",
+                   "arrowsize", "extlines", "dimspacing",
+                   "dimovershoot", "extovershoot"):
+        return "float"
+    elif param in ("selectBaseObjects", "alwaysSnap", "grid",
+                   "fillmode", "saveonexit", "maxSnap",
+                   "SvgLinesBlack", "dxfStdSize", "showSnapBar",
+                   "hideSnapBar", "alwaysShowGrid", "renderPolylineWidth",
+                   "showPlaneTracker", "UsePartPrimitives",
+                   "DiscretizeEllipses", "showUnit"):
+        return "bool"
+    elif param in ("color", "constructioncolor",
+                   "snapcolor", "gridColor"):
+        return "unsigned"
+    else:
+        return None
