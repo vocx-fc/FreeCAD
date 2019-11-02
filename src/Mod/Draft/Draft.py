@@ -87,28 +87,8 @@ stringencodecoin = draftutils.utils.string_encode_coin
 typecheck = draftutils.utils.type_check
 getParamType = draftutils.utils.get_param_type
 getParam = draftutils.utils.get_param
+setParam = draftutils.utils.set_param
 
-
-def setParam(param,value):
-    """setParam(parameterName,value): sets a Draft parameter with the given value"""
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    t = getParamType(param)
-    if t == "int":
-        if param == "linewidth":
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").SetInt("DefaultShapeLineWidth",value)
-        else:
-            p.SetInt(param,value)
-    elif t == "string":
-        p.SetString(param,value)
-    elif t == "float":
-        p.SetFloat(param,value)
-    elif t == "bool":
-        p.SetBool(param,value)
-    elif t == "unsigned":
-        if param == "color":
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").SetUnsigned("DefaultShapeLineColor",value)
-        else:
-            p.SetUnsigned(param,value)
 
 def precision():
     """precision(): returns the precision value from Draft user settings"""

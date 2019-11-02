@@ -136,8 +136,8 @@ def get_param(param, default=None):
     ::
         'User parameter:BaseApp/Preferences/Mod/Draft'
 
-    In the case that `param` is `'linewidth'` or `'color'` it will use
-    the values from the View preferences
+    In the case that `param` is `'linewidth'` or `'color'` it will get
+    the values from the View parameters
     ::
         'User parameter:BaseApp/Preferences/View/DefaultShapeLineWidth'
         'User parameter:BaseApp/Preferences/View/DefaultShapeLineColor'
@@ -156,9 +156,9 @@ def get_param(param, default=None):
     Returns
     -------
     int, or str, or float, or bool
-        Depending on `param` and its type, by calling `FreeCAD.GetInt`,
-        `FreeCAD.GetString`, `FreeCAD.GetFloat`, `FreeCAD.GetBool`,
-        or `FreeCAD.GetUnsinged`.
+        Depending on `param` and its type, by returning `ParameterGrp.GetInt`,
+        `ParameterGrp.GetString`, `ParameterGrp.GetFloat`,
+        `ParameterGrp.GetBool`, or `ParameterGrp.GetUnsinged`.
     """
     draft_params = "User parameter:BaseApp/Preferences/Mod/Draft"
     view_params = "User parameter:BaseApp/Preferences/View"
@@ -196,3 +196,56 @@ def get_param(param, default=None):
 
 
 getParam = get_param
+
+
+def set_param(param, value):
+    """Set a Draft parameter with the given value
+
+    The parameter database is located in the tree
+    ::
+        'User parameter:BaseApp/Preferences/Mod/Draft'
+
+    In the case that `param` is `'linewidth'` or `'color'` it will set
+    the View parameters
+    ::
+        'User parameter:BaseApp/Preferences/View/DefaultShapeLineWidth'
+        'User parameter:BaseApp/Preferences/View/DefaultShapeLineColor'
+
+    Parameters
+    ----------
+    param : str
+        A string that indicates a parameter in the parameter database.
+
+    value : int, or str, or float, or bool
+        The appropriate value of the parameter.
+        Depending on `param` and its type, determined with `get_param_type`,
+        it sets the appropriate value by calling `ParameterGrp.SetInt`,
+        `ParameterGrp.SetString`, `ParameterGrp.SetFloat`,
+        `ParameterGrp.SetBool`, or `ParameterGrp.SetUnsinged`.
+    """
+    draft_params = "User parameter:BaseApp/Preferences/Mod/Draft"
+    view_params = "User parameter:BaseApp/Preferences/View"
+
+    p = FreeCAD.ParamGet(draft_params)
+    v = FreeCAD.ParamGet(view_params)
+    t = getParamType(param)
+
+    if t == "int":
+        if param == "linewidth":
+            v.SetInt("DefaultShapeLineWidth", value)
+        else:
+            p.SetInt(param, value)
+    elif t == "string":
+        p.SetString(param, value)
+    elif t == "float":
+        p.SetFloat(param, value)
+    elif t == "bool":
+        p.SetBool(param, value)
+    elif t == "unsigned":
+        if param == "color":
+            v.SetUnsigned("DefaultShapeLineColor", value)
+        else:
+            p.SetUnsigned(param, value)
+
+
+setParam = set_param
