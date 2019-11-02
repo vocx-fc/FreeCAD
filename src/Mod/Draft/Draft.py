@@ -65,8 +65,6 @@ else:
 def translate(ctx,txt):
     return txt
 
-arrowtypes = ["Dot","Circle","Arrow","Tick","Tick-2"]
-
 #---------------------------------------------------------------------------
 # Backwards compatibility
 #---------------------------------------------------------------------------
@@ -84,6 +82,7 @@ makeLayer = DraftLayer.makeLayer
 # General functions
 #---------------------------------------------------------------------------
 import draftutils.utils
+arrowtypes = draftutils.utils.arrow_types
 stringencodecoin = draftutils.utils.string_encode_coin
 
 
