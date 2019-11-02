@@ -82,43 +82,12 @@ makeLayer = DraftLayer.makeLayer
 # General functions
 #---------------------------------------------------------------------------
 import draftutils.utils
-arrowtypes = draftutils.utils.arrow_types
+arrowtypes = draftutils.utils.ARROW_TYPES
 stringencodecoin = draftutils.utils.string_encode_coin
 typecheck = draftutils.utils.type_check
 getParamType = draftutils.utils.get_param_type
+getParam = draftutils.utils.get_param
 
-
-def getParam(param,default=None):
-    """getParam(parameterName): returns a Draft parameter value from the current config"""
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    t = getParamType(param)
-    #print("getting param ",param, " of type ",t, " default: ",str(default))
-    if t == "int":
-        if default is None:
-            default = 0
-        if param == "linewidth":
-            return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetInt("DefaultShapeLineWidth",default)
-        return p.GetInt(param,default)
-    elif t == "string":
-        if default is None:
-            default = ""
-        return p.GetString(param,default)
-    elif t == "float":
-        if default is None:
-            default = 0
-        return p.GetFloat(param,default)
-    elif t == "bool":
-        if default is None:
-            default = False
-        return p.GetBool(param,default)
-    elif t == "unsigned":
-        if default is None:
-            default = 0
-        if param == "color":
-            return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeLineColor",default)
-        return p.GetUnsigned(param,default)
-    else:
-        return None
 
 def setParam(param,value):
     """setParam(parameterName,value): sets a Draft parameter with the given value"""

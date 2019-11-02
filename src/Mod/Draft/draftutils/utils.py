@@ -6,7 +6,8 @@
 import FreeCAD
 
 
-arrow_types = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"]
+ARROW_TYPES = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"]
+arrowtypes = ARROW_TYPES
 
 
 def string_encode_coin(ustr):
@@ -33,6 +34,9 @@ def string_encode_coin(ustr):
         return ustr.encode('utf-8')
     else:
         return ustr.encode('latin1')
+
+
+stringencodecoin = string_encode_coin
 
 
 def type_check(args_and_types, name="?"):
@@ -73,6 +77,9 @@ def type_check(args_and_types, name="?"):
             w += str(v) + " is not " + str(t) + "\n"
             FreeCAD.Console.PrintWarning(w)
             raise TypeError("Draft." + str(name))
+
+
+typecheck = type_check
 
 
 def get_param_type(param):
@@ -117,3 +124,75 @@ def get_param_type(param):
         return "unsigned"
     else:
         return None
+
+
+getParamType = get_param_type
+
+
+def get_param(param, default=None):
+    """Return a paramater value from the current parameter database.
+
+    The parameter database is located in the tree
+    ::
+        'User parameter:BaseApp/Preferences/Mod/Draft'
+
+    In the case that `param` is `'linewidth'` or `'color'` it will use
+    the values from the View preferences
+    ::
+        'User parameter:BaseApp/Preferences/View/DefaultShapeLineWidth'
+        'User parameter:BaseApp/Preferences/View/DefaultShapeLineColor'
+
+    Parameters
+    ----------
+    param : str
+        A string that indicates a parameter in the parameter database.
+
+    default : optional
+        It indicates the default value of the given parameter.
+        It defaults to `None`, in which case it will use a specific
+        value depending on the type of parameter determined
+        with `get_param_type`.
+
+    Returns
+    -------
+    int, or str, or float, or bool
+        Depending on `param` and its type, by calling `FreeCAD.GetInt`,
+        `FreeCAD.GetString`, `FreeCAD.GetFloat`, `FreeCAD.GetBool`,
+        or `FreeCAD.GetUnsinged`.
+    """
+    draft_params = "User parameter:BaseApp/Preferences/Mod/Draft"
+    view_params = "User parameter:BaseApp/Preferences/View"
+
+    p = FreeCAD.ParamGet(draft_params)
+    v = FreeCAD.ParamGet(view_params)
+    t = getParamType(param)
+    # print("getting param ",param, " of type ",t, " default: ",str(default))
+    if t == "int":
+        if default is None:
+            default = 0
+        if param == "linewidth":
+            return v.GetInt("DefaultShapeLineWidth", default)
+        return p.GetInt(param, default)
+    elif t == "string":
+        if default is None:
+            default = ""
+        return p.GetString(param, default)
+    elif t == "float":
+        if default is None:
+            default = 0
+        return p.GetFloat(param, default)
+    elif t == "bool":
+        if default is None:
+            default = False
+        return p.GetBool(param, default)
+    elif t == "unsigned":
+        if default is None:
+            default = 0
+        if param == "color":
+            return v.GetUnsigned("DefaultShapeLineColor", default)
+        return p.GetUnsigned(param, default)
+    else:
+        return None
+
+
+getParam = get_param
