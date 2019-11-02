@@ -4,7 +4,13 @@ IF (BUILD_GUI)
     PYSIDE_WRAP_RC(Draft_QRC_SRCS Resources/Draft.qrc)
 ENDIF (BUILD_GUI)
 
+SET(Draft_utilities
+    draftutils/__init__.py
+    draftutils/utils.py
+)
+
 SET(Draft_SRCS
+    ${Draft_utilities}
     Init.py
     InitGui.py
     Draft.py
