@@ -83,18 +83,9 @@ makeLayer = DraftLayer.makeLayer
 #---------------------------------------------------------------------------
 # General functions
 #---------------------------------------------------------------------------
+import draftutils.utils
+stringencodecoin = draftutils.utils.string_encode_coin
 
-def stringencodecoin(ustr):
-    """stringencodecoin(str): Encodes a unicode object to be used as a string in coin"""
-    try:
-        from pivy import coin
-        coin4 = coin.COIN_MAJOR_VERSION >= 4
-    except (ImportError, AttributeError):
-        coin4 = False
-    if coin4:
-        return ustr.encode('utf-8')
-    else:
-        return ustr.encode('latin1')
 
 def typecheck (args_and_types, name="?"):
     """typecheck([arg1,type),(arg2,type),...]): checks arguments types"""
