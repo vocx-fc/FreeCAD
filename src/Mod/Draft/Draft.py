@@ -84,16 +84,8 @@ makeLayer = DraftLayer.makeLayer
 import draftutils.utils
 arrowtypes = draftutils.utils.arrow_types
 stringencodecoin = draftutils.utils.string_encode_coin
+typecheck = draftutils.utils.type_check
 
-
-def typecheck (args_and_types, name="?"):
-    """typecheck([arg1,type),(arg2,type),...]): checks arguments types"""
-    for v,t in args_and_types:
-        if not isinstance (v,t):
-            w = "typecheck[" + str(name) + "]: "
-            w += str(v) + " is not " + str(t) + "\n"
-            FreeCAD.Console.PrintWarning(w)
-            raise TypeError("Draft." + str(name))
 
 def getParamType(param):
     if param in ["dimsymbol","dimPrecision","dimorientation","precision","defaultWP",
