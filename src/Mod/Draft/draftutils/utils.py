@@ -249,3 +249,45 @@ def set_param(param, value):
 
 
 setParam = set_param
+
+
+def precision():
+    """Return the precision value from the paramater database.
+
+    It is the number of decimal places that a float will have.
+    Example
+    ::
+        precision=6, 0.123456
+        precision=5, 0.12345
+        precision=4, 0.1234
+
+    Due to floating point operations there may be rounding errors.
+    Therefore, this precision number is used to round up values
+    so that all operations are consistent.
+    By default the precision is 6 decimal places.
+
+    Returns
+    -------
+    int
+        get_param("precision", 6)
+    """
+    return getParam("precision", 6)
+
+
+def tolerance():
+    """Return the tolerance value from the parameter database.
+
+    This specifies a tolerance around a quantity.
+    ::
+        value + tolerance
+        value - tolerance
+
+    By default the tolerance is 0.05.
+
+    Returns
+    -------
+    float
+        get_param("tolerance", 0.05)
+    """
+    return getParam("tolerance", 0.05)
+

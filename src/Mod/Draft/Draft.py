@@ -88,15 +88,8 @@ typecheck = draftutils.utils.type_check
 getParamType = draftutils.utils.get_param_type
 getParam = draftutils.utils.get_param
 setParam = draftutils.utils.set_param
-
-
-def precision():
-    """precision(): returns the precision value from Draft user settings"""
-    return getParam("precision",6)
-
-def tolerance():
-    """tolerance(): returns the tolerance value from Draft user settings"""
-    return getParam("tolerance",0.05)
+precision = draftutils.utils.precision
+tolerance = draftutils.utils.tolerance
 
 def epsilon():
     ''' epsilon(): returns a small number based on Draft.tolerance() for use in
