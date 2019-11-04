@@ -92,37 +92,8 @@ precision = draftutils.utils.precision
 tolerance = draftutils.utils.tolerance
 epsilon = draftutils.utils.epsilon
 getRealName = draftutils.utils.get_real_name
+getType = draftutils.utils.get_type
 
-
-def getType(obj):
-    """getType(object): returns the Draft type of the given object"""
-    import Part
-    if not obj:
-        return None
-    if isinstance(obj,Part.Shape):
-        return "Shape"
-    if "Proxy" in obj.PropertiesList:
-        if hasattr(obj.Proxy,"Type"):
-            return obj.Proxy.Type
-    if obj.isDerivedFrom("Sketcher::SketchObject"):
-        return "Sketch"
-    if (obj.TypeId == "Part::Line"):
-        return "Part::Line"
-    if (obj.TypeId == "Part::Offset2D"):
-        return "Offset2D"
-    if obj.isDerivedFrom("Part::Feature"):
-        return "Part"
-    if (obj.TypeId == "App::Annotation"):
-        return "Annotation"
-    if obj.isDerivedFrom("Mesh::Feature"):
-        return "Mesh"
-    if obj.isDerivedFrom("Points::Feature"):
-        return "Points"
-    if (obj.TypeId == "App::DocumentObjectGroup"):
-        return "Group"
-    if (obj.TypeId == "App::Part"):
-        return "App::Part"
-    return "Unknown"
 
 def getObjectsOfType(objectslist,typ):
     """getObjectsOfType(objectslist,typ): returns a list of objects of type "typ" found
