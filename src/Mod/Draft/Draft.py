@@ -91,14 +91,8 @@ setParam = draftutils.utils.set_param
 precision = draftutils.utils.precision
 tolerance = draftutils.utils.tolerance
 epsilon = draftutils.utils.epsilon
+getRealName = draftutils.utils.get_real_name
 
-
-def getRealName(name):
-    """getRealName(string): strips the trailing numbers from a string name"""
-    for i in range(1,len(name)):
-        if not name[-i] in '1234567890':
-            return name[:len(name)-(i-1)]
-    return name
 
 def getType(obj):
     """getType(object): returns the Draft type of the given object"""

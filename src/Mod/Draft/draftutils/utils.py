@@ -304,7 +304,31 @@ def epsilon():
     Returns
     -------
     float
-        num/denom
+        1/(10**tolerance)
     """
-    return (1.0/(10.0**tolerance()))
+    return 1.0/(10.0**tolerance())
+
+
+def get_real_name(name):
+    """Strip the trailing numbers from a string to get only the letters.
+
+    Paramaters
+    ----------
+    name : str
+        A string that may have a number at the end, `Line001`.
+
+    Returns
+    -------
+    str
+        A string without the numbers at the end, `Line`.
+        The returned string cannot be empty; it will have
+        at least one letter.
+    """
+    for i in range(1, len(name)):
+        if name[-i] not in '1234567890':
+            return name[:len(name) - (i-1)]
+    return name
+
+
+getRealName = get_real_name
 
