@@ -391,3 +391,30 @@ def get_type(obj):
 
 
 getType = get_type
+
+
+def get_objects_of_type(objects, typ):
+    """Return only the objects that match the type in the list of objects.
+
+    Parameters
+    ----------
+    objects : list of App::DocumentObject
+        A list of objects which will be tested.
+
+    typ : str
+        A string that indicates a type. This should be one of the types
+        that can be returned by `get_type`.
+
+    Returns
+    -------
+    list of objects
+        Only the objects that match `typ` will be added to the output list.
+    """
+    objs = []
+    for o in objects:
+        if getType(o) == typ:
+            objs.append(o)
+    return objs
+
+
+getObjectsOfType = get_objects_of_type

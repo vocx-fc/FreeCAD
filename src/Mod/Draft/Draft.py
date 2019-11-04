@@ -93,16 +93,8 @@ tolerance = draftutils.utils.tolerance
 epsilon = draftutils.utils.epsilon
 getRealName = draftutils.utils.get_real_name
 getType = draftutils.utils.get_type
+getObjectsOfType = draftutils.utils.get_objects_of_type
 
-
-def getObjectsOfType(objectslist,typ):
-    """getObjectsOfType(objectslist,typ): returns a list of objects of type "typ" found
-    in the given object list"""
-    objs = []
-    for o in objectslist:
-        if getType(o) == typ:
-            objs.append(o)
-    return objs
 
 def get3DView():
     """get3DView(): returns the current view if it is 3D, or the first 3D view found, or None"""
