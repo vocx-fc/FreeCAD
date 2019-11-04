@@ -291,3 +291,20 @@ def tolerance():
     """
     return getParam("tolerance", 0.05)
 
+
+def epsilon():
+    """Return a small number based on the tolerance for use in comparisons.
+
+    The epsilon value is used in floating point comparisons. Use with caution.
+    ::
+        denom = 10**tolerance
+        num = 1
+        epsilon = num/denom
+
+    Returns
+    -------
+    float
+        num/denom
+    """
+    return (1.0/(10.0**tolerance()))
+

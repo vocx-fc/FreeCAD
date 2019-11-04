@@ -90,11 +90,8 @@ getParam = draftutils.utils.get_param
 setParam = draftutils.utils.set_param
 precision = draftutils.utils.precision
 tolerance = draftutils.utils.tolerance
+epsilon = draftutils.utils.epsilon
 
-def epsilon():
-    ''' epsilon(): returns a small number based on Draft.tolerance() for use in
-    floating point comparisons.  Use with caution. '''
-    return (1.0/(10.0**tolerance()))
 
 def getRealName(name):
     """getRealName(string): strips the trailing numbers from a string name"""
