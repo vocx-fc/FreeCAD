@@ -418,3 +418,66 @@ def get_objects_of_type(objects, typ):
 
 
 getObjectsOfType = get_objects_of_type
+
+
+def is_clone(obj, objtype, recursive=False):
+    """Return True if the given object is a clone of a certain type.
+
+    A clone is of type `'Clone'`, and has a reference
+    to the original object inside its `Objects` attribute,
+    which is an `'App::PropertyLinkListGlobal'`.
+
+    The `Objects` attribute can point to another `'Clone'` object.
+    If `recursive` is `True`, the function will be called recursively
+    to further test this clone, until the type of the original object
+    can be compared to `objtype`.
+
+    Parameters
+    ----------
+    obj : App::DocumentObject
+        The clone object that will be tested for a certain type.
+
+    objtype : str or list of str
+        A type string such as one obtained from `get_type`.
+        Or a list of such types.
+
+    recursive : bool, optional
+        It defaults to `False`.
+        If it is `True`, this same function will be called recursively
+        with `obj.Object[0]` as input.
+
+        This option only works if `obj.Object[0]` is of type `'Clone'`,
+        that is, if `obj` is a clone of a clone.
+
+    Returns
+    -------
+    bool
+        Returns `True` if `obj` is of type `'Clone'`,
+        and `obj.Object[0]` is of type `objtype`.
+
+        If `objtype` is a list, then `obj.Objects[0]`
+        will be tested against each of the elements in the list,
+        and it will return `True` if at least one element matches the type.
+
+        If `obj` isn't of type `'Clone'` but has the `CloneOf` attribute,
+        it will also return `True`.
+
+        It returns `False` otherwise, for example,
+        if `obj` is not even a clone.
+    """
+    if isinstance(objtype, list):
+        return any([isClone(obj, t, recursive) for t in objtype])
+
+    if getType(obj) == "Clone":
+        if len(obj.Objects) == 1:
+            if getType(obj.Objects[0]) == objtype:
+                return True
+            elif recursive and (getType(obj.Objects[0]) == "Clone"):
+                return isClone(obj.Objects[0], objtype, recursive)
+    elif hasattr(obj, "CloneOf"):
+        if obj.CloneOf:
+            return True
+    return False
+
+
+isClone = is_clone

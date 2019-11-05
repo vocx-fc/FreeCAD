@@ -109,22 +109,9 @@ def get3DView():
             return v[0]
     return None
 
-def isClone(obj,objtype,recursive=False):
-    """isClone(obj,objtype,[recursive]): returns True if the given object is
-    a clone of an object of the given type. If recursive is True, also check if
-    the clone is a clone of clone (of clone...)  of the given type."""
-    if isinstance(objtype,list):
-        return any([isClone(obj,t,recursive) for t in objtype])
-    if getType(obj) == "Clone":
-        if len(obj.Objects) == 1:
-            if getType(obj.Objects[0]) == objtype:
-                return True
-            elif recursive and (getType(obj.Objects[0]) == "Clone"):
-                return isClone(obj.Objects[0],objtype,recursive)
-    elif hasattr(obj,"CloneOf"):
-        if obj.CloneOf:
-            return True
-    return False
+
+isClone = draftutils.utils.is_clone
+
 
 def getGroupNames():
     """returns a list of existing groups in the document"""
