@@ -511,15 +511,20 @@ getGroupNames = get_group_names
 def ungroup(obj):
     """Remove the object from any group to which it belongs.
 
+    A "group" is any object returned by `get_group_names`.
+
     Parameters
     ----------
     obj : App::DocumentObject
         Any type of scripted object created with Draft,
         or any other workbench.
     """
-    for g in getGroupNames():
-        grp = FreeCAD.ActiveDocument.getObject(g)
-        if obj in grp.Group:
-            g = grp.Group
-            g.remove(obj)
-            grp.Group = g
+    for name in getGroupNames():
+        group = FreeCAD.ActiveDocument.getObject(name)
+        if obj in group.Group:
+            # The list of objects cannot be modified directly,
+            # so a new list is created, this new list is modified,
+            # and then it is assigned over the older list.
+            objects = group.Group
+            objects.remove(obj)
+            group.Group = objects
