@@ -111,25 +111,9 @@ def get3DView():
 
 
 isClone = draftutils.utils.is_clone
+getGroupNames = draftutils.utils.get_group_names
+ungroup = draftutils.utils.ungroup
 
-
-def getGroupNames():
-    """returns a list of existing groups in the document"""
-    glist = []
-    doc = FreeCAD.ActiveDocument
-    for obj in doc.Objects:
-        if obj.isDerivedFrom("App::DocumentObjectGroup") or (getType(obj) in ["Floor","Building","Site"]):
-            glist.append(obj.Name)
-    return glist
-
-def ungroup(obj):
-    """removes the current object from any group it belongs to"""
-    for g in getGroupNames():
-        grp = FreeCAD.ActiveDocument.getObject(g)
-        if obj in grp.Group:
-            g = grp.Group
-            g.remove(obj)
-            grp.Group = g
 
 def autogroup(obj):
     """adds a given object to the autogroup, if applicable"""

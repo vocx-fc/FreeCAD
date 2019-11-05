@@ -481,3 +481,45 @@ def is_clone(obj, objtype, recursive=False):
 
 
 isClone = is_clone
+
+
+def get_group_names():
+    """Return a list of names of existing groups in the document.
+
+    Returns
+    -------
+    list of str
+        A list of names of objects that are "groups".
+        These are objects derived from `'App::DocumentObjectGroup'`
+        or which are of types `'Floor'`, `'Building'`, or `'Site'`
+        (from the Arch Workbench).
+
+        Otherwise, return an empty list.
+    """
+    glist = []
+    doc = FreeCAD.ActiveDocument
+    for obj in doc.Objects:
+        if (obj.isDerivedFrom("App::DocumentObjectGroup")
+                or getType(obj) in ("Floor", "Building", "Site")):
+            glist.append(obj.Name)
+    return glist
+
+
+getGroupNames = get_group_names
+
+
+def ungroup(obj):
+    """Remove the object from any group to which it belongs.
+
+    Parameters
+    ----------
+    obj : App::DocumentObject
+        Any type of scripted object created with Draft,
+        or any other workbench.
+    """
+    for g in getGroupNames():
+        grp = FreeCAD.ActiveDocument.getObject(g)
+        if obj in grp.Group:
+            g = grp.Group
+            g.remove(obj)
+            grp.Group = g
