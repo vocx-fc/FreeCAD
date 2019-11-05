@@ -83,17 +83,34 @@ makeLayer = DraftLayer.makeLayer
 #---------------------------------------------------------------------------
 import draftutils.utils
 arrowtypes = draftutils.utils.ARROW_TYPES
+
 stringencodecoin = draftutils.utils.string_encode_coin
+string_encode_coin = draftutils.utils.string_encode_coin
+
 typecheck = draftutils.utils.type_check
+type_check = draftutils.utils.type_check
+
 getParamType = draftutils.utils.get_param_type
+get_param_type = draftutils.utils.get_param_type
+
 getParam = draftutils.utils.get_param
+get_param = draftutils.utils.get_param
+
 setParam = draftutils.utils.set_param
+set_param = draftutils.utils.set_param
+
 precision = draftutils.utils.precision
 tolerance = draftutils.utils.tolerance
 epsilon = draftutils.utils.epsilon
+
 getRealName = draftutils.utils.get_real_name
+get_real_name = draftutils.utils.get_real_name
+
 getType = draftutils.utils.get_type
+get_type = draftutils.utils.get_type
+
 getObjectsOfType = draftutils.utils.get_objects_of_type
+get_objects_of_type = draftutils.utils.get_objects_of_type
 
 
 def get3DView():
@@ -111,7 +128,11 @@ def get3DView():
 
 
 isClone = draftutils.utils.is_clone
+is_clone = draftutils.utils.is_clone
+
 getGroupNames = draftutils.utils.get_group_names
+get_group_names = draftutils.utils.get_group_names
+
 ungroup = draftutils.utils.ungroup
 
 
