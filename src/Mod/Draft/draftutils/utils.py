@@ -583,3 +583,111 @@ def shapify(obj):
     newobj.Shape = shape
 
     return newobj
+
+
+def get_group_contents(objectslist,
+                       walls=False, addgroups=False,
+                       spaces=False, noarchchild=False):
+    """Return a list of objects from expanding the input groups.
+
+    The function accepts any type of object, although it is most useful
+    with "groups", as it is meant to unpack the objects inside these groups.
+
+    Parameters
+    ----------
+    objectslist : list
+        If any object in the list is a group, its contents (`obj.Group`)
+        are extracted and added to the output list.
+
+        The "groups" are objects derived from `'App::DocumentObjectGroup'`,
+        but they can also be `'App::Part'`, or `'Building'`, `'BuildingPart'`,
+        `'Space'`, and `'Site'` from the Arch Workbench.
+
+        Single items that aren't groups are added to the output list
+        as is.
+
+    walls : bool, optional
+        It defaults to `False`.
+        If it is `True`, Wall and Structure objects (Arch Workbench)
+        are treated as groups; they are scanned for Window, Door,
+        and Rebar objects, and these are added to the output list.
+
+    addgroups : bool, optional
+        It defaults to `False`.
+        If it is `True`, the group itself is kept as part of the output list.
+
+    spaces : bool, optional
+        It defaults to `False`.
+        If it is `True`, Arch Spaces are treated as groups,
+        and are added to the output list.
+
+    noarchchild : bool, optional
+        It defaults to `False`.
+        If it is `True`, the objects inside Building and BuildingParts
+        (Arch Workbench) aren't added to the output list.
+
+    Returns
+    -------
+    list
+        The list of objects from each group present in `objectslist`,
+        plus any other individual object given in `objectslist`.
+    """
+    def getWindows(obj):
+        l = []
+        if getType(obj) in ["Wall", "Structure"]:
+            for o in obj.OutList:
+                l.extend(getWindows(o))
+            for i in obj.InList:
+                if (getType(i) in ["Window"]) or isClone(obj, "Window"):
+                    if hasattr(i, "Hosts"):
+                        if obj in i.Hosts:
+                            l.append(i)
+                elif (getType(i) in ["Rebar"]) or isClone(obj, "Rebar"):
+                    if hasattr(i, "Host"):
+                        if obj == i.Host:
+                            l.append(i)
+        elif (getType(obj) in ["Window", "Rebar"]) or isClone(obj, ["Window", "Rebar"]):
+            l.append(obj)
+        return l
+
+    newlist = []
+    if not isinstance(objectslist, list):
+        objectslist = [objectslist]
+    for obj in objectslist:
+        if obj:
+            if (obj.isDerivedFrom("App::DocumentObjectGroup")
+                    or ((getType(obj) in ["App::Part",
+                                          "Building", "BuildingPart",
+                                          "Space", "Site"])
+                        and hasattr(obj, "Group"))):
+                if getType(obj) == "Site":
+                    if obj.Shape:
+                        newlist.append(obj)
+                if obj.isDerivedFrom("Drawing::FeaturePage"):
+                    # skip if the group is a page
+                    newlist.append(obj)
+                else:
+                    if addgroups or (spaces and (getType(obj) == "Space")):
+                        newlist.append(obj)
+                    if (noarchchild
+                            and (getType(obj) in ["Building",
+                                                  "BuildingPart"])):
+                        pass
+                    else:
+                        newlist.extend(getGroupContents(obj.Group,
+                                                        walls, addgroups))
+            else:
+                # print("adding ", obj.Name)
+                newlist.append(obj)
+                if walls:
+                    newlist.extend(getWindows(obj))
+
+    # Clean possible duplicates
+    cleanlist = []
+    for obj in newlist:
+        if obj not in cleanlist:
+            cleanlist.append(obj)
+    return cleanlist
+
+
+getGroupContents = get_group_contents
