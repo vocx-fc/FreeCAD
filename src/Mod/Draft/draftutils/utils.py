@@ -4,6 +4,35 @@
 # \ingroup  DRAFT
 # \brief This module provides utility functions for the Draft Workbench
 import FreeCAD
+App = FreeCAD
+
+if App.GuiUp:
+    # The right translate function needs to be imported here
+    # from DraftGui import translate
+
+    # At the moment it is the same function as without GUI
+    def translate(context, text):
+        return text
+else:
+    def translate(context, text):
+        return text
+
+
+def _tr(text):
+    """Function to translate with the context set."""
+    return translate("Draft", text)
+
+
+def _msg(text, end="\n"):
+    App.Console.PrintMessage(text + end)
+
+
+def _wrn(text, end="\n"):
+    App.Console.PrintWarning(text + end)
+
+
+def _log(text, end="\n"):
+    App.Console.PrintLog(text + end)
 
 
 ARROW_TYPES = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"]
@@ -691,3 +720,35 @@ def get_group_contents(objectslist,
 
 
 getGroupContents = get_group_contents
+
+
+def print_shape(shape):
+    """Print detailed information of a topological shape.
+
+    Parameters
+    ----------
+    shape : Part::TopoShape
+        Any topological shape in an object, usually obtained from `obj.Shape`.
+    """
+    _msg(_tr("Solids:") + " {}".format(len(shape.Solids)))
+    _msg(_tr("Faces:") + " {}".format(len(shape.Faces)))
+    _msg(_tr("Wires:") + " {}".format(len(shape.Wires)))
+    _msg(_tr("Edges:") + " {}".format(len(shape.Edges)))
+    _msg(_tr("Vertices:") + " {}".format(len(shape.Vertexes)))
+
+    if shape.Faces:
+        for f in range(len(shape.Faces)):
+            _msg(_tr("Face") + " {}:".format(f))
+            for v in shape.Faces[f].Vertexes:
+                _msg("    {}".format(v.Point))
+    elif shape.Wires:
+        for w in range(len(shape.Wires)):
+            _msg(_tr("Wire") + " {}:".format(w))
+            for v in shape.Wires[w].Vertexes:
+                _msg("    {}".format(v.Point))
+    else:
+        for v in shape.Vertexes:
+            _msg("    {}".format(v.Point))
+
+
+printShape = print_shape

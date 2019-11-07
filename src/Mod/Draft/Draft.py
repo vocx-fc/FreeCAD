@@ -227,26 +227,10 @@ def removeHidden(objectslist):
                 newlist.remove(o)
     return newlist
 
-def printShape(shape):
-    """prints detailed information of a shape"""
-    print("solids: ", len(shape.Solids))
-    print("faces: ", len(shape.Faces))
-    print("wires: ", len(shape.Wires))
-    print("edges: ", len(shape.Edges))
-    print("verts: ", len(shape.Vertexes))
-    if shape.Faces:
-        for f in range(len(shape.Faces)):
-            print("face ",f,":")
-            for v in shape.Faces[f].Vertexes:
-                print("    ",v.Point)
-    elif shape.Wires:
-        for w in range(len(shape.Wires)):
-            print("wire ",w,":")
-            for v in shape.Wires[w].Vertexes:
-                print("    ",v.Point)
-    else:
-        for v in shape.Vertexes:
-            print("    ",v.Point)
+
+printShape = draftutils.utils.print_shape
+print_shape = draftutils.utils.print_shape
+
 
 def compareObjects(obj1,obj2):
     """Prints the differences between 2 objects"""
