@@ -211,36 +211,9 @@ def dimDash(p1, p2):
     dash.addChild(l)
     return dash
 
-def shapify(obj):
-    """shapify(object): transforms a parametric shape object into
-    non-parametric and returns the new object"""
-    try:
-        shape = obj.Shape
-    except Exception:
-        return None
-    if len(shape.Faces) == 1:
-        name = "Face"
-    elif len(shape.Solids) == 1:
-        name = "Solid"
-    elif len(shape.Solids) > 1:
-        name = "Compound"
-    elif len(shape.Faces) > 1:
-        name = "Shell"
-    elif len(shape.Wires) == 1:
-        name = "Wire"
-    elif len(shape.Edges) == 1:
-        import DraftGeomUtils
-        if DraftGeomUtils.geomType(shape.Edges[0]) == "Line":
-            name = "Line"
-        else:
-            name = "Circle"
-    else:
-        name = getRealName(obj.Name)
-    FreeCAD.ActiveDocument.removeObject(obj.Name)
-    newobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
-    newobj.Shape = shape
 
-    return newobj
+shapify = draftutils.utils.shapify
+
 
 def getGroupContents(objectslist,walls=False,addgroups=False,spaces=False,noarchchild=False):
     """getGroupContents(objectlist,[walls,addgroups]): if any object of the given list

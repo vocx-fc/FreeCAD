@@ -516,8 +516,7 @@ def ungroup(obj):
     Parameters
     ----------
     obj : App::DocumentObject
-        Any type of scripted object created with Draft,
-        or any other workbench.
+        Any type of scripted object.
     """
     for name in getGroupNames():
         group = FreeCAD.ActiveDocument.getObject(name)
@@ -528,3 +527,59 @@ def ungroup(obj):
             objects = group.Group
             objects.remove(obj)
             group.Group = objects
+
+
+def shapify(obj):
+    """Transform a parametric object into a static, non-parametric shape.
+
+    Parameters
+    ----------
+    obj : App::DocumentObject
+        Any type of scripted object.
+
+        This object will be removed, and a non-parametric object
+        with the same topological shape (`Part::TopoShape`)
+        will be created.
+
+    Returns
+    -------
+    Part::Feature
+        The new object that takes `obj.Shape` as its own.
+
+        Depending on the contents of the Shape, the resulting object
+        will be named `'Face'`, `'Solid'`, `'Compound'`,
+        `'Shell'`, `'Wire'`, `'Line'`, `'Circle'`,
+        or the name returned by `get_real_name(obj.Name)`.
+
+        If there is a problem with `obj.Shape`, it will return `None`,
+        and the original object will not be modified.
+    """
+    try:
+        shape = obj.Shape
+    except Exception:
+        return None
+
+    if len(shape.Faces) == 1:
+        name = "Face"
+    elif len(shape.Solids) == 1:
+        name = "Solid"
+    elif len(shape.Solids) > 1:
+        name = "Compound"
+    elif len(shape.Faces) > 1:
+        name = "Shell"
+    elif len(shape.Wires) == 1:
+        name = "Wire"
+    elif len(shape.Edges) == 1:
+        import DraftGeomUtils
+        if DraftGeomUtils.geomType(shape.Edges[0]) == "Line":
+            name = "Line"
+        else:
+            name = "Circle"
+    else:
+        name = getRealName(obj.Name)
+
+    FreeCAD.ActiveDocument.removeObject(obj.Name)
+    newobj = FreeCAD.ActiveDocument.addObject("Part::Feature", name)
+    newobj.Shape = shape
+
+    return newobj
