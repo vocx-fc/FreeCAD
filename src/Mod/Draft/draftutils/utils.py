@@ -752,3 +752,50 @@ def print_shape(shape):
 
 
 printShape = print_shape
+
+
+def compare_objects(obj1, obj2):
+    """Print the differences between 2 objects.
+
+    The two objects are compared through their `TypeId` attribute,
+    or by using the `get_type` function.
+
+    If they are the same type their properties are compared
+    looking for differences.
+
+    Neither `Shape` nor `Label` attributes are compared.
+
+    Parameters
+    ----------
+    obj1 : App::DocumentObject
+        Any type of scripted object.
+    obj2 : App::DocumentObject
+        Any type of scripted object.
+    """
+    if obj1.TypeId != obj2.TypeId:
+        _msg("'{0}' ({1}), '{2}' ({3}): ".format(obj1.Name, obj1.TypeId,
+                                                 obj2.Name, obj2.TypeId)
+             + _tr("different types") + " (TypeId)")
+    elif getType(obj1) != getType(obj2):
+        _msg("'{0}' ({1}), '{2}' ({3}): ".format(obj1.Name, get_type(obj1),
+                                                 obj2.Name, get_type(obj2))
+             + _tr("different types") + " (Proxy.Type)")
+    else:
+        for p in obj1.PropertiesList:
+            if p in obj2.PropertiesList:
+                if p in ("Shape", "Label"):
+                    pass
+                elif p == "Placement":
+                    delta = obj1.Placement.Base.sub(obj2.Placement.Base)
+                    text = _tr("Objects have different placements. "
+                               "Distance between the two base points: ")
+                    _msg(text + str(delta.Length))
+                else:
+                    if getattr(obj1, p) != getattr(obj2, p):
+                        _msg("'{}' ".format(p) + _tr("has a different value"))
+            else:
+                _msg("{} ".format(p)
+                     + _tr("doesn't exist in one of the objects"))
+
+
+compareObjects = compare_objects
