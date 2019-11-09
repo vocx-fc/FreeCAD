@@ -406,36 +406,10 @@ def loadTexture(filename,size=None):
             return img
     return None
 
-def getMovableChildren(objectslist,recursive=True):
-    """getMovableChildren(objectslist,[recursive]): extends the given list of objects
-    with all child objects that have a "MoveWithHost" property set to True. If
-    recursive is True, all descendents are considered, otherwise only direct children."""
-    added = []
-    if not isinstance(objectslist,list):
-        objectslist = [objectslist]
-    for obj in objectslist:
-        if not (getType(obj) in ["Clone","SectionPlane","Facebinder","BuildingPart"]):
-            # objects that should never move their children
-            children = obj.OutList
-            if  hasattr(obj,"Proxy"):
-                if obj.Proxy:
-                    if hasattr(obj.Proxy,"getSiblings") and not(getType(obj) in ["Window"]):
-                        #children.extend(obj.Proxy.getSiblings(obj))
-                        pass
-            for child in children:
-                if hasattr(child,"MoveWithHost"):
-                    if child.MoveWithHost:
-                        if hasattr(obj,"CloneOf"):
-                            if obj.CloneOf:
-                                if obj.CloneOf.Name != child.Name:
-                                    added.append(child)
-                            else:
-                                added.append(child)
-                        else:
-                            added.append(child)
-            if recursive:
-                added.extend(getMovableChildren(children))
-    return added
+
+getMovableChildren = draftutils.utils.get_movable_children
+get_movable_children = draftutils.utils.get_movable_children
+
 
 def makeCircle(radius, placement=None, face=None, startangle=None, endangle=None, support=None):
     """makeCircle(radius,[placement,face,startangle,endangle])

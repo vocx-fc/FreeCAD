@@ -5,7 +5,6 @@
 # \brief This module provides utility functions for the Draft Workbench
 import os
 import FreeCAD
-import importSVG
 from PySide import QtCore
 import Draft_rc
 App = FreeCAD
@@ -815,6 +814,7 @@ def load_svg_patterns():
     The SVG patterns are added as a dictionary to the `FreeCAD.svgpatterns`
     attribute.
     """
+    import importSVG
     FreeCAD.svgpatterns = {}
 
     # Getting default patterns in the resource file
@@ -865,3 +865,61 @@ def svg_patterns():
 
 
 svgpatterns = svg_patterns
+
+
+def get_movable_children(objectslist, recursive=True):
+    """Return a list of objects with child objects that move with a host.
+
+    Builds a list of objects with all child objects (`obj.OutList`)
+    that have their `MoveWithHost` attribute set to `True`.
+    This function is mostly useful for Arch Workbench objects.
+
+    Parameters
+    ----------
+    objectslist : list of App::DocumentObject
+        A single scripted object or list of objects.
+
+    recursive : bool, optional
+        It defaults to `True`, in which case the function
+        is called recursively to also extract the children of children
+        objects.
+        Otherwise, only direct children of the input objects
+        are added to the output list.
+
+    Returns
+    -------
+    list
+        List of children objects that have their `MoveWithHost` attribute
+        set to `True`.
+    """
+    added = []
+    if not isinstance(objectslist, list):
+        objectslist = [objectslist]
+    for obj in objectslist:
+        # Skips some objects that should never move their children
+        if getType(obj) not in ("Clone", "SectionPlane",
+                                "Facebinder", "BuildingPart"):
+            children = obj.OutList
+            if hasattr(obj, "Proxy"):
+                if obj.Proxy:
+                    if (hasattr(obj.Proxy, "getSiblings")
+                            and getType(obj) not in ("Window")):
+                        # children.extend(obj.Proxy.getSiblings(obj))
+                        pass
+            for child in children:
+                if hasattr(child, "MoveWithHost"):
+                    if child.MoveWithHost:
+                        if hasattr(obj, "CloneOf"):
+                            if obj.CloneOf:
+                                if obj.CloneOf.Name != child.Name:
+                                    added.append(child)
+                            else:
+                                added.append(child)
+                        else:
+                            added.append(child)
+            if recursive:
+                added.extend(getMovableChildren(children))
+    return added
+
+
+getMovableChildren = get_movable_children
