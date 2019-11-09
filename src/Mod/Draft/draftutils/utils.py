@@ -621,6 +621,51 @@ def shapify(obj):
     return newobj
 
 
+def get_windows(obj):
+    """Return the windows and rebars inside a host.
+
+    Parameters
+    ----------
+    obj : App::DocumentObject
+        A scripted object of type `'Wall'` or `'Structure'`
+        (Arch Workbench).
+        This will be searched for objects of type `'Window'` and `'Rebar'`,
+        and clones of them, and the found elements will be added
+        to the output list.
+
+        The function will search recursively all elements under `obj.OutList`,
+        in case the windows and rebars are nested under other walls
+        and structures.
+
+    Returns
+    -------
+    list
+        A list of all found windows and rebars in `obj`.
+        If `obj` is itself a `'Window'` or a `'Rebar'`, or a clone of them,
+        it will return the same `obj` element.
+    """
+    out = []
+    if getType(obj) in ("Wall", "Structure"):
+        for o in obj.OutList:
+            out.extend(get_windows(o))
+        for i in obj.InList:
+            if getType(i) in ("Window") or isClone(obj, "Window"):
+                if hasattr(i, "Hosts"):
+                    if obj in i.Hosts:
+                        out.append(i)
+            elif getType(i) in ("Rebar") or isClone(obj, "Rebar"):
+                if hasattr(i, "Host"):
+                    if obj == i.Host:
+                        out.append(i)
+    elif (getType(obj) in ("Window", "Rebar")
+          or isClone(obj, ["Window", "Rebar"])):
+        out.append(obj)
+    return out
+
+
+getWindows = get_windows
+
+
 def get_group_contents(objectslist,
                        walls=False, addgroups=False,
                        spaces=False, noarchchild=False):
@@ -668,33 +713,15 @@ def get_group_contents(objectslist,
         The list of objects from each group present in `objectslist`,
         plus any other individual object given in `objectslist`.
     """
-    def getWindows(obj):
-        l = []
-        if getType(obj) in ["Wall", "Structure"]:
-            for o in obj.OutList:
-                l.extend(getWindows(o))
-            for i in obj.InList:
-                if (getType(i) in ["Window"]) or isClone(obj, "Window"):
-                    if hasattr(i, "Hosts"):
-                        if obj in i.Hosts:
-                            l.append(i)
-                elif (getType(i) in ["Rebar"]) or isClone(obj, "Rebar"):
-                    if hasattr(i, "Host"):
-                        if obj == i.Host:
-                            l.append(i)
-        elif (getType(obj) in ["Window", "Rebar"]) or isClone(obj, ["Window", "Rebar"]):
-            l.append(obj)
-        return l
-
     newlist = []
     if not isinstance(objectslist, list):
         objectslist = [objectslist]
     for obj in objectslist:
         if obj:
             if (obj.isDerivedFrom("App::DocumentObjectGroup")
-                    or ((getType(obj) in ["App::Part",
-                                          "Building", "BuildingPart",
-                                          "Space", "Site"])
+                    or (getType(obj) in ("App::Part",
+                                         "Building", "BuildingPart",
+                                         "Space", "Site")
                         and hasattr(obj, "Group"))):
                 if getType(obj) == "Site":
                     if obj.Shape:
@@ -703,11 +730,10 @@ def get_group_contents(objectslist,
                     # skip if the group is a page
                     newlist.append(obj)
                 else:
-                    if addgroups or (spaces and (getType(obj) == "Space")):
+                    if addgroups or (spaces and getType(obj) == "Space"):
                         newlist.append(obj)
                     if (noarchchild
-                            and (getType(obj) in ["Building",
-                                                  "BuildingPart"])):
+                            and getType(obj) in ("Building", "BuildingPart")):
                         pass
                     else:
                         newlist.extend(getGroupContents(obj.Group,
