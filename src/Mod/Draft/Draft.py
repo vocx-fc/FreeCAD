@@ -82,6 +82,8 @@ makeLayer = DraftLayer.makeLayer
 # General functions
 #---------------------------------------------------------------------------
 import draftutils.utils
+import draftutils.gui_utils
+
 arrowtypes = draftutils.utils.ARROW_TYPES
 
 stringencodecoin = draftutils.utils.string_encode_coin
@@ -112,20 +114,8 @@ get_type = draftutils.utils.get_type
 getObjectsOfType = draftutils.utils.get_objects_of_type
 get_objects_of_type = draftutils.utils.get_objects_of_type
 
-
-def get3DView():
-    """get3DView(): returns the current view if it is 3D, or the first 3D view found, or None"""
-    if FreeCAD.GuiUp:
-        import FreeCADGui
-        v = FreeCADGui.ActiveDocument.ActiveView
-        if "View3DInventor" in str(type(v)):
-            return v
-        #print("Debug: Draft: Warning, not working in active view")
-        v = FreeCADGui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")
-        if v:
-            return v[0]
-    return None
-
+get3DView = draftutils.gui_utils.get_3d_view
+get_3d_view = draftutils.gui_utils.get_3d_view
 
 isClone = draftutils.utils.is_clone
 is_clone = draftutils.utils.is_clone

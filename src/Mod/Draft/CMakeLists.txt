@@ -7,6 +7,7 @@ ENDIF (BUILD_GUI)
 SET(Draft_utilities
     draftutils/__init__.py
     draftutils/utils.py
+    draftutils/gui_utils.py
 )
 
 SET(Draft_SRCS
