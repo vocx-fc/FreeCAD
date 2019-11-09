@@ -3,8 +3,16 @@
 ## @package utils
 # \ingroup  DRAFT
 # \brief This module provides utility functions for the Draft Workbench
+import os
 import FreeCAD
+import importSVG
+from PySide import QtCore
+import Draft_rc
 App = FreeCAD
+
+# The module is used to prevent complaints from code checkers (flake8)
+True if Draft_rc else False
+
 
 if App.GuiUp:
     # The right translate function needs to be imported here
@@ -799,3 +807,61 @@ def compare_objects(obj1, obj2):
 
 
 compareObjects = compare_objects
+
+
+def load_svg_patterns():
+    """Load the default Draft SVG patterns and user defined patterns.
+
+    The SVG patterns are added as a dictionary to the `FreeCAD.svgpatterns`
+    attribute.
+    """
+    FreeCAD.svgpatterns = {}
+
+    # Getting default patterns in the resource file
+    patfiles = QtCore.QDir(":/patterns").entryList()
+    for fn in patfiles:
+        file = ":/patterns/" + str(fn)
+        f = QtCore.QFile(file)
+        f.open(QtCore.QIODevice.ReadOnly)
+        p = importSVG.getContents(str(f.readAll()), 'pattern', True)
+        if p:
+            for k in p:
+                p[k] = [p[k], file]
+            FreeCAD.svgpatterns.update(p)
+
+    # Get patterns in a user defined file
+    altpat = getParam("patternFile", "")
+    if os.path.isdir(altpat):
+        for f in os.listdir(altpat):
+            if f[-4:].upper() == ".SVG":
+                file = os.path.join(altpat, f)
+                p = importSVG.getContents(file, 'pattern')
+                if p:
+                    for k in p:
+                        p[k] = [p[k], file]
+                    FreeCAD.svgpatterns.update(p)
+
+
+loadSvgPatterns = load_svg_patterns
+
+
+def svg_patterns():
+    """Return a dictionary with installed SVG patterns.
+
+    Returns
+    -------
+    dict
+        Returns `FreeCAD.svgpatterns` if it exists.
+        Otherwise it calls `load_svg_patterns` to create it
+        before returning it.
+    """
+    if hasattr(FreeCAD, "svgpatterns"):
+        return FreeCAD.svgpatterns
+    else:
+        loadSvgPatterns()
+        if hasattr(FreeCAD, "svgpatterns"):
+            return FreeCAD.svgpatterns
+    return {}
+
+
+svgpatterns = svg_patterns
