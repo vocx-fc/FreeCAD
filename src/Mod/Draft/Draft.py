@@ -127,60 +127,11 @@ ungroup = draftutils.utils.ungroup
 
 autogroup = draftutils.gui_utils.autogroup
 
+dimSymbol = draftutils.gui_utils.dim_symbol
+dim_symbol = draftutils.gui_utils.dim_symbol
 
-def dimSymbol(symbol=None,invert=False):
-    """returns the current dim symbol from the preferences as a pivy SoMarkerSet"""
-    if symbol is None:
-        symbol = getParam("dimsymbol",0)
-    from pivy import coin
-    if symbol == 0:
-        return coin.SoSphere()
-    elif symbol == 1:
-        marker = coin.SoMarkerSet()
-        marker.markerIndex = FreeCADGui.getMarkerIndex("circle", 9)
-        return marker
-    elif symbol == 2:
-        marker = coin.SoSeparator()
-        t = coin.SoTransform()
-        t.translation.setValue((0,-2,0))
-        t.center.setValue((0,2,0))
-        if invert:
-            t.rotation.setValue(coin.SbVec3f((0,0,1)),-math.pi/2)
-        else:
-            t.rotation.setValue(coin.SbVec3f((0,0,1)),math.pi/2)
-        c = coin.SoCone()
-        c.height.setValue(4)
-        marker.addChild(t)
-        marker.addChild(c)
-        return marker
-    elif symbol == 3:
-        marker = coin.SoSeparator()
-        c = coin.SoCoordinate3()
-        c.point.setValues([(-1,-2,0),(0,2,0),(1,2,0),(0,-2,0)])
-        f = coin.SoFaceSet()
-        marker.addChild(c)
-        marker.addChild(f)
-        return marker
-    elif symbol == 4:
-        return dimDash((-1.5,-1.5,0),(1.5,1.5,0))
-    else:
-        print("Draft.dimsymbol: Not implemented")
-        return coin.SoSphere()
-
-def dimDash(p1, p2):
-    """dimDash(p1, p2): returns pivy SoSeparator.
-    Used for making Tick-2, DimOvershoot, ExtOvershoot dashes.
-    """
-    from pivy import coin
-    dash = coin.SoSeparator()
-    v = coin.SoVertexProperty()
-    v.vertex.set1Value(0, p1)
-    v.vertex.set1Value(1, p2)
-    l = coin.SoLineSet()
-    l.vertexProperty = v
-    dash.addChild(l)
-    return dash
-
+dimDash = draftutils.gui_utils.dim_dash
+dim_dash = draftutils.gui_utils.dim_dash
 
 shapify = draftutils.utils.shapify
 
