@@ -147,67 +147,9 @@ print_shape = draftutils.utils.print_shape
 compareObjects = draftutils.utils.compare_objects
 compare_objects = draftutils.utils.compare_objects
 
+formatObject = draftutils.gui_utils.format_object
+format_object = draftutils.gui_utils.format_object
 
-def formatObject(target,origin=None):
-    """
-    formatObject(targetObject,[originObject]): This function applies
-    to the given target object the current properties
-    set on the toolbar (line color and line width),
-    or copies the properties of another object if given as origin.
-    It also places the object in construction group if needed.
-    """
-    if not target:
-        return
-    obrep = target.ViewObject
-    if not obrep:
-        return
-    ui = None
-    if gui:
-        if hasattr(FreeCADGui,"draftToolBar"):
-            ui = FreeCADGui.draftToolBar
-    if ui:
-        doc = FreeCAD.ActiveDocument
-        if ui.isConstructionMode():
-            col = fcol = ui.getDefaultColor("constr")
-            gname = getParam("constructiongroupname","Construction")
-            grp = doc.getObject(gname)
-            if not grp:
-                grp = doc.addObject("App::DocumentObjectGroup",gname)
-            grp.addObject(target)
-            if hasattr(obrep,"Transparency"):
-                obrep.Transparency = 80
-        else:
-            col = ui.getDefaultColor("ui")
-            fcol = ui.getDefaultColor("face")
-        col = (float(col[0]),float(col[1]),float(col[2]),0.0)
-        fcol = (float(fcol[0]),float(fcol[1]),float(fcol[2]),0.0)
-        lw = ui.linewidth
-        fs = ui.fontsize
-        if not origin or not hasattr(origin,'ViewObject'):
-            if "FontSize" in obrep.PropertiesList: obrep.FontSize = fs
-            if "TextColor" in obrep.PropertiesList: obrep.TextColor = col
-            if "LineWidth" in obrep.PropertiesList: obrep.LineWidth = lw
-            if "PointColor" in obrep.PropertiesList: obrep.PointColor = col
-            if "LineColor" in obrep.PropertiesList: obrep.LineColor = col
-            if "ShapeColor" in obrep.PropertiesList: obrep.ShapeColor = fcol
-        else:
-            matchrep = origin.ViewObject
-            for p in matchrep.PropertiesList:
-                if not p in ["DisplayMode","BoundingBox","Proxy","RootNode","Visibility"]:
-                    if p in obrep.PropertiesList:
-                        if not obrep.getEditorMode(p):
-                            if hasattr(getattr(matchrep,p),"Value"):
-                                val = getattr(matchrep,p).Value
-                            else:
-                                val = getattr(matchrep,p)
-                            try:
-                                setattr(obrep,p,val)
-                            except Exception:
-                                pass
-            if matchrep.DisplayMode in obrep.listDisplayModes():
-                obrep.DisplayMode = matchrep.DisplayMode
-            if hasattr(matchrep,"DiffuseColor") and hasattr(obrep,"DiffuseColor"):
-                obrep.DiffuseColor = matchrep.DiffuseColor
 
 def getSelection():
     """getSelection(): returns the current FreeCAD selection"""

@@ -223,8 +223,9 @@ dimDash = dim_dash
 def remove_hidden(objectslist):
     """Return only the visible objects in the list.
 
-    This function only works if the graphical interface is available,
-    as the `Visibility` attribute is a property of the view provider.
+    This function only works if the graphical interface is available
+    as the `Visibility` attribute is a property of the view provider
+    (`obj.ViewObject`).
 
     Parameters
     ----------
@@ -250,3 +251,95 @@ def remove_hidden(objectslist):
 
 
 removeHidden = remove_hidden
+
+
+def format_object(target, origin=None):
+    """Apply visual properties from the Draft toolbar or another object.
+
+    This function only works if the graphical interface is available
+    as the visual properties are attributes of the view provider
+    (`obj.ViewObject`).
+
+    Parameters
+    ----------
+    target : App::DocumentObject
+        Any type of scripted object.
+
+        This object will adopt the applicable visual properties,
+        `FontSize`, `TextColor`, `LineWidth`, `PointColor`, `LineColor`,
+        and `ShapeColor`, defined in the Draft toolbar
+        (`FreeCADGui.draftToolBar`) or will adopt
+        the properties from the `origin` object.
+
+        The `target` is also placed in the construction group
+        if the construction mode in the Draft toolbar is active.
+
+    origin : App::DocumentObject, optional
+        It defaults to `None`.
+        If it exists, it will provide the visual properties to assign
+        to `target`, with the exception of `BoundingBox`, `Proxy`,
+        `RootNode` and `Visibility`.
+    """
+    if not target:
+        return
+    obrep = target.ViewObject
+    if not obrep:
+        return
+    ui = None
+    if FreeCAD.GuiUp:
+        if hasattr(FreeCADGui, "draftToolBar"):
+            ui = FreeCADGui.draftToolBar
+    if ui:
+        doc = FreeCAD.ActiveDocument
+        if ui.isConstructionMode():
+            col = fcol = ui.getDefaultColor("constr")
+            gname = getParam("constructiongroupname", "Construction")
+            grp = doc.getObject(gname)
+            if not grp:
+                grp = doc.addObject("App::DocumentObjectGroup", gname)
+            grp.addObject(target)
+            if hasattr(obrep, "Transparency"):
+                obrep.Transparency = 80
+        else:
+            col = ui.getDefaultColor("ui")
+            fcol = ui.getDefaultColor("face")
+        col = (float(col[0]), float(col[1]), float(col[2]), 0.0)
+        fcol = (float(fcol[0]), float(fcol[1]), float(fcol[2]), 0.0)
+        lw = ui.linewidth
+        fs = ui.fontsize
+        if not origin or not hasattr(origin, 'ViewObject'):
+            if "FontSize" in obrep.PropertiesList:
+                obrep.FontSize = fs
+            if "TextColor" in obrep.PropertiesList:
+                obrep.TextColor = col
+            if "LineWidth" in obrep.PropertiesList:
+                obrep.LineWidth = lw
+            if "PointColor" in obrep.PropertiesList:
+                obrep.PointColor = col
+            if "LineColor" in obrep.PropertiesList:
+                obrep.LineColor = col
+            if "ShapeColor" in obrep.PropertiesList:
+                obrep.ShapeColor = fcol
+        else:
+            matchrep = origin.ViewObject
+            for p in matchrep.PropertiesList:
+                if p not in ("DisplayMode", "BoundingBox",
+                             "Proxy", "RootNode", "Visibility"):
+                    if p in obrep.PropertiesList:
+                        if not obrep.getEditorMode(p):
+                            if hasattr(getattr(matchrep, p), "Value"):
+                                val = getattr(matchrep, p).Value
+                            else:
+                                val = getattr(matchrep, p)
+                            try:
+                                setattr(obrep, p, val)
+                            except Exception:
+                                pass
+            if matchrep.DisplayMode in obrep.listDisplayModes():
+                obrep.DisplayMode = matchrep.DisplayMode
+            if (hasattr(matchrep, "DiffuseColor")
+                    and hasattr(obrep, "DiffuseColor")):
+                obrep.DiffuseColor = matchrep.DiffuseColor
+
+
+formatObject = format_object
