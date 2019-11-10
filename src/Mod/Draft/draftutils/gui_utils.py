@@ -35,6 +35,10 @@ the graphical user interface (GUI).
 
 import FreeCAD
 import FreeCADGui
+# from .utils import _msg
+from .utils import _wrn
+# from .utils import _log
+from .utils import _tr
 
 
 def get_3d_view():
@@ -57,7 +61,52 @@ def get_3d_view():
         v = FreeCADGui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")
         if v:
             return v[0]
+
+    _wrn(_tr("No graphical interface"))
     return None
 
 
 get3DView = get_3d_view
+
+
+def autogroup(obj):
+    """Adds a given object to the defined Draft autogroup, if applicable.
+
+    This function only works if the graphical interface is available.
+    It checks that the `FreeCAD.draftToolBar` class is available,
+    which contains the group to use to automatically store
+    new created objects.
+
+    Originally, it worked with standard groups (`App::DocumentObjectGroup`),
+    and Arch Workbench containers like `'Site'`, `'Building'`, `'Floor'`,
+    and `'BuildingPart'`.
+
+    Now it works with Draft Layers.
+
+    Parameters
+    ----------
+    obj : App::DocumentObject
+        Any type of object that will be stored in the group.
+    """
+    doc = FreeCAD.ActiveDocument
+    if FreeCAD.GuiUp:
+        view = FreeCADGui.ActiveDocument.ActiveView
+        if hasattr(FreeCADGui, "draftToolBar"):
+            if (hasattr(FreeCADGui.draftToolBar, "autogroup")
+                    and not FreeCADGui.draftToolBar.isConstructionMode()):
+                if FreeCADGui.draftToolBar.autogroup is not None:
+                    g = doc.getObject(FreeCADGui.draftToolBar.autogroup)
+                    if g:
+                        found = False
+                        for o in g.Group:
+                            if o.Name == obj.Name:
+                                found = True
+                        if not found:
+                            gr = g.Group
+                            gr.append(obj)
+                            g.Group = gr
+                else:
+                    # Arch active container
+                    a = view.getActiveObject("Arch")
+                    if a:
+                        a.addObject(obj)

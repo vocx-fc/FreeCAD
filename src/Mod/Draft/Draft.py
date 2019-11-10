@@ -125,28 +125,8 @@ get_group_names = draftutils.utils.get_group_names
 
 ungroup = draftutils.utils.ungroup
 
+autogroup = draftutils.gui_utils.autogroup
 
-def autogroup(obj):
-    """adds a given object to the autogroup, if applicable"""
-    if FreeCAD.GuiUp:
-        if hasattr(FreeCADGui,"draftToolBar"):
-            if hasattr(FreeCADGui.draftToolBar,"autogroup") and (not FreeCADGui.draftToolBar.isConstructionMode()):
-                if FreeCADGui.draftToolBar.autogroup != None:
-                    g = FreeCAD.ActiveDocument.getObject(FreeCADGui.draftToolBar.autogroup)
-                    if g:
-                        found = False
-                        for o in g.Group:
-                            if o.Name == obj.Name:
-                                found = True
-                        if not found:
-                            gr = g.Group
-                            gr.append(obj)
-                            g.Group = gr
-                else:
-                    # Arch active container
-                    a = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
-                    if a:
-                        a.addObject(obj)
 
 def dimSymbol(symbol=None,invert=False):
     """returns the current dim symbol from the preferences as a pivy SoMarkerSet"""
