@@ -138,16 +138,8 @@ shapify = draftutils.utils.shapify
 getGroupContents = draftutils.utils.get_group_contents
 get_group_contents = draftutils.utils.get_group_contents
 
-
-def removeHidden(objectslist):
-    """removeHidden(objectslist): removes hidden objects from the list"""
-    newlist = objectslist[:]
-    for o in objectslist:
-        if o.ViewObject:
-            if not o.ViewObject.isVisible():
-                newlist.remove(o)
-    return newlist
-
+removeHidden = draftutils.gui_utils.remove_hidden
+remove_hidden = draftutils.gui_utils.remove_hidden
 
 printShape = draftutils.utils.print_shape
 print_shape = draftutils.utils.print_shape

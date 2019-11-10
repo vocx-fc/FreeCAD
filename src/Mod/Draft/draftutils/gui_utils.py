@@ -35,7 +35,7 @@ the graphical user interface (GUI).
 
 import FreeCAD
 import FreeCADGui
-# from .utils import _msg
+from .utils import _msg
 from .utils import _wrn
 # from .utils import _log
 from .utils import _tr
@@ -218,3 +218,35 @@ def dim_dash(p1, p2):
 
 
 dimDash = dim_dash
+
+
+def remove_hidden(objectslist):
+    """Return only the visible objects in the list.
+
+    This function only works if the graphical interface is available,
+    as the `Visibility` attribute is a property of the view provider.
+
+    Parameters
+    ----------
+    objectslist : list of App::DocumentObject
+        List of any type of object.
+
+    Returns
+    -------
+    list
+        Return a copy of the input list without those objects
+        for which `obj.ViewObject.Visibility` is `False`.
+
+        If the graphical interface is not loaded
+        the returned list is just a copy of the input list.
+    """
+    newlist = objectslist[:]
+    for obj in objectslist:
+        if obj.ViewObject:
+            if not obj.ViewObject.isVisible():
+                newlist.remove(obj)
+                _msg(_tr("Visibility off; removed from list: ") + obj.Label)
+    return newlist
+
+
+removeHidden = remove_hidden
