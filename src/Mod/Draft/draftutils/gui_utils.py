@@ -343,3 +343,114 @@ def format_object(target, origin=None):
 
 
 formatObject = format_object
+
+
+def get_selection(gui=FreeCAD.GuiUp):
+    """Return the current selected objects.
+
+    This function only works if the graphical interface is available
+    as the selection module only works on the 3D view.
+
+    It wraps around `FreeCADGui.Selection.getSelection`
+
+    Parameters
+    ----------
+    gui : bool, optional
+        It defaults to the value of `FreeCAD.GuiUp`, which is `True`
+        when the interface exists, and `False` otherwise.
+
+        This value can be set to `False` to simulate
+        when the interface is not available.
+
+    Returns
+    -------
+    list of App::DocumentObject
+        Returns a list of objects in the current selection.
+        It can be an empty list if no object is selected.
+
+        If the interface is not available, it returns `None`.
+    """
+    if gui:
+        return FreeCADGui.Selection.getSelection()
+    return None
+
+
+getSelection = get_selection
+
+
+def get_selection_ex(gui=FreeCAD.GuiUp):
+    """Return the current selected objects together with their subelements.
+
+    This function only works if the graphical interface is available
+    as the selection module only works on the 3D view.
+
+    It wraps around `FreeCADGui.Selection.getSelectionEx`
+
+    Parameters
+    ----------
+    gui : bool, optional
+        It defaults to the value of `FreeCAD.GuiUp`, which is `True`
+        when the interface exists, and `False` otherwise.
+
+        This value can be set to `False` to simulate
+        when the interface is not available.
+
+    Returns
+    -------
+    list of Gui::SelectionObject
+        Returns a list of `Gui::SelectionObject` in the current selection.
+        It can be an empty list if no object is selected.
+
+        If the interface is not available, it returns `None`.
+
+    Selection objects
+    -----------------
+    One `Gui::SelectionObject` has attributes that indicate which specific
+    subelements, that is, vertices, wires, and faces, were selected.
+    This can be useful to operate on the subelements themselves.
+    If `G` is a `Gui::SelectionObject`
+     * `G.Object` is the selected object
+     * `G.ObjectName` is the name of the selected object
+     * `G.HasSubObjects` is `True` if there are subelements in the selection
+     * `G.SubObjects` is a tuple of the subelements' shapes
+     * `G.SubElementNames` is a tuple of the subelements' names
+
+    `SubObjects` and `SubElementNames` should be empty tuples
+    if `HasSubObjects` is `False`.
+    """
+    if gui:
+        return FreeCADGui.Selection.getSelectionEx()
+    return None
+
+
+getSelectionEx = get_selection_ex
+
+
+def select(objs=None, gui=FreeCAD.GuiUp):
+    """Unselects everything and selects only the given list of objects.
+
+    This function only works if the graphical interface is available
+    as the selection module only works on the 3D view.
+
+    Parameters
+    ----------
+    objs : list of App::DocumentObject, optional
+        It defaults to `None`.
+        Any type of scripted object.
+        It may be a list of objects or a single object.
+
+    gui : bool, optional
+        It defaults to the value of `FreeCAD.GuiUp`, which is `True`
+        when the interface exists, and `False` otherwise.
+
+        This value can be set to `False` to simulate
+        when the interface is not available.
+    """
+    if gui:
+        FreeCADGui.Selection.clearSelection()
+        if objs:
+            if not isinstance(objs, list):
+                objs = [objs]
+            for obj in objs:
+                if obj:
+                    FreeCADGui.Selection.addSelection(obj)

@@ -150,30 +150,13 @@ compare_objects = draftutils.utils.compare_objects
 formatObject = draftutils.gui_utils.format_object
 format_object = draftutils.gui_utils.format_object
 
+getSelection = draftutils.gui_utils.get_selection
+get_selection = draftutils.gui_utils.get_selection
 
-def getSelection():
-    """getSelection(): returns the current FreeCAD selection"""
-    if gui:
-        return FreeCADGui.Selection.getSelection()
-    return None
+getSelectionEx = draftutils.gui_utils.get_selection_ex
+get_selection_ex = draftutils.gui_utils.get_selection_ex
 
-def getSelectionEx():
-    """getSelectionEx(): returns the current FreeCAD selection (with subobjects)"""
-    if gui:
-        return FreeCADGui.Selection.getSelectionEx()
-    return None
-
-def select(objs=None):
-    """select(object): deselects everything and selects only the passed object or list"""
-    if gui:
-        FreeCADGui.Selection.clearSelection()
-        if objs:
-            if not isinstance(objs,list):
-                objs = [objs]
-            for obj in objs:
-                if obj:
-                    FreeCADGui.Selection.addSelection(obj)
-
+select = draftutils.gui_utils.select
 
 loadSvgPatterns = draftutils.utils.load_svg_patterns
 load_svg_patterns = draftutils.utils.load_svg_patterns
