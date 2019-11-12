@@ -164,86 +164,8 @@ load_svg_patterns = draftutils.utils.load_svg_patterns
 svgpatterns = draftutils.utils.svg_patterns
 svg_patterns = draftutils.utils.svg_patterns
 
-
-def loadTexture(filename,size=None):
-    """loadTexture(filename,[size]): returns a SoSFImage from a file. If size
-    is defined (an int or a tuple), and provided the input image is a png file,
-    it will be scaled to match the given size."""
-    if gui:
-        from pivy import coin
-        from PySide import QtGui,QtSvg
-        try:
-            p = QtGui.QImage(filename)
-            # buggy - TODO: allow to use resolutions
-            #if size and (".svg" in filename.lower()):
-            #    # this is a pattern, not a texture
-            #    if isinstance(size,int):
-            #        size = (size,size)
-            #    svgr = QtSvg.QSvgRenderer(filename)
-            #    p = QtGui.QImage(size[0],size[1],QtGui.QImage.Format_ARGB32)
-            #    pa = QtGui.QPainter()
-            #    pa.begin(p)
-            #    svgr.render(pa)
-            #    pa.end()
-            #else:
-            #    p = QtGui.QImage(filename)
-            size = coin.SbVec2s(p.width(), p.height())
-            buffersize = p.byteCount()
-            numcomponents = int (float(buffersize) / ( size[0] * size[1] ))
-
-            img = coin.SoSFImage()
-            width = size[0]
-            height = size[1]
-            byteList = []
-            isPy2 = sys.version_info.major < 3
-
-            for y in range(height):
-                #line = width*numcomponents*(height-(y));
-                for x in range(width):
-                    rgb = p.pixel(x,y)
-                    if numcomponents == 1:
-                        if isPy2:
-                            byteList.append(chr(QtGui.qGray( rgb )))
-                        else:
-                            byteList.append(chr(QtGui.qGray( rgb )).encode('latin-1'))
-                    elif numcomponents == 2:
-                        if isPy2:
-                            byteList.append(chr(QtGui.qGray( rgb )))
-                            byteList.append(chr(QtGui.qAlpha( rgb )))
-                        else:
-                            byteList.append(chr(QtGui.qGray( rgb )).encode('latin-1'))
-                            byteList.append(chr(QtGui.qAlpha( rgb )).encode('latin-1'))
-                    elif numcomponents == 3:
-                        if isPy2:
-                            byteList.append(chr(QtGui.qRed( rgb )))
-                            byteList.append(chr(QtGui.qGreen( rgb )))
-                            byteList.append(chr(QtGui.qBlue( rgb )))
-                        else:
-                            byteList.append(chr(QtGui.qRed( rgb )).encode('latin-1'))
-                            byteList.append(chr(QtGui.qGreen( rgb )).encode('latin-1'))
-                            byteList.append(chr(QtGui.qBlue( rgb )).encode('latin-1'))
-                    elif numcomponents == 4:
-                        if isPy2:
-                            byteList.append(chr(QtGui.qRed( rgb )))
-                            byteList.append(chr(QtGui.qGreen( rgb )))
-                            byteList.append(chr(QtGui.qBlue( rgb )))
-                            byteList.append(chr(QtGui.qAlpha( rgb )))
-                        else:
-                            byteList.append(chr(QtGui.qRed( rgb )).encode('latin-1'))
-                            byteList.append(chr(QtGui.qGreen( rgb )).encode('latin-1'))
-                            byteList.append(chr(QtGui.qBlue( rgb )).encode('latin-1'))
-                            byteList.append(chr(QtGui.qAlpha( rgb )).encode('latin-1'))
-                    #line += numcomponents
-
-            bytes = b"".join(byteList)
-            img.setValue(size, numcomponents, bytes)
-        except:
-            print("Draft: unable to load texture")
-            return None
-        else:
-            return img
-    return None
-
+loadTexture = draftutils.gui_utils.load_texture
+load_texture = draftutils.gui_utils.load_texture
 
 getMovableChildren = draftutils.utils.get_movable_children
 get_movable_children = draftutils.utils.get_movable_children
