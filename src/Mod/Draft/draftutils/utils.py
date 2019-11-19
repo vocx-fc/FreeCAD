@@ -978,3 +978,70 @@ def get_movable_children(objectslist, recursive=True):
 
 
 getMovableChildren = get_movable_children
+
+
+def utf8_decode(text):
+    """Decode the input string and return a unicode string.
+
+    Python 2:
+    ::
+        str -> unicode
+        unicode -> unicode
+
+    Python 3:
+    ::
+        str -> str
+        bytes -> str
+
+    It runs
+    ::
+        try:
+            return text.decode("utf-8")
+        except AttributeError:
+            return text
+
+    Parameters
+    ----------
+    text : str, unicode or bytes
+        A str, unicode, or bytes object that may have unicode characters
+        like accented characters.
+
+        In Python 2, a `bytes` object can include accented characters,
+        but in Python 3 it must only contain ASCII literal characters.
+
+    Returns
+    -------
+    unicode or str
+        In Python 2 it will try decoding the `bytes` string
+        and return a `'utf-8'` decoded string.
+
+        >>> "Aá".decode("utf-8")
+        >>> b"Aá".decode("utf-8")
+        u'A\\xe1'
+
+        In Python 2 the unicode string is prefixed with `u`,
+        and unicode characters are replaced by their two-digit hexadecimal
+        representation, or four digit unicode escape.
+
+        >>> "AáBẃCñ".decode("utf-8")
+        u'A\\xe1B\\u1e83C\\xf1'
+
+        In Python 2 it will always return a `unicode` object.
+
+        In Python 3 a regular string is already unicode encoded,
+        so strings have no `decode` method. In this case, `text`
+        will be returned as is.
+
+        In Python 3, if `text` is a `bytes` object, then it will be converted
+        to `str`; in this case, the `bytes` object cannot have accents,
+        it must only contain ASCII literal characters.
+
+        >>> b"ABC".decode("utf-8")
+        'ABC'
+
+        In Python 3 it will always return a `str` object, with no prefix.
+    """
+    try:
+        return text.decode("utf-8")
+    except AttributeError:
+        return text
