@@ -5676,6 +5676,11 @@ bool ViewProviderSketch::setEdit(int ModNum)
                         "if ActiveSketch.ViewObject.ShowLinks:\n"
                         "  tv.show([ref[0] for ref in ActiveSketch.ExternalGeometry])\n"
                         "tv.hide(ActiveSketch)\n"
+                        "if hasattr(FreeCADGui, 'Snapper'):\n"
+                        "  if FreeCADGui.Snapper.grid:\n"
+                        "    if FreeCADGui.Snapper.grid.Visible:\n"
+                        "      FreeCADGui.Snapper.grid.off()\n"
+                        "      FreeCADGui.Snapper.forceGridOff=True\n"
                         "del(tv)\n"
                         ).arg(QString::fromLatin1(getDocument()->getDocument()->getName()),
                               QString::fromLatin1(getSketchObject()->getNameInDocument()),
@@ -6118,6 +6123,10 @@ void ViewProviderSketch::unsetEdit(int ModNum)
                     "if tv:\n"
                     "  tv.restore()\n"
                     "ActiveSketch.ViewObject.TempoVis = None\n"
+                    "if hasattr(FreeCADGui,'Snapper'):\n"
+                    "  if FreeCADGui.Snapper.grid:\n"
+                    "    FreeCADGui.Snapper.grid.on()\n"
+                    "    FreeCADGui.Snapper.forceGridOff=False\n"
                     "del(tv)\n"
                     ).arg(QString::fromLatin1(getDocument()->getDocument()->getName())).arg(
                           QString::fromLatin1(getSketchObject()->getNameInDocument()));
