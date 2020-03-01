@@ -112,6 +112,7 @@ SET(Draft_objects
     draftobjects/polararray.py
     draftobjects/arc_3points.py
     draftobjects/draft_annotation.py
+    draftobjects/notch.py
     draftobjects/label.py
     draftobjects/dimension.py
     draftobjects/point.py
@@ -136,6 +137,7 @@ SET(Draft_view_providers
     draftviewproviders/view_orthoarray.py
     draftviewproviders/view_polararray.py
     draftviewproviders/view_draft_annotation.py
+    draftviewproviders/view_notch.py
     draftviewproviders/view_label.py
     draftviewproviders/view_dimension.py
     draftviewproviders/view_point.py
@@ -204,6 +206,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_trackers.py
     draftguitools/gui_edit.py
     draftguitools/gui_lineops.py
+    draftguitools/gui_notch.py
     draftguitools/gui_togglemodes.py
     draftguitools/gui_groups.py
     draftguitools/gui_grid.py
