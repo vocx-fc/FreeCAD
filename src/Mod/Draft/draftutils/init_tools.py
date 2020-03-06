@@ -1,14 +1,3 @@
-"""Provides lists of commands for the Draft Workbench.
-
-This module returns lists of commands, so that the toolbars
-can be initialized by Draft, and by other workbenches.
-These commands should be defined in `DraftTools`, and in the individual
-modules in `draftguitools`.
-"""
-## @package init_tools
-# \ingroup DRAFT
-# \brief This module provides lists of commands for the Draft Workbench.
-
 # ***************************************************************************
 # *   (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de>           *
 # *                                                                         *
@@ -31,6 +20,16 @@ modules in `draftguitools`.
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+"""Provides lists of commands for the Draft Workbench.
+
+This module returns lists of commands, so that the toolbars
+can be initialized by Draft, and by other workbenches.
+These commands should be defined in `DraftTools`, and in the individual
+modules in `draftguitools`.
+"""
+## @package init_tools
+# \ingroup DRAFT
+# \brief This module provides lists of commands for the Draft Workbench.
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
