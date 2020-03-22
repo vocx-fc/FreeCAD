@@ -210,9 +210,9 @@ class ViewProviderLayer:
         vobj.addDisplayMode(sep, "Default")
         return
 
-    def claimChildren(self):
-        if hasattr(self, "Object") and hasattr(self.Object, "Group"):
-            return self.Object.Group
+    # def claimChildren(self):
+    #     if hasattr(self, "Object") and hasattr(self.Object, "Group"):
+    #         return self.Object.Group
 
     def getDisplayModes(self, vobj):
         return ["Default"]
