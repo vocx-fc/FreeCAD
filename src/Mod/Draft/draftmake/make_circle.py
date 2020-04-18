@@ -21,9 +21,9 @@
 # ***************************************************************************
 """This module provides the object code for Draft make_circle function.
 """
-## @package dimension
+## @package make circle
 # \ingroup DRAFT
-# \brief This module provides the object code for Draft Dimension.
+# \brief This module provides the code for Draft make_circle.
 
 import FreeCAD as App
 
@@ -54,14 +54,15 @@ def make_circle(radius, placement=None, face=None, startangle=None, endangle=Non
     placement : 
         If placement is given, it is used. 
     
-    face :
-        If face is False, the circle is shown as a wireframe, otherwise as a face. 
+    face : Bool
+        If face is False, the circle is shown as a wireframe, 
+        otherwise as a face. 
     
     startangle : start angle of the arc (in degrees)
 
     endangle : end angle of the arc (in degrees)
-        if startangle and endangle are equal, a circle is created, if they are 
-        different an arc is created
+        if startangle and endangle are equal, a circle is created, 
+        if they are different an arc is created
 
     edge : edge.Curve must be a 'Part.Circle'
         the circle is created from the given edge
