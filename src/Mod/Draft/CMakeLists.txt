@@ -58,9 +58,15 @@ SET(Draft_utilities
     draftutils/README.md
 )
 
+SET(Draft_make_functions
+    draftmake/__init__.py
+    draftmake/make_circle.py
+)
+
 SET(Draft_objects
     draftobjects/__init__.py
     draftobjects/base.py
+    draftobjects/circle.py
     draftobjects/circulararray.py
     draftobjects/orthoarray.py
     draftobjects/polararray.py
@@ -169,6 +175,7 @@ SET(Draft_SRCS_all
     ${Draft_import}
     ${Draft_tests}
     ${Draft_utilities}
+    ${Draft_make_functions}
     ${Draft_objects}
     ${Draft_view_providers}
     ${Draft_GUI_tools}
@@ -212,6 +219,7 @@ INSTALL(
 
 INSTALL(FILES ${Draft_tests} DESTINATION Mod/Draft/drafttests)
 INSTALL(FILES ${Draft_utilities} DESTINATION Mod/Draft/draftutils)
+INSTALL(FILES ${Draft_make_functions} DESTINATION Mod/Draft/draftmake)
 INSTALL(FILES ${Draft_objects} DESTINATION Mod/Draft/draftobjects)
 INSTALL(FILES ${Draft_view_providers} DESTINATION Mod/Draft/draftviewproviders)
 INSTALL(FILES ${Draft_GUI_tools} DESTINATION Mod/Draft/draftguitools)
