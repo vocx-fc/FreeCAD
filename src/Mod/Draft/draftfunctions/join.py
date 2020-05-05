@@ -23,9 +23,11 @@
 """This module provides the code for Draft join functions.
 """
 ## @package join
-# \ingroup DRAFT
+# \ingroup draftfuctions
 # \brief This module provides the code for Draft join functions.
 
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
 
 
@@ -89,3 +91,5 @@ def join_two_wires(wire1, wire2):
 
 
 joinTwoWires = join_two_wires
+
+## @}

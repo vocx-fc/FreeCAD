@@ -23,9 +23,11 @@
 """This module provides the code for Draft extrude function.
 """
 ## @package extrude
-# \ingroup DRAFT
+# \ingroup draftfuctions
 # \brief This module provides the code for Draft extrude function.
 
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
 
 import draftutils.gui_utils as gui_utils
@@ -59,3 +61,5 @@ def extrude(obj, vector, solid=False):
         gui_utils.select(newobj)
 
     return newobj
+
+## @}

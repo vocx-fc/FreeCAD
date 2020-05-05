@@ -23,20 +23,19 @@
 """This module provides the code for Draft scale function.
 """
 ## @package scale
-# \ingroup DRAFT
+# \ingroup draftfuctions
 # \brief This module provides the code for Draft scale function.
 
+## \addtogroup draftfuctions
+# @{
 import math
 
 import FreeCAD as App
-
 import DraftVecUtils
-
 import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
 
 from draftfunctions.join import join_wires
-
 from draftmake.make_copy import make_copy
 
 
@@ -206,3 +205,5 @@ def copy_scaled_edges(arguments):
 
 
 copyScaledEdges = copy_scaled_edges
+
+## @}

@@ -25,7 +25,7 @@
 See also the `downgrade` function.
 """
 ## @package downgrade
-# \ingroup DRAFT
+# \ingroup draftfuctions
 # \brief Provides the code for Draft upgrade function.
 
 import re
@@ -49,6 +49,9 @@ Part = lz.LazyLoader("Part", globals(), "Part")
 DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 Arch = lz.LazyLoader("Arch", globals(), "Arch")
 _DEBUG = False
+
+## \addtogroup draftfuctions
+# @{
 
 
 def upgrade(objects, delete=False, force=None):
@@ -505,3 +508,5 @@ def upgrade(objects, delete=False, force=None):
 
     gui_utils.select(add_list)
     return add_list, delete_list
+
+## @}

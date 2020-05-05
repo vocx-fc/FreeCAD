@@ -22,9 +22,11 @@
 # ***************************************************************************
 """Provides provides the code for Draft cut function."""
 ## @package cut
-# \ingroup DRAFT
+# \ingroup draftfuctions
 # \brief Provides provides the code for Draft cut function.
 
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
 import draftutils.gui_utils as gui_utils
 from draftutils.translate import _tr
@@ -65,3 +67,5 @@ def cut(object1, object2):
         object2.ViewObject.Visibility = False
 
     return obj
+
+## @}

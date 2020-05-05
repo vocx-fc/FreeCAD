@@ -23,9 +23,11 @@
 """This module provides the code for Draft draftify function.
 """
 ## @package draftify
-# \ingroup DRAFT
+# \ingroup draftfuctions
 # \brief This module provides the code for Draft draftify function.
 
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
 
 import draftutils.gui_utils as gui_utils
@@ -86,3 +88,5 @@ def draftify(objectslist, makeblock=False, delete=True):
         if len(newobjlist) == 1:
             return newobjlist[0]
         return newobjlist
+
+## @}

@@ -23,9 +23,11 @@
 """This module provides the code for Draft split functions.
 """
 ## @package split
-# \ingroup DRAFT
+# \ingroup draftfuctions
 # \brief This module provides the code for Draft split functions.
 
+## \addtogroup draftfuctions
+# @{
 import draftutils.utils as utils
 
 from draftmake.make_wire import make_wire
@@ -71,3 +73,5 @@ def split_open_wire(wire, newPoint, edgeIndex):
 
 
 splitOpenWire = split_open_wire
+
+## @}

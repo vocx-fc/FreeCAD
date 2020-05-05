@@ -23,9 +23,11 @@
 """This module provides the code for Draft heal function.
 """
 ## @package heal
-# \ingroup DRAFT
+# \ingroup draftfuctions
 # \brief This module provides the code for Draft heal function.
 
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
 
 import draftutils.gui_utils as gui_utils
@@ -113,3 +115,5 @@ def heal(objlist=None, delete=True, reparent=True):
     if dellist and delete:
         for n in dellist:
             App.ActiveDocument.removeObject(n)
+
+## @}

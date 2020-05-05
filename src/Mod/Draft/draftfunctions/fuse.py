@@ -23,9 +23,11 @@
 """This module provides the code for Draft fuse function.
 """
 ## @package fuse
-# \ingroup DRAFT
+# \ingroup draftfuctions
 # \brief This module provides the code for Draft fuse function.
 
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
 
 import draftutils.gui_utils as gui_utils
@@ -78,3 +80,5 @@ def fuse(object1, object2):
         gui_utils.select(obj)
 
     return obj
+
+## @}

@@ -23,21 +23,20 @@
 """This module provides the code for Draft rotate function.
 """
 ## @package rotate
-# \ingroup DRAFT
+# \ingroup draftfuctions
 # \brief This module provides the code for Draft rotate function.
 
+## \addtogroup draftfuctions
+# @{
 import math
 
 import FreeCAD as App
-
 import DraftVecUtils
-
 import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
 
 from draftmake.make_line import make_line
 from draftfunctions.join import join_wires
-
 from draftmake.make_copy import make_copy
 
 
@@ -227,4 +226,5 @@ def copy_rotated_edge(object, edge_index, angle, center, axis):
             object.Placement.multVec(object.Points[edge_index+1]),
             angle, axis, center)
     return make_line(vertex1, vertex2)
-    
+
+## @}

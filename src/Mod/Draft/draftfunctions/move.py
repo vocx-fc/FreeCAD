@@ -23,9 +23,11 @@
 """This module provides the code for Draft move function.
 """
 ## @package move
-# \ingroup DRAFT
+# \ingroup draftfuctions
 # \brief This module provides the code for Draft move function.
 
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
 
 import draftutils.gui_utils as gui_utils
@@ -103,7 +105,7 @@ def move(objectslist, vector, copy=False):
                 newobj = obj
             newobj.Position = obj.Position.add(real_vector)
 
-        elif utils.get_type(obj) == "Text":
+        elif utils.get_type(obj) in ("Text", "DraftText"):
             if copy:
                 newobj = make_copy(obj)
             else:
@@ -136,7 +138,7 @@ def move(objectslist, vector, copy=False):
 
         if newobj is not None:
             newobjlist.append(newobj)
-        
+
         if copy:
             for p in obj.InList:
                 if p.isDerivedFrom("App::DocumentObjectGroup") and (p in objectslist):
@@ -211,3 +213,5 @@ def copy_moved_edge(object, edge_index, vector):
     else:
         vertex2 = object.Placement.multVec(object.Points[edge_index+1]).add(vector)
     return make_line(vertex1, vertex2)
+
+## @}

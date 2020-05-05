@@ -24,9 +24,11 @@
 # ***************************************************************************
 """Provides the object code for Draft array function."""
 ## @package array
-# \ingroup DRAFT
+# \ingroup draftfuctions
 # \brief Provides the object code for Draft array.
 
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
 
 import draftutils.utils as utils
@@ -110,3 +112,5 @@ def polarArray(objectslist,center,angle,num):
     for i in range(num):
         currangle = fraction + (i*fraction)
         rotate(objectslist,currangle,center,copy=True)
+
+## @}

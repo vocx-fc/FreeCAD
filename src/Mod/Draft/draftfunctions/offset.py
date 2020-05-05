@@ -23,20 +23,19 @@
 """This module provides the code for Draft offset function.
 """
 ## @package offset
-# \ingroup DRAFT
+# \ingroup draftfuctions
 # \brief This module provides the code for Draft offset function.
 
+## \addtogroup draftfuctions
+# @{
 import math
 
 import FreeCAD as App
-
 import DraftVecUtils
-
 import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
 
 from draftmake.make_copy import make_copy
-
 from draftmake.make_rectangle import makeRectangle
 from draftmake.make_wire import makeWire
 from draftmake.make_polygon import makePolygon
@@ -244,3 +243,5 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
     if delete:
         App.ActiveDocument.removeObject(delete)
     return newobj
+
+## @}

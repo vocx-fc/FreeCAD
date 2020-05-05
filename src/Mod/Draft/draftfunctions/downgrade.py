@@ -25,9 +25,11 @@
 See also the `upgrade` function.
 """
 ## @package downgrade
-# \ingroup DRAFT
+# \ingroup draftfuctions
 # \brief Provides the code for Draft downgrade function.
 
+## \addtogroup draftfuctions
+# @{
 import FreeCAD as App
 
 import draftutils.gui_utils as gui_utils
@@ -297,3 +299,5 @@ def downgrade(objects, delete=False, force=None):
 
     gui_utils.select(add_list)
     return add_list, delete_list
+
+## @}
