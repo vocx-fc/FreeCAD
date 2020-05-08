@@ -100,6 +100,7 @@ SET(Draft_functions
 
 SET(Draft_make_functions
     draftmake/__init__.py
+    draftmake/make_arcs.py
     draftmake/make_arc_3points.py
     draftmake/make_array.py
     draftmake/make_bezcurve.py
