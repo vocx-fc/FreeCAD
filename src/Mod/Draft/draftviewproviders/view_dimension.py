@@ -386,22 +386,21 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
     def updateData(self, obj, prop):
         """called when the base object is changed"""
         import DraftGui
-        if prop in ["Start","End","Dimline","Direction"]:
+        if prop in ["Start", "End", "Dimline", "Direction"]:
 
             if obj.Start == obj.End:
                 return
 
-            if not hasattr(self,"node"):
+            if not hasattr(self, "node"):
                 return
 
             import Part, DraftGeomUtils
-            from pivy import coin
 
             # calculate the 4 points
             self.p1 = obj.Start
             self.p4 = obj.End
             base = None
-            if hasattr(obj,"Direction"):
+            if hasattr(obj, "Direction"):
                 if not DraftVecUtils.isNull(obj.Direction):
                     v2 = self.p1.sub(obj.Dimline)
                     v3 = self.p4.sub(obj.Dimline)
@@ -409,21 +408,21 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                     v3 = DraftVecUtils.project(v3,obj.Direction)
                     self.p2 = obj.Dimline.add(v2)
                     self.p3 = obj.Dimline.add(v3)
-                    if DraftVecUtils.equals(self.p2,self.p3):
+                    if DraftVecUtils.equals(self.p2, self.p3):
                         base = None
                         proj = None
                     else:
-                        base = Part.LineSegment(self.p2,self.p3).toShape()
-                        proj = DraftGeomUtils.findDistance(self.p1,base)
+                        base = Part.LineSegment(self.p2, self.p3).toShape()
+                        proj = DraftGeomUtils.findDistance(self.p1, base)
                         if proj:
                             proj = proj.negative()
             if not base:
-                if DraftVecUtils.equals(self.p1,self.p4):
+                if DraftVecUtils.equals(self.p1, self.p4):
                     base = None
                     proj = None
                 else:
-                    base = Part.LineSegment(self.p1,self.p4).toShape()
-                    proj = DraftGeomUtils.findDistance(obj.Dimline,base)
+                    base = Part.LineSegment(self.p1, self.p4).toShape()
+                    proj = DraftGeomUtils.findDistance(obj.Dimline, base)
                 if proj:
                     self.p2 = self.p1.add(proj.negative())
                     self.p3 = self.p4.add(proj.negative())
@@ -445,10 +444,10 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                 proj = (self.p3.sub(self.p2)).cross(App.Vector(0,0,1))
 
             # calculate the arrows positions
-            self.trans1.translation.setValue((self.p2.x,self.p2.y,self.p2.z))
-            self.coord1.point.setValue((self.p2.x,self.p2.y,self.p2.z))
-            self.trans2.translation.setValue((self.p3.x,self.p3.y,self.p3.z))
-            self.coord2.point.setValue((self.p3.x,self.p3.y,self.p3.z))
+            self.trans1.translation.setValue((self.p2.x, self.p2.y, self.p2.z))
+            self.coord1.point.setValue((self.p2.x, self.p2.y, self.p2.z))
+            self.trans2.translation.setValue((self.p3.x, self.p3.y, self.p3.z))
+            self.coord2.point.setValue((self.p3.x, self.p3.y, self.p3.z))
 
             # calculate dimension and extension lines overshoots positions
             self.transDimOvershoot1.translation.setValue((self.p2.x,self.p2.y,self.p2.z))
@@ -457,19 +456,19 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             self.transExtOvershoot2.translation.setValue((self.p3.x,self.p3.y,self.p3.z))
 
             # calculate the text position and orientation
-            if hasattr(obj,"Normal"):
+            if hasattr(obj, "Normal"):
                 if DraftVecUtils.isNull(obj.Normal):
                     if proj:
                         norm = (self.p3.sub(self.p2).cross(proj)).negative()
                     else:
-                        norm = App.Vector(0,0,1)
+                        norm = App.Vector(0, 0, 1)
                 else:
                     norm = App.Vector(obj.Normal)
             else:
                 if proj:
                     norm = (self.p3.sub(self.p2).cross(proj)).negative()
                 else:
-                    norm = App.Vector(0,0,1)
+                    norm = App.Vector(0, 0, 1)
             if not DraftVecUtils.isNull(norm):
                 norm.normalize()
             u = self.p3.sub(self.p2)
@@ -478,7 +477,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             rot1 = App.Placement(DraftVecUtils.getPlaneRotation(u,v1,norm)).Rotation.Q
             self.transDimOvershoot1.rotation.setValue((rot1[0],rot1[1],rot1[2],rot1[3]))
             self.transDimOvershoot2.rotation.setValue((rot1[0],rot1[1],rot1[2],rot1[3]))
-            if hasattr(obj.ViewObject,"FlipArrows"):
+            if hasattr(obj.ViewObject, "FlipArrows"):
                 if obj.ViewObject.FlipArrows:
                     u = u.negative()
             v2 = norm.cross(u)
@@ -492,21 +491,21 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                 rot3 = App.Placement(DraftVecUtils.getPlaneRotation(u3,v3,norm)).Rotation.Q
                 self.transExtOvershoot1.rotation.setValue((rot3[0],rot3[1],rot3[2],rot3[3]))
                 self.transExtOvershoot2.rotation.setValue((rot3[0],rot3[1],rot3[2],rot3[3]))
-            if hasattr(obj.ViewObject,"TextSpacing")and hasattr(obj.ViewObject, "ScaleMultiplier"):
+            if hasattr(obj.ViewObject, "TextSpacing") and hasattr(obj.ViewObject, "ScaleMultiplier"):
                 ts = obj.ViewObject.TextSpacing.Value * obj.ViewObject.ScaleMultiplier
                 offset = DraftVecUtils.scaleTo(v1,ts)
             else:
-                offset = DraftVecUtils.scaleTo(v1,0.05)
+                offset = DraftVecUtils.scaleTo(v1, 0.05)
             rott = rot1
-            if hasattr(obj.ViewObject,"FlipText"):
+            if hasattr(obj.ViewObject, "FlipText"):
                 if obj.ViewObject.FlipText:
-                    rott = App.Rotation(*rott).multiply(App.Rotation(norm,180)).Q
+                    rott = App.Rotation(*rott).multiply(App.Rotation(norm, 180)).Q
                     offset = offset.negative()
             # setting text
             try:
                 m = obj.ViewObject.DisplayMode
             except: # swallow all exceptions here since it always fails on first run (Displaymode enum no set yet)
-                m = ["2D","3D"][utils.get_param("dimstyle",0)]
+                m = ["2D", "3D"][utils.get_param("dimstyle", 0)]
             if m == "3D":
                 offset = offset.negative()
             self.tbase = (self.p2.add((self.p3.sub(self.p2).multiply(0.5)))).add(offset)
@@ -528,14 +527,13 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
                 s = App.Units.Quantity(l,App.Units.Length).UserString
                 self.string = s.replace("' ","'- ")
                 self.string = s.replace("+"," ")
-            elif hasattr(obj.ViewObject,"Decimals"):
-                self.string = DraftGui.displayExternal(l,obj.ViewObject.Decimals,'Length',su,unit)
+            elif hasattr(obj.ViewObject, "Decimals"):
+                self.string = DraftGui.displayExternal(l, obj.ViewObject.Decimals,'Length',su,unit)
             else:
                 self.string = DraftGui.displayExternal(l,None,'Length',su,unit)
             if hasattr(obj.ViewObject,"Override"):
                 if obj.ViewObject.Override:
-                    self.string = obj.ViewObject.Override.replace("$dim",\
-                            self.string)
+                    self.string = obj.ViewObject.Override.replace("$dim", self.string)
             self.text.string = self.text3d.string = utils.string_encode_coin(self.string)
 
             # set the lines
@@ -574,53 +572,53 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             if hasattr(self,"node") and hasattr(self,"p2") and hasattr(vobj,"ArrowSize"):
                 self.remove_dim_arrows()
                 self.draw_dim_arrows(vobj)
-            if hasattr(vobj,"DimOvershoot"):
+            if hasattr(vobj, "DimOvershoot"):
                 self.remove_dim_overshoot()
                 self.draw_dim_overshoot(vobj)
-            if hasattr(vobj,"ExtOvershoot"):
+            if hasattr(vobj, "ExtOvershoot"):
                 self.remove_ext_overshoot()
                 self.draw_ext_overshoot(vobj)
-            self.updateData(vobj.Object,"Start")
+            self.updateData(vobj.Object, "Start")
             vobj.Object.touch()
             
-        elif (prop == "FontSize") and hasattr(vobj,"FontSize") and hasattr(vobj, "ScaleMultiplier"):
-            if hasattr(self,"font"):
+        elif (prop == "FontSize") and hasattr(vobj, "FontSize") and hasattr(vobj, "ScaleMultiplier"):
+            if hasattr(self, "font"):
                 self.font.size = vobj.FontSize.Value * vobj.ScaleMultiplier
-            if hasattr(self,"font3d"):
+            if hasattr(self, "font3d"):
                 self.font3d.size = vobj.FontSize.Value * 100 * vobj.ScaleMultiplier
             vobj.Object.touch()
             
-        elif (prop == "FontName") and hasattr(vobj,"FontName"):
-            if hasattr(self,"font") and hasattr(self,"font3d"):
+        elif (prop == "FontName") and hasattr(vobj, "FontName"):
+            if hasattr(self, "font") and hasattr(self, "font3d"):
                 self.font.name = self.font3d.name = str(vobj.FontName)
                 vobj.Object.touch()
                 
-        elif (prop == "LineColor") and hasattr(vobj,"LineColor"):
+        elif (prop == "LineColor") and hasattr(vobj, "LineColor"):
             if hasattr(self,"color"):
                 c = vobj.LineColor
-                self.color.rgb.setValue(c[0],c[1],c[2])
+                self.color.rgb.setValue(c[0], c[1], c[2])
                 
-        elif (prop == "LineWidth") and hasattr(vobj,"LineWidth"):
-            if hasattr(self,"drawstyle"):
+        elif (prop == "LineWidth") and hasattr(vobj, "LineWidth"):
+            if hasattr(self, "drawstyle"):
                 self.drawstyle.lineWidth = vobj.LineWidth
                 
-        elif (prop in ["ArrowSize","ArrowType"]) and hasattr(vobj,"ArrowSize") and hasattr(vobj, "ScaleMultiplier"):
-            if hasattr(self,"node") and hasattr(self,"p2"):
+        elif (prop in ["ArrowSize", "ArrowType"]) and hasattr(vobj, "ArrowSize") and hasattr(vobj, "ScaleMultiplier"):
+            if hasattr(self, "node") and hasattr(self, "p2"):
                 self.remove_dim_arrows()
                 self.draw_dim_arrows(vobj)
                 vobj.Object.touch()
                 
-        elif (prop == "DimOvershoot") and hasattr(vobj,"DimOvershoot") and hasattr(vobj, "ScaleMultiplier"):
+        elif (prop == "DimOvershoot") and hasattr(vobj, "DimOvershoot") and hasattr(vobj, "ScaleMultiplier"):
             self.remove_dim_overshoot()
             self.draw_dim_overshoot(vobj)
             vobj.Object.touch()
             
-        elif (prop == "ExtOvershoot") and hasattr(vobj,"ExtOvershoot") and hasattr(vobj, "ScaleMultiplier"):
+        elif (prop == "ExtOvershoot") and hasattr(vobj, "ExtOvershoot") and hasattr(vobj, "ScaleMultiplier"):
             self.remove_ext_overshoot()
             self.draw_ext_overshoot(vobj)
             vobj.Object.touch()
             
-        elif (prop == "ShowLine") and hasattr(vobj,"ShowLine"):
+        elif (prop == "ShowLine") and hasattr(vobj, "ShowLine"):
             if vobj.ShowLine:
                 self.lineswitch2.whichChild = -3
                 self.lineswitch3.whichChild = -3
@@ -636,9 +634,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         self.node3d.removeChild(self.marks)
 
     def draw_dim_arrows(self, vobj):
-        from pivy import coin
-
-        if not hasattr(vobj,"ArrowType"):
+        if not hasattr(vobj, "ArrowType"):
             return
 
         if self.p3.x < self.p2.x:
@@ -649,9 +645,8 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         # set scale
         symbol = utils.ARROW_TYPES.index(vobj.ArrowType)
         s = vobj.ArrowSize.Value * vobj.ScaleMultiplier
-        self.trans1.scaleFactor.setValue((s,s,s))
-        self.trans2.scaleFactor.setValue((s,s,s))
-
+        self.trans1.scaleFactor.setValue((s, s, s))
+        self.trans2.scaleFactor.setValue((s, s, s))
 
         # set new nodes
         self.marks = coin.SoSeparator()
@@ -677,14 +672,11 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         self.node.removeChild(self.marksDimOvershoot)
         self.node3d.removeChild(self.marksDimOvershoot)
 
-    
     def draw_dim_overshoot(self, vobj):
-        from pivy import coin
-
         # set scale
         s = vobj.DimOvershoot.Value * vobj.ScaleMultiplier
-        self.transDimOvershoot1.scaleFactor.setValue((s,s,s))
-        self.transDimOvershoot2.scaleFactor.setValue((s,s,s))
+        self.transDimOvershoot1.scaleFactor.setValue((s, s, s))
+        self.transDimOvershoot2.scaleFactor.setValue((s, s, s))
 
         # remove existing nodes
 
@@ -694,28 +686,24 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             self.marksDimOvershoot.addChild(self.color)
             s1 = coin.SoSeparator()
             s1.addChild(self.transDimOvershoot1)
-            s1.addChild(gui_utils.dimDash((-1,0,0),(0,0,0)))
+            s1.addChild(gui_utils.dimDash((-1, 0, 0), (0, 0, 0)))
             self.marksDimOvershoot.addChild(s1)
             s2 = coin.SoSeparator()
             s2.addChild(self.transDimOvershoot2)
-            s2.addChild(gui_utils.dimDash((0,0,0),(1,0,0)))
+            s2.addChild(gui_utils.dimDash((0, 0, 0), (1, 0, 0)))
             self.marksDimOvershoot.addChild(s2)
-        self.node.insertChild(self.marksDimOvershoot,2)
-        self.node3d.insertChild(self.marksDimOvershoot,2)
+        self.node.insertChild(self.marksDimOvershoot, 2)
+        self.node3d.insertChild(self.marksDimOvershoot, 2)
 
-    
     def remove_ext_overshoot(self):
         self.node.removeChild(self.marksExtOvershoot)
         self.node3d.removeChild(self.marksExtOvershoot)
 
-    
     def draw_ext_overshoot(self, vobj):
-        from pivy import coin
-
         # set scale
         s = vobj.ExtOvershoot.Value * vobj.ScaleMultiplier
-        self.transExtOvershoot1.scaleFactor.setValue((s,s,s))
-        self.transExtOvershoot2.scaleFactor.setValue((s,s,s))
+        self.transExtOvershoot1.scaleFactor.setValue((s, s, s))
+        self.transExtOvershoot2.scaleFactor.setValue((s, s, s))
 
         # set new nodes
         self.marksExtOvershoot = coin.SoSeparator()
@@ -723,14 +711,14 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             self.marksExtOvershoot.addChild(self.color)
             s1 = coin.SoSeparator()
             s1.addChild(self.transExtOvershoot1)
-            s1.addChild(gui_utils.dimDash((0,0,0),(-1,0,0)))
+            s1.addChild(gui_utils.dimDash((0, 0, 0), (-1, 0, 0)))
             self.marksExtOvershoot.addChild(s1)
             s2 = coin.SoSeparator()
             s2.addChild(self.transExtOvershoot2)
-            s2.addChild(gui_utils.dimDash((0,0,0),(-1,0,0)))
+            s2.addChild(gui_utils.dimDash((0, 0, 0), (-1, 0, 0)))
             self.marksExtOvershoot.addChild(s2)
-        self.node.insertChild(self.marksExtOvershoot,2)
-        self.node3d.insertChild(self.marksExtOvershoot,2)
+        self.node.insertChild(self.marksExtOvershoot, 2)
+        self.node3d.insertChild(self.marksExtOvershoot, 2)
 
     def is_linked_to_circle(self):
         _obj = self.Object
