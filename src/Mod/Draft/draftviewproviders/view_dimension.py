@@ -21,37 +21,43 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the Draft Dimensions view provider classes
+"""Provides the Draft Dimension viewprovider classes.
+
+These include linear dimensions, including radius and diameter,
+as well as angular dimensions.
+They inherit their behavior from the base Annotation viewprovider.
 """
-## @package dimension
+## @package view_dimension
 # \ingroup DRAFT
-# \brief This module provides the view provider code for Draft Dimensions.
+# \brief Provides the Draft Dimension viewprovider classes.
 
-
-import FreeCAD as App
-import DraftVecUtils, DraftGeomUtils
 from pivy import coin
 from PySide.QtCore import QT_TRANSLATE_NOOP
+
+import FreeCAD as App
+import DraftVecUtils
+import DraftGeomUtils
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 from draftviewproviders.view_draft_annotation import ViewProviderDraftAnnotation
 
+
 class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
-    """
-    A View Provider for the Draft Dimension object
-    This class is not used directly, but inherited by all dimension
-    view providers.
+    """A viewprovider base class for dimensions.
+
+    This class is not used directly, but inherited by dimension
+    viewproviders like linear, radial, and angular.
 
     DIMENSION VIEW PROVIDER NOMENCLATURE:
-    
+
         |              txt               |       e
     ----o--------------------------------o-----
         |                                |
-        |                                |       d  
+        |                                |       d
         |                                |
 
      a  b               c                b  a
-    
+
     a = DimOvershoot (vobj)
     b = Arrows (vobj)
     c = Dimline (obj)
@@ -71,7 +77,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
                    .color
                    .font
                    .text
-             
+
     vobj.node3d.color
                .drawstyle
                .lineswitch3.coords
@@ -83,7 +89,6 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
                        .color
                        .font3d
                        .text3d
-    
     """
     def __init__(self, vobj):
         super(ViewProviderDimensionBase, self).__init__(vobj)
@@ -272,15 +277,15 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
         self.setEdit(vobj)
 
     def getDisplayModes(self,vobj):
-        return ["2D","3D"]
+        return ["2D", "3D"]
 
     def getDefaultDisplayMode(self):
-        if hasattr(self,"defaultmode"):
+        if hasattr(self, "defaultmode"):
             return self.defaultmode
         else:
-            return ["2D","3D"][utils.get_param("dimstyle",0)]
+            return ["2D", "3D"][utils.get_param("dimstyle", 0)]
 
-    def setDisplayMode(self,mode):
+    def setDisplayMode(self, mode):
         return mode
 
     def getIcon(self):
@@ -291,11 +296,10 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
     def __getstate__(self):
         return self.Object.ViewObject.DisplayMode
 
-    def __setstate__(self,state):
+    def __setstate__(self, state):
         if state:
             self.defaultmode = state
             self.setDisplayMode(state)
-
 
 
 class ViewProviderLinearDimension(ViewProviderDimensionBase):
@@ -308,7 +312,6 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
 
         self.Object = vobj.Object
         vobj.Proxy = self
-
 
     def attach(self, vobj):
         '''Setup the scene sub-graph of the view provider'''
