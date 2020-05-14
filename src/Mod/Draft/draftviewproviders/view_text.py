@@ -21,28 +21,27 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the Draft Text view provider classes
-"""
-## @package text
+"""Provides the Draft Text viewprovider classes."""
+## @package view_text
 # \ingroup DRAFT
-# \brief This module provides the view provider code for Draft Text.
+# \brief Provides the Draft Text viewprovider classes.
 
-
-import FreeCAD as App
-import DraftVecUtils, DraftGeomUtils
-import math, sys
 from pivy import coin
 from PySide.QtCore import QT_TRANSLATE_NOOP
+import sys
+
+import FreeCAD as App
+
 import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
 from draftviewproviders.view_draft_annotation import ViewProviderDraftAnnotation
+
+param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 
 class ViewProviderText(ViewProviderDraftAnnotation):
-    """A View Provider for the Draft Text annotation"""
+    """Viewprovider for the Text annotation."""
 
-
-    def __init__(self,vobj):
+    def __init__(self, vobj):
         super(ViewProviderText, self).__init__(vobj)
 
         self.set_properties(vobj)
@@ -100,10 +99,8 @@ class ViewProviderText(ViewProviderDraftAnnotation):
     def getIcon(self):
         return ":/icons/Draft_Text.svg"
 
-
     def claimChildren(self):
         return []
-
 
     def attach(self,vobj):
         '''Setup the scene sub-graph of the view provider'''
@@ -144,10 +141,8 @@ class ViewProviderText(ViewProviderDraftAnnotation):
     def getDisplayModes(self,vobj):
         return ["2D text","3D text"]
 
-
     def setDisplayMode(self,mode):
         return mode
-
 
     def updateData(self,obj,prop):
         if prop == "Text":
