@@ -382,7 +382,7 @@ def make_linear_dimension_obj(edge_object, i1=1, i2=2, dim_line=None):
 
 
 def make_radial_dimension_obj(edge_object, index=1, mode="radius",
-                              dim_line=None):
+                              angle=0):
     """Create a radial or diameter dimension from an arc object.
 
     Parameters
@@ -405,15 +405,11 @@ def make_radial_dimension_obj(edge_object, index=1, mode="radius",
         It determines whether the dimension will be shown as a radius
         or as a diameter.
 
-    dim_line: Base::Vector3, optional
-        It defaults to `None`.
-        This is a point through which the extension of the dimension line
-        will pass. The dimension line will be a radius or diameter
-        of the measured arc, extending from the center to the arc itself.
-
-        If it is `None`, this point will be set to one unit to the right
-        of the center of the arc, which will create a dimension line that is
-        horizontal, that is, parallel to the +X axis.
+    angle: int, float, optional
+        It defaults to `0`.
+        This is the angle of the dimension line, which will be a radius
+        or diameter of the measured arc, extending from the center
+        to the arc itself.
 
     Returns
     -------
@@ -484,16 +480,21 @@ def make_radial_dimension_obj(edge_object, index=1, mode="radius",
         _err(_tr("Wrong input: must be a string, 'radius' or 'diameter'."))
         return None
 
-    _msg("dim_line: {}".format(dim_line))
-    if dim_line:
-        try:
-            utils.type_check([(dim_line, App.Vector)], name=_name)
-        except TypeError:
-            _err(_tr("Wrong input: must be a vector."))
-            return None
+    _msg("angle: {}".format(angle))
+    try:
+        utils.type_check([(angle, (int, float))], name=_name)
+    except TypeError:
+        _err(_tr("Wrong input: must be a number."))
+        return None
+
+    x = math.cos(math.radians(angle))
+    y = math.sin(math.radians(angle))
+    if App.DraftWorkingPlane:
+        dim_line = (edge.Curve.Center
+                    + x * App.DraftWorkingPlane.u
+                    + y * App.DraftWorkingPlane.v)
     else:
-        center = edge_object.Shape.Edges[index - 1].Curve.Center
-        dim_line = center + App.Vector(1, 0, 0)
+        dim_line = edge.Curve.Center + App.Vector(x, y, 0)
 
     # TODO: the internal function expects an index starting with 0
     # so we need to decrease the value here.
