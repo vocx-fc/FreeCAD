@@ -23,7 +23,7 @@
 # ***************************************************************************
 """Provides basic functions for calculating intersections of shapes."""
 ## @package intersections
-# \ingroup DRAFTGEOUTILS
+# \ingroup draftgeoutils
 # \brief Provides basic functions for calculating intersections of shapes.
 
 import lazy_loader.lazy_loader as lz
@@ -36,6 +36,9 @@ from draftgeoutils.edges import findMidpoint
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
+
+## \addtogroup draftgeoutils
+# @{
 
 
 def findIntersection(edge1, edge2,
@@ -411,3 +414,5 @@ def angleBisection(edge1, edge2):
         direction.normalize()
 
     return Part.LineSegment(origin, origin.add(direction)).toShape()
+
+## @}

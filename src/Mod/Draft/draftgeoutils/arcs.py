@@ -23,7 +23,7 @@
 # ***************************************************************************
 """Provides various functions for arc operations."""
 ## @package arcs
-# \ingroup DRAFTGEOUTILS
+# \ingroup draftgeoutils
 # \brief Provides various functions for arc operations.
 
 import math
@@ -36,6 +36,9 @@ from draftgeoutils.general import geomType
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
+
+## \addtogroup draftgeoutils
+# @{
 
 
 def isClockwise(edge, ref=None):
@@ -142,3 +145,5 @@ def arcFromSpline(edge):
         except Part.OCCError:
             print("couldn't make a circle out of this edge")
             return None
+
+## @}

@@ -23,7 +23,7 @@
 # ***************************************************************************
 """Provides various functions for working with wires."""
 ## @package wires
-# \ingroup DRAFTGEOUTILS
+# \ingroup draftgeoutils
 # \brief Provides various functions for working with wires.
 
 import math
@@ -38,6 +38,9 @@ from draftgeoutils.edges import findMidpoint, isLine
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
+
+## \addtogroup draftgeoutils
+# @{
 
 
 def findWires(edgeslist):
@@ -429,3 +432,5 @@ def tessellateProjection(shape, seglen):
             print("Debug: error cleaning edge ", e)
 
     return Part.makeCompound(newedges)
+
+## @}

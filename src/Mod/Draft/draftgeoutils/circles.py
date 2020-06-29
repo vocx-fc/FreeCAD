@@ -23,7 +23,7 @@
 # ***************************************************************************
 """Provides various functions for circle operations."""
 ## @package circles
-# \ingroup DRAFTGEOUTILS
+# \ingroup draftgeoutils
 # \brief Provides various functions for circle operations.
 
 import math
@@ -39,6 +39,9 @@ from draftgeoutils.intersections import findIntersection, angleBisection
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
+
+## \addtogroup draftgeoutils
+# @{
 
 
 def findClosestCircle(point, circles):
@@ -490,3 +493,5 @@ def findRadicalCenter(circle1, circle2, circle3):
     else:
         # No radical center could be calculated.
         return None
+
+## @}

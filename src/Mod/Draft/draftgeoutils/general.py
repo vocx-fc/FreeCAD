@@ -23,7 +23,7 @@
 # ***************************************************************************
 """Provides general functions for shape operations."""
 ## @package general
-# \ingroup DRAFTGEOUTILS
+# \ingroup draftgeoutils
 # \brief Provides basic functions for shape operations.
 
 import math
@@ -35,6 +35,8 @@ import DraftVecUtils
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
 
+## \addtogroup draftgeoutils
+# @{
 PARAMGRP = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 # Default normal direction for all geometry operations
@@ -339,3 +341,5 @@ def getBoundaryAngles(angle, alist):
                 higher = a
 
     return lower, higher
+
+## @}

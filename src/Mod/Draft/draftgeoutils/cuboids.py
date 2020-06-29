@@ -23,9 +23,11 @@
 # ***************************************************************************
 """Provides various functions for cubic shapes (parallelepipeds)."""
 ## @package cuboids
-# \ingroup DRAFTGEOUTILS
+# \ingroup draftgeoutils
 # \brief Provides various functions for cubic shapes (parallelepipeds).
 
+## \addtogroup draftgeoutils
+# @{
 import math
 
 import FreeCAD as App
@@ -128,3 +130,5 @@ def getCubicDimensions(shape):
             round(vx.Length, precision()),
             round(vy.Length, precision()),
             round(vz.Length, precision())]
+
+## @}

@@ -23,7 +23,7 @@
 # ***************************************************************************
 """Provides various functions for sorting edges."""
 ## @package sort_edges
-# \ingroup DRAFTGEOUTILS
+# \ingroup draftgeoutils
 # \brief Provides various functions for sorting edges.
 
 import lazy_loader.lazy_loader as lz
@@ -33,6 +33,9 @@ from draftgeoutils.edges import findMidpoint, isLine, invert
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
+
+## \addtogroup draftgeoutils
+# @{
 
 
 def sortEdges(edges):
@@ -221,3 +224,5 @@ def sortEdgesOld(lEdges, aVertex=None):
             return olEdges
         else:
             return []
+
+## @}

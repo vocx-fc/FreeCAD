@@ -26,9 +26,11 @@
 This includes calculating linear equation parameters, and matrix determinants.
 """
 ## @package linear_algebra
-# \ingroup DRAFTGEOUTILS
+# \ingroup draftgeoutils
 # \brief Provides various functions for linear algebraic operations.
 
+## \addtogroup draftgeoutils
+# @{
 import FreeCAD as App
 
 
@@ -82,3 +84,5 @@ def determinant(mat, n):
         return d
     else:
         return 0
+
+## @}
