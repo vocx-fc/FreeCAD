@@ -29,13 +29,16 @@ module. We assume that the graphical interface was already loaded
 as they operate on selections and graphical properties.
 """
 ## @package gui_tool_utils
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides the utility functions for Draft Gui Commands.
 
+## \addtogroup draftguitools
+# @{
 import FreeCAD as App
 import FreeCADGui as Gui
 import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
+
 from draftutils.messages import _wrn
 
 # Set modifier keys from the parameter database
@@ -387,3 +390,5 @@ def redraw_3d_view():
 
 
 redraw3DView = redraw_3d_view
+
+## @}

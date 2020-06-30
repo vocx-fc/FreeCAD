@@ -27,9 +27,11 @@
 Minimum number of sides is three (equilateral triangles).
 """
 ## @package gui_polygons
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools for creating regular polygons with the Draft Workbench.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -291,3 +293,5 @@ class Polygon(gui_base_original.Creator):
 
 
 Gui.addCommand('Draft_Polygon', Polygon())
+
+## @}

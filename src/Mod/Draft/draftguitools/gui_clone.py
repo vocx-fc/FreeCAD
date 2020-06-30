@@ -35,9 +35,11 @@ more memory efficient as it reuses the same internal `Shape`
 instead of creating a copy of it.
 """
 ## @package gui_clone
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools for creating clones of objects.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -123,3 +125,5 @@ class Clone(gui_base_original.Modifier):
 
 Draft_Clone = Clone
 Gui.addCommand('Draft_Clone', Clone())
+
+## @}

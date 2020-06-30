@@ -22,9 +22,11 @@
 # ***************************************************************************
 """Provide the Draft ArrayTools command to group the other array tools."""
 ## @package gui_arrays
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provide the Draft ArrayTools command to group the other array tools.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -73,3 +75,5 @@ class ArrayGroup:
 
 
 Gui.addCommand('Draft_ArrayTools', ArrayGroup())
+
+## @}

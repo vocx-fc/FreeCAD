@@ -29,9 +29,11 @@ These commands were replaced by individual commands `Draft_OrthoArray`,
 task panel, and provide a more useful way of creating the desired array.
 """
 ## @package gui_array_simple
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides simple tools for creating arrays with the Draft Workbench.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -132,3 +134,5 @@ class LinkArray(Array):
 
 
 Gui.addCommand('Draft_LinkArray', LinkArray())
+
+## @}

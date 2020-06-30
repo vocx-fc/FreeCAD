@@ -32,7 +32,7 @@ And it can also be an angular dimension measuring the angle between
 two straight lines.
 """
 ## @package gui_dimensions
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools for creating dimensions with the Draft Workbench.
 
 import math
@@ -54,6 +54,9 @@ DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
+
+## \addtogroup draftguitools
+# @{
 
 
 class Dimension(gui_base_original.Creator):
@@ -578,3 +581,5 @@ class Dimension(gui_base_original.Creator):
 
 
 Gui.addCommand('Draft_Dimension', Dimension())
+
+## @}

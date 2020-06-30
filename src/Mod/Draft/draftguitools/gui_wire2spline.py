@@ -31,9 +31,11 @@ and passed to the `makeWire` or `makeBSpline` functions,
 depending on the desired result.
 """
 ## @package gui_wire2spline
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools for converting polylines to B-splines.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -41,6 +43,7 @@ import Draft_rc
 import Draft
 import draftutils.utils as utils
 import draftguitools.gui_base_original as gui_base_original
+
 from draftutils.translate import translate, _tr
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -107,3 +110,5 @@ class WireToBSpline(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_WireToBSpline', WireToBSpline())
+
+## @}

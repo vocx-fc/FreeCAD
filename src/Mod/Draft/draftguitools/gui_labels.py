@@ -29,9 +29,11 @@ and an arrow in order to point to an object and indicate some of its
 properties.
 """
 ## @package gui_labels
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools for creating labels with the Draft Workbench.
 
+## \addtogroup draftguitools
+# @{
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -247,3 +249,5 @@ class Label(gui_base_original.Creator):
 
 Draft_Label = Label
 Gui.addCommand('Draft_Label', Label())
+
+## @}

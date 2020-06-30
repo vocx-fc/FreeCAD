@@ -24,9 +24,11 @@
 # ***************************************************************************
 """Provides tools for creating rectangles with the Draft Workbench."""
 ## @package gui_rectangles
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools for creating rectangles with the Draft Workbench.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -207,3 +209,5 @@ class Rectangle(gui_base_original.Creator):
 
 
 Gui.addCommand('Draft_Rectangle', Rectangle())
+
+## @}

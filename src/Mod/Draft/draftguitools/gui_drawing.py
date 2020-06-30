@@ -35,9 +35,11 @@ it is not really necessary. TechDraw has its own set of tools
 to create 2D projections of 2D and 3D objects.
 """
 ## @package gui_drawing
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools for sending projections to a Drawing Workbench page.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -149,3 +151,5 @@ class Drawing(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Drawing', Drawing())
+
+## @}

@@ -29,9 +29,11 @@ set the automatic group in which to create objects, and add objects
 to the construction group.
 """
 ## @package gui_groups
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools to do various operations with groups.
 
+## \addtogroup draftguitools
+# @{
 import PySide.QtCore as QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -394,3 +396,5 @@ class AddToConstruction(gui_base.GuiCommandSimplest):
 
 Draft_AddConstruction = AddToConstruction
 Gui.addCommand('Draft_AddConstruction', AddToConstruction())
+
+## @}

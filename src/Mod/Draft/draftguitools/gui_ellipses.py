@@ -24,9 +24,11 @@
 # ***************************************************************************
 """Provides tools for creating ellipses with the Draft Workbench."""
 ## @package gui_ellipses
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools for creating ellipses with the Draft Workbench.
 
+## \addtogroup draftguitools
+# @{
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -202,3 +204,5 @@ class Ellipse(gui_base_original.Creator):
 
 
 Gui.addCommand('Draft_Ellipse', Ellipse())
+
+## @}

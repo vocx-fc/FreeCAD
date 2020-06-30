@@ -24,9 +24,11 @@
 # ***************************************************************************
 """Provides the Draft_Heal command to heal older Draft files."""
 ## @package gui_health
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides the Draft_Heal command to heal older Draft files.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -74,3 +76,5 @@ class Heal(gui_base.GuiCommandSimplest):
 
 
 Gui.addCommand('Draft_Heal', Heal())
+
+## @}

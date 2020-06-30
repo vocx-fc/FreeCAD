@@ -22,7 +22,7 @@
 # ***************************************************************************
 """Provide the support functions to Draft_Edit for Arch objects."""
 ## @package gui_edit_arch_objects
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provide the support functions to Draft_Edit for Arch objects.
 
 __title__ = "FreeCAD Draft Edit Tool"
@@ -30,13 +30,15 @@ __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin, Carlo Pavan")
 __url__ = "https://www.freecadweb.org"
 
-
+## \addtogroup draftguitools
+# @{
 import math
 import FreeCAD as App
 import DraftVecUtils
 
 from draftutils.translate import translate
 import draftutils.utils as utils
+
 
 def get_supported_arch_objects():
     return ["Wall", "Window", "Structure", "Space", "PanelCut", "PanelSheet"]
@@ -174,3 +176,5 @@ def updatePanelSheet(obj, nodeIndex, v):
         obj.TagPosition = v
     else:
         obj.Group[nodeIndex-1].Placement.Base = v
+
+## @}

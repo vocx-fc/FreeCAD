@@ -24,9 +24,11 @@
 # ***************************************************************************
 """Provides tools for moving objects in the 3D space."""
 ## @package gui_move
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools for moving objects in the 3D space.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -36,11 +38,12 @@ import DraftVecUtils
 import draftutils.utils as utils
 import draftutils.todo as todo
 import draftguitools.gui_base_original as gui_base_original
-from draftguitools.gui_subelements import SubelementHighlight
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
+
 from draftutils.messages import _msg, _err
 from draftutils.translate import translate
+from draftguitools.gui_subelements import SubelementHighlight
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -310,3 +313,5 @@ class Move(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Move', Move())
+
+## @}

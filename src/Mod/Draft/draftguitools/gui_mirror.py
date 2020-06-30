@@ -30,9 +30,11 @@ as the one created by the Part module.
 Perhaps in the future a specific Draft `Mirror` object can be defined.
 """
 ## @package gui_mirror
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools for creating mirrored objects with the Draft Workbench.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -42,6 +44,7 @@ import DraftVecUtils
 import WorkingPlane
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
+
 from draftutils.messages import _msg
 from draftutils.translate import translate
 
@@ -212,3 +215,5 @@ class Mirror(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Mirror', Mirror())
+
+## @}

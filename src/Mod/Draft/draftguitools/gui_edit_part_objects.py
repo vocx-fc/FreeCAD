@@ -20,7 +20,7 @@
 # ***************************************************************************
 """Provide the support functions to Draft_Edit for Part objects."""
 ## @package gui_edit_part_objects
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provide the support functions to Draft_Edit for Part objects.
 
 __title__ = "FreeCAD Draft Edit Tool"
@@ -28,7 +28,8 @@ __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin, Carlo Pavan")
 __url__ = "https://www.freecadweb.org"
 
-
+## \addtogroup draftguitools
+# @{
 import FreeCAD as App
 import DraftVecUtils
 
@@ -136,3 +137,5 @@ def updatePartSphere(obj, nodeIndex, v):
     elif nodeIndex == 1:
         if v.Length > 0.0:
             obj.Radius = v.Length # TODO: Perhaps better to project on the face?
+
+## @}

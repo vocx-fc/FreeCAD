@@ -22,9 +22,11 @@
 # ***************************************************************************
 """Provides the Draft PolarArray GuiCommand."""
 ## @package gui_polararray
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief This module provides the Draft PolarArray tool.
 
+## \addtogroup draftguitools
+# @{
 from pivy import coin
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -142,3 +144,5 @@ class PolarArray(gui_base.GuiCommandBase):
 
 
 Gui.addCommand('Draft_PolarArray', PolarArray())
+
+## @}

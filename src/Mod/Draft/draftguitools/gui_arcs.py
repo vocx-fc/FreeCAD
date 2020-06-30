@@ -24,9 +24,11 @@
 # ***************************************************************************
 """Provides tools for creating circular arcs with the Draft Workbench."""
 ## @package gui_arcs
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools for creating circular arcs with the Draft Workbench.
 
+## \addtogroup draftguitools
+# @{
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -616,3 +618,5 @@ class ArcGroup:
 
 
 Gui.addCommand('Draft_ArcTools', ArcGroup())
+
+## @}

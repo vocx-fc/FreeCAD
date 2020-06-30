@@ -34,7 +34,7 @@ TODO: Abstract the code that handles the preview and move the object specific
     code to this module from main Draft_Edit module
 """
 ## @package gui_edit_draft_objects
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provide the support functions to Draft_Edit for Draft objects.
 
 __title__ = "FreeCAD Draft Edit Tool"
@@ -42,7 +42,8 @@ __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin, Carlo Pavan")
 __url__ = "https://www.freecadweb.org"
 
-
+## \addtogroup draftguitools
+# @{
 import math
 import FreeCAD as App
 import DraftVecUtils
@@ -511,3 +512,4 @@ def smoothBezPoint(obj, point, style='Symmetric'):
     obj.Points = pts
     obj.Continuity = newcont
 
+## @}

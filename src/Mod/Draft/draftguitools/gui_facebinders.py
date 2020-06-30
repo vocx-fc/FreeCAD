@@ -29,9 +29,11 @@ This tool allows extracting such faces to be used for other purposes
 including extruding solids from faces.
 """
 ## @package gui_facebinders
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools for creating facebinders with the Draft Workbench.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -91,3 +93,5 @@ class Facebinder(gui_base_original.Creator):
 
 Draft_Facebinder = Facebinder
 Gui.addCommand('Draft_Facebinder', Facebinder())
+
+## @}

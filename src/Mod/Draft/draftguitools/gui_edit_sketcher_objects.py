@@ -21,8 +21,8 @@
 # *                                                                         *
 # ***************************************************************************
 """Provide the support functions to Draft_Edit for Arch objects."""
-## @package gui_edit_arch_objects
-# \ingroup DRAFT
+## @package gui_edit_sketcher_objects
+# \ingroup draftguitools
 # \brief Provide the support functions to Draft_Edit for Arch objects.
 
 __title__ = "FreeCAD Draft Edit Tool"
@@ -30,7 +30,8 @@ __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin, Carlo Pavan")
 __url__ = "https://www.freecadweb.org"
 
-
+## \addtogroup draftguitools
+# @{
 import math
 import FreeCAD as App
 
@@ -75,3 +76,5 @@ def updateSketch(obj, nodeIndex, v):
     elif nodeIndex == 1:
         obj.movePoint(0, 2, v)
     obj.recompute()
+
+## @}

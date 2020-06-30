@@ -20,9 +20,11 @@
 # ***************************************************************************
 """Provides the Draft SelectPlane tool."""
 ## @package gui_selectplane
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief This module provides the Draft SelectPlane tool.
 
+## \addtogroup draftguitools
+# @{
 import math
 from pivy import coin
 from PySide import QtGui
@@ -34,6 +36,7 @@ import Draft
 import Draft_rc
 import DraftVecUtils
 import drafttaskpanels.task_selectplane as task_selectplane
+
 from draftutils.todo import todo
 from draftutils.messages import _msg
 from draftutils.translate import translate
@@ -521,3 +524,5 @@ class Draft_SelectPlane:
 
 
 FreeCADGui.addCommand('Draft_SelectPlane', Draft_SelectPlane())
+
+## @}

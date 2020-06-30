@@ -31,9 +31,11 @@ The copies will be created along a path, like a polyline, B-spline,
 or Bezier curve.
 """
 ## @package gui_patharray
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools for creating path arrays with the Draft Workbench.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -183,3 +185,5 @@ class PathLinkArray(PathArray):
 
 
 Gui.addCommand('Draft_PathLinkArray', PathLinkArray())
+
+## @}

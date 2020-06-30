@@ -30,9 +30,11 @@ Its visual properties can be changed, like display size on screen
 and color.
 """
 ## @package gui_points
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools for creating simple points with the Draft Workbench.
 
+## \addtogroup draftguitools
+# @{
 import pivy.coin as coin
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -43,6 +45,7 @@ import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 import draftguitools.gui_base_original as gui_base_original
 import draftutils.todo as todo
+
 from draftutils.translate import translate, _tr
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -161,3 +164,5 @@ class Point(gui_base_original.Creator):
 
 
 Gui.addCommand('Draft_Point', Point())
+
+## @}

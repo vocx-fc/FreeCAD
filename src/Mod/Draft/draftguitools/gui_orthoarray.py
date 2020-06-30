@@ -22,9 +22,11 @@
 # ***************************************************************************
 """Provides the Draft OrthoArray GuiCommand."""
 ## @package gui_orthoarray
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides the Draft OrthoArray GuiCommand.
 
+## \addtogroup draftguitools
+# @{
 from pivy import coin
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -130,3 +132,5 @@ class OrthoArray(gui_base.GuiCommandBase):
 
 
 Gui.addCommand('Draft_OrthoArray', OrthoArray())
+
+## @}

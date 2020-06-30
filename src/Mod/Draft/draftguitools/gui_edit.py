@@ -22,7 +22,7 @@
 # ***************************************************************************
 """Provide the Draft_Edit command used by the Draft workbench."""
 ## @package gui_edit
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provide the Draft_Edit command used by the Draft workbench
 
 __title__ = "FreeCAD Draft Edit Tool"
@@ -30,7 +30,8 @@ __author__ = ("Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, "
               "Dmitry Chigrin, Carlo Pavan")
 __url__ = "https://www.freecadweb.org"
 
-
+## \addtogroup draftguitools
+# @{
 import math
 from pivy import coin
 from PySide import QtCore, QtGui
@@ -45,7 +46,6 @@ import draftguitools.gui_tool_utils as gui_tool_utils
 import draftutils.gui_utils as gui_utils
 
 import DraftVecUtils
-import DraftGeomUtils
 
 from draftutils.translate import translate
 import draftguitools.gui_trackers as trackers
@@ -1234,3 +1234,5 @@ class Edit(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Edit', Edit())
+
+## @}

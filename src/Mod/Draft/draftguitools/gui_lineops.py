@@ -28,14 +28,18 @@ These GuiCommands aren't really used anymore, as the same actions
 are called from the task panel interface by other methods.
 """
 ## @package gui_lineops
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides certain line operations in the Draft Workbench.
+
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
 import draftguitools.gui_base as gui_base
+
 from draftutils.messages import _msg
 from draftutils.translate import _tr
 
@@ -161,3 +165,5 @@ class UndoLine(LineAction):
 
 
 Gui.addCommand('Draft_UndoLine', UndoLine())
+
+## @}

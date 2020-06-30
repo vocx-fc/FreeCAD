@@ -24,9 +24,11 @@
 # ***************************************************************************
 """Provides tools for rotating objects in the 3D space."""
 ## @package gui_rotate
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools for rotating objects in the 3D space.
 
+## \addtogroup draftguitools
+# @{
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -426,3 +428,5 @@ class Rotate(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Rotate', Rotate())
+
+## @}

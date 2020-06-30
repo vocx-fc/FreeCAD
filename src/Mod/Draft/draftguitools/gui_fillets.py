@@ -28,9 +28,11 @@ Instead we should provide its own .ui file and task panel,
 similar to the Ortho Array tool.
 """
 ## @package gui_fillet
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools for creating fillets between two lines.
 
+## \addtogroup draftguitools
+# @{
 import PySide.QtCore as QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -202,3 +204,5 @@ class Fillet(gui_base_original.Creator):
 
 
 Gui.addCommand('Draft_Fillet', Fillet())
+
+## @}

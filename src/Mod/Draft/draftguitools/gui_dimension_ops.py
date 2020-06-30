@@ -28,9 +28,11 @@ For example, a tool to flip the direction of the text in the dimension
 as the normal is sometimes not correctly calculated automatically.
 """
 ## @package gui_dimension_ops
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools to modify Draft dimensions.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -81,3 +83,5 @@ class FlipDimension(gui_base.GuiCommandNeedsSelection):
 
 Draft_FlipDimension = FlipDimension
 Gui.addCommand('Draft_FlipDimension', FlipDimension())
+
+## @}

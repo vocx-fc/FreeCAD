@@ -22,9 +22,11 @@
 # ***************************************************************************
 """Provides the Draft CircularArray GuiCommand."""
 ## @package gui_circulararray
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief This module provides the Draft CircularArray tool.
 
+## \addtogroup draftguitools
+# @{
 from pivy import coin
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -142,3 +144,5 @@ class CircularArray(gui_base.GuiCommandBase):
 
 
 Gui.addCommand('Draft_CircularArray', CircularArray())
+
+## @}

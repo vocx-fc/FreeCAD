@@ -36,9 +36,11 @@ Test properly using `DraftVecUtils.equals` because then it will consider
 the precision set in the Draft preferences.
 """
 ## @package gui_join
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools for joining lines with the Draft Workbench.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -113,3 +115,5 @@ class Join(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Join', Join())
+
+## @}

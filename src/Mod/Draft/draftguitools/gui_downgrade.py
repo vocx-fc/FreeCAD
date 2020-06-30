@@ -29,9 +29,11 @@ simple Edge primitives. For example, a Draft Line to wire, and then
 to a series of edges.
 """
 ## @package gui_downgrade
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools for downgrading objects with the Draft Workbench.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -95,3 +97,5 @@ class Downgrade(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Downgrade', Downgrade())
+
+## @}

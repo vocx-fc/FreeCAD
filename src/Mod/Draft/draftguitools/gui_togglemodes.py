@@ -28,13 +28,17 @@ For example, a construction mode, a continue mode to repeat commands,
 and to toggle the appearance of certain shapes to wireframe.
 """
 ## @package gui_togglemodes
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides certain mode operations of the Draft Workbench.
+
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
 import Draft_rc
 import draftguitools.gui_base as gui_base
+
 from draftutils.messages import _msg
 from draftutils.translate import _tr
 
@@ -205,3 +209,5 @@ class ToggleDisplayMode(gui_base.GuiCommandNeedsSelection):
 
 
 Gui.addCommand('Draft_ToggleDisplayMode', ToggleDisplayMode())
+
+## @}

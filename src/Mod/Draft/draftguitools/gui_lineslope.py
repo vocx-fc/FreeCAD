@@ -28,9 +28,11 @@ It currently only works for a line in the XY plane, it changes the height
 of one of its points in the Z direction to create a sloped line.
 """
 ## @package gui_lineslope
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools to change the slope of a line over the working plane.
 
+## \addtogroup draftguitools
+# @{
 import PySide.QtGui as QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -154,3 +156,5 @@ class LineSlope(gui_base.GuiCommandNeedsSelection):
 
 Draft_Slope = LineSlope
 Gui.addCommand('Draft_Slope', LineSlope())
+
+## @}

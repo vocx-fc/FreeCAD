@@ -37,9 +37,11 @@ the explicit point and vertex objects will be used when creating
 the point array.
 """
 ## @package gui_pointarray
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools for creating point arrays with the Draft Workbench.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -132,3 +134,5 @@ class PointArray(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_PointArray', PointArray())
+
+## @}

@@ -26,12 +26,14 @@ It also creates the Draft grid, which is actually a tracker
 defined by `gui_trackers.gridTracker`.
 """
 ## @package gui_snapper
-#  \ingroup DRAFT
+#  \ingroup draftguitools
 #  \brief Snapper class to control snapping in the Draft Workbench.
 #
 #  This module provides tools to handle point snapping and
 #  everything that goes with it (toolbar buttons, cursor icons, etc.).
 
+## \addtogroup draftguitools
+# @{
 from pivy import coin
 from PySide import QtCore, QtGui
 
@@ -40,19 +42,16 @@ import inspect
 import itertools
 import math
 
+import FreeCAD as App
+import FreeCADGui as Gui
+import Part
 import Draft
 import DraftVecUtils
 import DraftGeomUtils
-
-import FreeCAD as App
-import FreeCADGui as Gui
-
-import Part
-
 import draftguitools.gui_trackers as trackers
+
 from draftutils.init_tools import get_draft_snap_commands
 from draftutils.messages import _msg, _wrn
-
 
 __title__ = "FreeCAD Draft Snap tools"
 __author__ = "Yorik van Havre"
@@ -1681,3 +1680,5 @@ class Snapper:
                 self.holdTracker.addCoords(self.spoint)
                 self.holdTracker.on()
             self.holdPoints.append(self.spoint)
+
+## @}

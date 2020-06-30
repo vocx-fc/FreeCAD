@@ -31,9 +31,11 @@ because internally the functions `scaleVertex` and `scaleEdge`
 only work with polylines that have a `Points` property.
 """
 ## @package gui_scale
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides tools for scaling objects with the Draft Workbench.
 
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -46,6 +48,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
 import drafttaskpanels.task_scale as task_scale
+
 from draftutils.messages import _msg, _err
 from draftutils.translate import translate
 
@@ -405,3 +408,5 @@ class Scale(gui_base_original.Modifier):
 
 
 Gui.addCommand('Draft_Scale', Scale())
+
+## @}

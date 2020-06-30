@@ -28,8 +28,11 @@ These GuiCommands aren't really used anymore, as the same actions
 are implemented directly in the Draft_Edit command.
 """
 ## @package gui_line_add_delete
-# \ingroup DRAFT
+# \ingroup draftguitools
 # \brief Provides certain add and remove line operations.
+
+## \addtogroup draftguitools
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCADGui as Gui
@@ -107,3 +110,5 @@ class DelPoint(DraftTools.Modifier):
 
 
 Gui.addCommand('Draft_DelPoint', DelPoint())
+
+## @}
