@@ -22,9 +22,11 @@
 # ***************************************************************************
 """Provides the task panel for the Draft OrthoArray tool."""
 ## @package task_orthoarray
-# \ingroup DRAFT
+# \ingroup drafttaskpanels
 # \brief Provide the task panel for the Draft OrthoArray tool.
 
+## \addtogroup drafttaskpanels
+# @{
 import PySide.QtGui as QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -408,3 +410,5 @@ class TaskPanelOrthoArray:
         Gui.ActiveDocument.resetEdit()
         # Runs the parent command to complete the call
         self.source_command.completed()
+
+## @}
