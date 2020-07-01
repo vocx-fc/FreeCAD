@@ -23,14 +23,16 @@
 """This module provides the code for Draft make_facebinder function.
 """
 ## @package make_facebinder
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief This module provides the code for Draft make_facebinder function.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 
 from draftutils.gui_utils import select
-
 from draftobjects.facebinder import Facebinder
+
 if App.GuiUp:
     from draftviewproviders.view_facebinder import ViewProviderFacebinder
 
@@ -64,3 +66,5 @@ def make_facebinder(selectionset, name="Facebinder"):
 
 
 makeFacebinder = make_facebinder
+
+## @}

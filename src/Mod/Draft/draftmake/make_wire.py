@@ -22,19 +22,19 @@
 """This module provides the code for Draft make_wire function.
 """
 ## @package make_wire
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief This module provides the code for Draft make_wire function.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
-
 import DraftGeomUtils
 
 from draftutils.gui_utils import format_object
 from draftutils.gui_utils import select
-
 from draftutils.utils import type_check
-
 from draftobjects.wire import Wire
+
 if App.GuiUp:
     from draftviewproviders.view_wire import ViewProviderWire
 
@@ -121,3 +121,5 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
 
 
 makeWire = make_wire
+
+## @}

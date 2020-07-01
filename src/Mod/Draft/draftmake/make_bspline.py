@@ -23,9 +23,11 @@
 """This module provides the code for Draft make_bspline function.
 """
 ## @package make_bspline
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief This module provides the code for Draft make_bspline function.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 
 from draftutils.gui_utils import format_object
@@ -110,3 +112,5 @@ def make_bspline(pointslist, closed=False, placement=None, face=None, support=No
 
 
 makeBSpline = make_bspline
+
+## @}

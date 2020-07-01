@@ -23,9 +23,11 @@
 """This module provides the code for Draft make_bezcurve function.
 """
 ## @package make_bezcurve
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief This module provides the code for Draft make_bezcurve function.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 
 from draftutils.gui_utils import format_object
@@ -105,3 +107,5 @@ def make_bezcurve(pointslist, closed=False, placement=None, face=None, support=N
 
 
 makeBezCurve = make_bezcurve
+
+## @}

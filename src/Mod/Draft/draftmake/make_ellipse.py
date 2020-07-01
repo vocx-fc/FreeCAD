@@ -23,15 +23,17 @@
 """This module provides the code for Draft make_ellipse function.
 """
 ## @package make_ellipse
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief This module provides the code for Draft make_ellipse function.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 
 from draftutils.gui_utils import format_object
 from draftutils.gui_utils import select
-
 from draftobjects.ellipse import Ellipse
+
 if App.GuiUp:
     from draftviewproviders.view_base import ViewProviderDraft
 
@@ -83,3 +85,5 @@ def make_ellipse(majradius, minradius, placement=None, face=True, support=None):
 
 
 makeEllipse = make_ellipse
+
+## @}

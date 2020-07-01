@@ -22,9 +22,11 @@
 # ***************************************************************************
 """Provides functions for creating polar arrays in a plane."""
 ## @package make_polararray
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief Provides functions for creating polar arrays in a plane.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 
 import draftmake.make_array as make_array
@@ -132,3 +134,5 @@ def make_polar_array(base_object,
                                     arg1=center, arg2=angle, arg3=number,
                                     use_link=use_link)
     return new_obj
+
+## @}

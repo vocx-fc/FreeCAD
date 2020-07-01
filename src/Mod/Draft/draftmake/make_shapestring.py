@@ -23,15 +23,17 @@
 """This module provides the code for Draft make_shapestring function.
 """
 ## @package make_shapestring
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief This module provides the code for Draft make_shapestring function.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 
 from draftutils.gui_utils import format_object
 from draftutils.gui_utils import select
-
 from draftobjects.shapestring import ShapeString
+
 if App.GuiUp:
     from draftviewproviders.view_base import ViewProviderDraft
 
@@ -70,3 +72,5 @@ def make_shapestring(String, FontFile, Size=100, Tracking=0):
 
 
 makeShapeString = make_shapestring
+
+## @}

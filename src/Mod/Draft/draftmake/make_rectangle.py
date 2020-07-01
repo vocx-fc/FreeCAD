@@ -23,17 +23,18 @@
 """This module provides the code for Draft make_rectangle function.
 """
 ## @package make_rectangle
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief This module provides the code for Draft make_rectangle function.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 
 from draftutils.gui_utils import format_object
 from draftutils.gui_utils import select
-
 from draftutils.utils import type_check
-
 from draftobjects.rectangle import Rectangle
+
 if App.GuiUp:
     from draftviewproviders.view_rectangle import ViewProviderRectangle
 
@@ -98,3 +99,5 @@ def make_rectangle(length, height=0, placement=None, face=None, support=None):
 
 
 makeRectangle = make_rectangle
+
+## @}

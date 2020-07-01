@@ -22,20 +22,20 @@
 # ***************************************************************************
 """This module provides the object code for Draft make_rectangle function.
 """
-## @package make_rectangle
-# \ingroup DRAFT
+## @package make_polygon
+# \ingroup draftmake
 # \brief This module provides the code for Draft make_rectangle function.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 
 from draftutils.gui_utils import format_object
 from draftutils.gui_utils import select
-
 from draftutils.utils import type_check
 
 from draftobjects.polygon import Polygon
 from draftviewproviders.view_base import ViewProviderDraft
-
 
 
 def make_polygon(nfaces, radius=1, inscribed=True, placement=None, face=None, support=None):
@@ -89,3 +89,5 @@ def make_polygon(nfaces, radius=1, inscribed=True, placement=None, face=None, su
 
 
 makePolygon = make_polygon
+
+## @}

@@ -23,11 +23,12 @@
 """This module provides the code for Draft make_copy function.
 """
 ## @package make_copy
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief This module provides the code for Draft make_copy function.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
-
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 
@@ -85,4 +86,5 @@ def make_copy(obj, force=None, reparent=False, simple_copy=False):
                             par.Group = group
 
     return newobj
-    
+
+## @}

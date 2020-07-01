@@ -23,9 +23,11 @@
 """This module provides the code for Draft make_workingplaneproxy function.
 """
 ## @package make_wpproxy
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief This module provides the code for Draft makeworkingplane_proxy function.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 
 from draftobjects.wpproxy import WorkingPlaneProxy
@@ -56,3 +58,5 @@ def make_workingplaneproxy(placement):
 
 
 makeWorkingPlaneProxy = make_workingplaneproxy
+
+## @}

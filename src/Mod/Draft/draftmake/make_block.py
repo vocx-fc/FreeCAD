@@ -23,9 +23,11 @@
 """This module provides the code for Draft make_block function.
 """
 ## @package make_block
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief This module provides the code for Draft make_block function.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 
 from draftutils.gui_utils import select
@@ -61,3 +63,5 @@ def make_block(objectslist):
 
 
 makeBlock = make_block
+
+## @}

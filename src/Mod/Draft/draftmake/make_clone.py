@@ -23,19 +23,19 @@
 """This module provides the code for Draft make_clone function.
 """
 ## @package make_clone
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief This module provides the code for Draft make_clone function.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
-
 import DraftGeomUtils
-
 import draftutils.utils as utils
 
 from draftutils.gui_utils import format_object
 from draftutils.gui_utils import select
-
 from draftobjects.clone import Clone
+
 if App.GuiUp:
     from draftutils.todo import ToDo
     from draftviewproviders.view_clone import ViewProviderClone
@@ -131,3 +131,5 @@ def make_clone(obj, delta=None, forcedraft=False):
 
 
 clone = make_clone
+
+## @}

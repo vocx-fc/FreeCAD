@@ -23,14 +23,16 @@
 """This module provides the code for Draft make_shape2dview function.
 """
 ## @package make_shape2dview
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief This module provides the code for Draft make_shape2dview function.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 
 from draftutils.gui_utils import select
-
 from draftobjects.shape2dview import Shape2DView
+
 if App.GuiUp:
     from draftviewproviders.view_base import ViewProviderDraftAlt
 
@@ -69,3 +71,5 @@ def make_shape2dview(baseobj,projectionVector=None,facenumbers=[]):
 
 
 makeShape2DView = make_shape2dview
+
+## @}

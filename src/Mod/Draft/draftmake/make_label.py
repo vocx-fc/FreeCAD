@@ -25,9 +25,11 @@
 # ***************************************************************************
 """Provides the make function to create Draft Label objects."""
 ## @package make_label
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief Provides the make function to create Draft Label objects.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 import draftutils.gui_utils as gui_utils
 import draftutils.utils as utils
@@ -408,3 +410,5 @@ def makeLabel(targetpoint=None, target=None, direction=None,
                       label_type=labeltype,
                       direction=direction,
                       distance=distance)
+
+## @}

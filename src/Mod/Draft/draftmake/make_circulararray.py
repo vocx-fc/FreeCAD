@@ -22,9 +22,11 @@
 # ***************************************************************************
 """Provides functions for creating circular arrays in a plane."""
 ## @package make_circulararray
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief Provides functions for creating circular arrays in a plane.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 
 import draftmake.make_array as make_array
@@ -172,3 +174,5 @@ def make_circular_array(base_object,
                                     arg5=number, arg6=symmetry,
                                     use_link=use_link)
     return new_obj
+
+## @}

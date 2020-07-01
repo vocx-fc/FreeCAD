@@ -23,23 +23,23 @@
 """This module provides the code for Draft make_sketch function.
 """
 ## @package make_sketch
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief This module provides the code for Draft make_sketch function.
 
+## \addtogroup draftmake
+# @{
 import math
 
 import FreeCAD as App
-
 import DraftVecUtils
 import DraftGeomUtils
-
 import draftutils.utils as utils
-from draftutils.translate import translate
 
+from draftutils.translate import translate
 from draftutils.gui_utils import format_object
 from draftutils.gui_utils import select
-
 from draftobjects.ellipse import Ellipse
+
 if App.GuiUp:
     from draftviewproviders.view_base import ViewProviderDraft
 
@@ -334,3 +334,5 @@ def make_sketch(objectslist, autoconstraints=False, addTo=None,
 
 
 makeSketch = make_sketch
+
+## @}

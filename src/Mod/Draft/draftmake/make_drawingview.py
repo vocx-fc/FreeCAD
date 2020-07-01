@@ -24,9 +24,11 @@
 OBSOLETE: Drawing Workbench was substituted by TechDraw.
 """
 ## @package make_drawingview
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief This module provides the code for Draft make_drawing_view function
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 
 import draftutils.utils as utils
@@ -104,3 +106,5 @@ def make_drawing_view(obj, page, lwmod=None, tmod=None, otherProjection=None):
 
 
 makeDrawingView = make_drawing_view
+
+## @}

@@ -25,9 +25,11 @@
 # ***************************************************************************
 """Provides functions to crate dimension objects."""
 ## @package make_dimension
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief Provides functions to crate dimension objects.
 
+## \addtogroup draftmake
+# @{
 import math
 
 import FreeCAD as App
@@ -646,3 +648,5 @@ def makeAngularDimension(center, angles, p3, normal=None):
 
     return make_angular_dimension(center=center, angles=angles,
                                   dim_line=p3, normal=normal)
+
+## @}

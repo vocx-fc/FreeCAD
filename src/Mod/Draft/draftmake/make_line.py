@@ -23,14 +23,15 @@
 """This module provides the code for Draft make_line function.
 """
 ## @package make_line
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief This module provides the code for Draft make_line function.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 
 from draftutils.gui_utils import format_object
 from draftutils.gui_utils import select
-
 from draftmake.make_wire import make_wire
 
 
@@ -71,3 +72,5 @@ def make_line(first_param, last_param=None):
 
 
 makeLine = make_line
+
+## @}

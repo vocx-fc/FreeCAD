@@ -31,9 +31,11 @@ The copies will be placed along a path like a polyline, spline, or bezier
 curve.
 """
 ## @package make_patharray
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief Provides functions for creating path arrays.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
@@ -315,3 +317,5 @@ def makePathArray(baseobject, pathobject, count,
                            xlate, pathobjsubs,
                            align,
                            use_link)
+
+## @}

@@ -24,7 +24,7 @@ This creates a `Part::Part2DObjectPython`, and then assigns the Proxy class
 `Fillet`, and the `ViewProviderFillet` for the view provider.
 """
 ## @package make_fillet
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief Provides the code to create Fillet objects.
 
 import lazy_loader.lazy_loader as lz
@@ -46,6 +46,9 @@ Part = lz.LazyLoader("Part", globals(), "Part")
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
+
+## \addtogroup draftmake
+# @{
 
 
 def _print_obj_length(obj, edge, num=1):
@@ -171,3 +174,5 @@ def make_fillet(objs, radius=100, chamfer=False, delete=False):
         gui_utils.autogroup(obj)
 
     return obj
+
+## @}

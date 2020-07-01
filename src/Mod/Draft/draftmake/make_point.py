@@ -23,15 +23,17 @@
 """This module provides the code for Draft make_point function.
 """
 ## @package make_point
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief This module provides the code for Draft make_point function.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 
 from draftutils.gui_utils import format_object
 from draftutils.gui_utils import select
-
 from draftobjects.point import Point
+
 if App.GuiUp:
     import FreeCADGui as Gui
     from draftviewproviders.view_point import ViewProviderPoint
@@ -94,3 +96,5 @@ def make_point(X=0, Y=0, Z=0, color=None, name = "Point", point_size= 5):
 
 
 makePoint = make_point
+
+## @}

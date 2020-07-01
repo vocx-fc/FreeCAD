@@ -24,9 +24,11 @@
 # ***************************************************************************
 """Provides the make function to create Draft Text objects."""
 ## @package make_text
-# \ingroup DRAFT
+# \ingroup draftmake
 # \brief Provides the make function to create Draft Text objects.
 
+## \addtogroup draftmake
+# @{
 import FreeCAD as App
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
@@ -153,3 +155,5 @@ def makeText(stringlist, point=App.Vector(0, 0, 0), screen=False):
     utils.use_instead("make_text")
 
     return make_text(stringlist, point, screen)
+
+## @}
