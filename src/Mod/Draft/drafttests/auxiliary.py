@@ -22,8 +22,14 @@
 # *                                                                         *
 # ***************************************************************************
 """Auxiliary functions for the unit tests of the Draft Workbench."""
+## @package auxiliary
+# \ingroup drafttests
+# \brief Auxiliary functions for the unit tests of the Draft Workbench.
 
+## \addtogroup drafttests
+# @{
 import traceback
+
 from draftutils.messages import _msg
 
 

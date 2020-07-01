@@ -22,11 +22,18 @@
 # *                                                                         *
 # ***************************************************************************
 """Unit test for the Draft Workbench, Coin (Pivy) tests."""
+## @package test_pivy
+# \ingroup drafttests
+# \brief Unit test for the Draft Workbench, Coin (Pivy) tests.
 
+## \addtogroup drafttests
+# @{
 import unittest
+
 import FreeCAD as App
 import FreeCADGui as Gui
 import drafttests.auxiliary as aux
+
 from draftutils.messages import _msg
 
 
@@ -71,3 +78,5 @@ class DraftPivy(unittest.TestCase):
         This is executed after each test, so we close the document.
         """
         App.closeDocument(self.doc_name)
+
+## @}

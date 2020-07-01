@@ -22,12 +22,19 @@
 # *                                                                         *
 # ***************************************************************************
 """Unit test for the Draft Workbench, OCA import and export tests."""
+## @package test_oca
+# \ingroup drafttests
+# \brief Unit test for the Draft Workbench, OCA import and export tests.
 
+## \addtogroup drafttests
+# @{
 import os
 import unittest
+
 import FreeCAD as App
 import Draft
 import drafttests.auxiliary as aux
+
 from draftutils.messages import _msg
 
 
@@ -86,3 +93,5 @@ class DraftOCA(unittest.TestCase):
         This is executed after each test, so we close the document.
         """
         App.closeDocument(self.doc_name)
+
+## @}
