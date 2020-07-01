@@ -34,9 +34,11 @@ and text created on screen through Coin (pivy).
 Its edit mode launches the `Draft_Edit` command.
 """
 ## @package view_draft_annotation
-# \ingroup DRAFT
+# \ingroup draftviewproviders
 # \brief Provides the base class for many annotation viewproviders.
 
+## \addtogroup draftviewproviders
+# @{
 import json
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -233,3 +235,5 @@ class ViewProviderDraftAnnotation(object):
             objs.extend(self.Object.Group)
 
         return objs
+
+## @}

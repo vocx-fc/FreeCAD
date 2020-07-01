@@ -20,31 +20,27 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the view provider code for the base Draft object.
-"""
+"""Provides the view provider code for the base Draft object."""
 ## @package view_base
-# \ingroup DRAFT
+# \ingroup draftviewproviders
 # \brief This module provides the view provider code for the base Draft object.
 
-
+## \addtogroup draftviewproviders
+# @{
 import PySide.QtCore as QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
+import draftutils.utils as utils
+import draftutils.gui_utils as gui_utils
 
 if App.GuiUp:
     from pivy import coin
     import FreeCADGui as Gui
+    import Draft_rc
+    # Use the resource file to satisfy code checkers (flake8)
+    bool(Draft_rc.__name__)
 
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-
-#import Draft_rc
-# from DraftGui import translate
-# from DraftGui import displayExternal
-
-# So the resource file doesn't trigger errors from code checkers (flake8)
-#True if Draft_rc.__name__ else False
 
 class ViewProviderDraft(object):
     """The base class for Draft view providers.
@@ -525,3 +521,5 @@ class ViewProviderDraftPart(ViewProviderDraftAlt):
 
 
 _ViewProviderDraftPart = ViewProviderDraftPart
+
+## @}

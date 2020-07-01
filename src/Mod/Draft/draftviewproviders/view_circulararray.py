@@ -25,11 +25,13 @@
 Currently unused.
 """
 ## @package view_circulararray
-# \ingroup DRAFT
+# \ingroup draftviewproviders
 # \brief Provides the view provider code for the circular array object.
 
+## \addtogroup draftviewproviders
+# @{
 import Draft_rc
-from Draft import _ViewProviderDraftArray as ViewProviderDraftArray
+from draftviewproviders.view_array import ViewProviderDraftArray
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -44,3 +46,5 @@ class ViewProviderCircularArray(ViewProviderDraftArray):
     def getIcon(self):
         """Set the icon in the tree view."""
         return ":/icons/Draft_CircularArray"
+
+## @}

@@ -21,20 +21,25 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the Draft Dimensions view provider classes
-"""
+"""Provides the Draft Dimensions view provider classes."""
 ## @package dimension
-# \ingroup DRAFT
+# \ingroup draftviewproviders
 # \brief This module provides the view provider code for Draft Dimensions.
 
+## \addtogroup draftviewproviders
+# @{
+import pivy.coin as coin
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-import DraftVecUtils, DraftGeomUtils
-from pivy import coin
-from PySide.QtCore import QT_TRANSLATE_NOOP
+import DraftVecUtils
+import DraftGeomUtils
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
-from draftviewproviders.view_draft_annotation import ViewProviderDraftAnnotation
+
+from draftviewproviders.view_draft_annotation \
+    import ViewProviderDraftAnnotation
+
 
 class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
     """
@@ -1022,3 +1027,5 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
 
 # Alias for compatibility with v0.18 and earlier
 _ViewProviderAngularDimension = ViewProviderAngularDimension
+
+## @}

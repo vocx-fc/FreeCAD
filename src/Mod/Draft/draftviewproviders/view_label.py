@@ -23,23 +23,28 @@
 # ***************************************************************************
 """This module provides the Draft Label view provider classes
 """
-## @package label
-# \ingroup DRAFT
+## @package view_label
+# \ingroup draftviewproviders
 # \brief This module provides the view provider code for Draft Label.
 
+## \addtogroup draftviewproviders
+# @{
+import math
+import sys
+import pivy.coin as coin
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-import DraftVecUtils, DraftGeomUtils
-import math, sys
-from pivy import coin
-from PySide.QtCore import QT_TRANSLATE_NOOP
+import DraftVecUtils
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
-from draftviewproviders.view_draft_annotation import ViewProviderDraftAnnotation
+
+from draftviewproviders.view_draft_annotation \
+    import ViewProviderDraftAnnotation
 
 if App.GuiUp:
     import FreeCADGui as Gui
-    
+
 
 class ViewProviderLabel(ViewProviderDraftAnnotation):
     """A View Provider for the Label annotation object"""
@@ -373,3 +378,5 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
 
 # Alias for compatibility with v0.18 and earlier
 ViewProviderDraftLabel = ViewProviderLabel
+
+## @}

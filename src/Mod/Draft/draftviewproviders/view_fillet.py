@@ -25,9 +25,11 @@ and behaves the same as it. In the future this could change
 if another behavior is desired.
 """
 ## @package view_fillet
-# \ingroup DRAFT
+# \ingroup draftviewproviders
 # \brief Provides the view provider code for Fillet objects.
 
+## \addtogroup draftviewproviders
+# @{
 from draftviewproviders.view_wire import ViewProviderWire
 
 
@@ -36,3 +38,5 @@ class ViewProviderFillet(ViewProviderWire):
 
     def __init__(self, vobj):
         super(ViewProviderFillet, self).__init__(vobj)
+
+## @}

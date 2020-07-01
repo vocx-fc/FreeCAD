@@ -21,21 +21,21 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the Draft Text view provider classes
-"""
+"""Provides the Draft Text view provider classes."""
 ## @package text
-# \ingroup DRAFT
+# \ingroup draftviewproviders
 # \brief This module provides the view provider code for Draft Text.
 
-
-import FreeCAD as App
-import DraftVecUtils, DraftGeomUtils
-import math, sys
-from pivy import coin
+## \addtogroup draftviewproviders
+# @{
+import sys
+import pivy.coin as coin
 from PySide.QtCore import QT_TRANSLATE_NOOP
+
 import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-from draftviewproviders.view_draft_annotation import ViewProviderDraftAnnotation
+
+from draftviewproviders.view_draft_annotation \
+    import ViewProviderDraftAnnotation
 
 
 class ViewProviderText(ViewProviderDraftAnnotation):
@@ -204,3 +204,5 @@ class ViewProviderText(ViewProviderDraftAnnotation):
 
 # Alias for compatibility with v0.18 and earlier
 ViewProviderDraftText = ViewProviderText
+
+## @}

@@ -20,17 +20,16 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the view provider code for Draft WorkingPlaneProxy
-object.
-"""
+"""Provides the view provider code for Draft WorkingPlaneProxy."""
 ## @package view_wpproxy
-# \ingroup DRAFT
-# \brief This module provides the view provider code for Draft WorkingPlaneProxy.
+# \ingroup draftviewproviders
+# \brief Provides the view provider code for Draft WorkingPlaneProxy.
 
-from pivy import coin
-from PySide import QtCore
-from PySide import QtGui
-
+## \addtogroup draftviewproviders
+# @{
+import pivy.coin as coin
+import PySide.QtCore as QtCore
+import PySide.QtGui as QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -232,3 +231,5 @@ class ViewProviderWorkingPlaneProxy:
 
     def __setstate__(self,state):
         return None
+
+## @}

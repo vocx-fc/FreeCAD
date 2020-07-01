@@ -20,12 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides the view provider code for the Draft Array objects.
-"""
+"""Provides the view provider code for the Draft Array objects."""
 ## @package view_array
-# \ingroup DRAFT
+# \ingroup draftviewproviders
 # \brief Provides the view provider code for the Draft Array objects.
 
+## \addtogroup draftviewproviders
+# @{
 from draftviewproviders.view_base import ViewProviderDraft
 
 
@@ -73,3 +74,5 @@ class ViewProviderDraftArray(ViewProviderDraft):
 
 
 _ViewProviderDraftArray = ViewProviderDraftArray
+
+## @}

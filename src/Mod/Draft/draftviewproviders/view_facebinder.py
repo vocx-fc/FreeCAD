@@ -20,12 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the view provider code for Draft Facebinder object.
-"""
+"""Provides the view provider code for Draft Facebinder object."""
 ## @package view_facebinder
-# \ingroup DRAFT
+# \ingroup draftviewproviders
 # \brief This module provides the view provider code for Draft Facebinder
 
+## \addtogroup draftviewproviders
+# @{
 import FreeCAD as App
 import FreeCADGui as Gui
 
@@ -54,3 +55,5 @@ class ViewProviderFacebinder(ViewProviderDraft):
 
 
 _ViewProviderFacebinder = ViewProviderFacebinder
+
+## @}

@@ -20,12 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the view provider code for the Draft Rectangle object.
-"""
+"""Provides the view provider code for the Draft Rectangle object."""
 ## @package view_rectangle
-# \ingroup DRAFT
+# \ingroup draftviewproviders
 # \brief This module provides the view provider code for the Draft Rectangle object.
 
+## \addtogroup draftviewproviders
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from draftviewproviders.view_base import ViewProviderDraft
@@ -42,3 +43,5 @@ class ViewProviderRectangle(ViewProviderDraft):
 
 
 _ViewProviderRectangle = ViewProviderRectangle
+
+## @}

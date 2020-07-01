@@ -25,9 +25,11 @@ and behaves the same as it. In the future this could change
 if another behavior is desired.
 """
 ## @package view_bspline
-# \ingroup DRAFT
+# \ingroup draftviewproviders
 # \brief Provides the view provider code for BSpline objects.
 
+## \addtogroup draftviewproviders
+# @{
 from draftviewproviders.view_wire import ViewProviderWire
 
 
@@ -39,3 +41,5 @@ class ViewProviderBSpline(ViewProviderWire):
 
 
 _ViewProviderBSpline = ViewProviderBSpline
+
+## @}

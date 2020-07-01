@@ -20,12 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the view provider code for Draft Point.
-"""
+"""Provides the view provider code for Draft Point."""
 ## @package view_point
-# \ingroup DRAFT
+# \ingroup draftviewproviders
 # \brief This module provides the view provider code for Draft Point.
 
+## \addtogroup draftviewproviders
+# @{
 from draftviewproviders.view_base import ViewProviderDraft
 
 
@@ -53,3 +54,5 @@ class ViewProviderPoint(ViewProviderDraft):
 
 
 _ViewProviderPoint = ViewProviderPoint
+
+## @}

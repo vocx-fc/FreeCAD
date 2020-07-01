@@ -20,11 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the view provider code for the Draft Link object.
-"""
+"""Provides the view provider code for the Draft Link object."""
 ## @package view_draftlink
-# \ingroup DRAFT
+# \ingroup draftviewproviders
 # \brief This module provides the view provider code for the Draft Link object.
+
+## \addtogroup draftviewproviders
+# @{
 
 
 class ViewProviderDraftLink:
@@ -69,3 +71,5 @@ class ViewProviderDraftLink:
             
 
 _ViewProviderDraftLink = ViewProviderDraftLink
+
+## @}

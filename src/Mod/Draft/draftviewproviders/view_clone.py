@@ -20,12 +20,13 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""This module provides the view provider code for the Draft Clone object.
-"""
+"""Provides the view provider code for the Draft Clone object."""
 ## @package view_clone
-# \ingroup DRAFT
+# \ingroup draftviewproviders
 # \brief This module provides the view provider code for the Draft Clone object.
 
+## \addtogroup draftviewproviders
+# @{
 import draftutils.utils as utils
 
 
@@ -78,3 +79,5 @@ class ViewProviderClone:
 
 
 _ViewProviderClone = ViewProviderClone
+
+## @}

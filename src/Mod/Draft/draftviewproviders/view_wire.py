@@ -26,9 +26,11 @@ This viewprovider is also used by simple lines, B-splines, bezier curves,
 and similar objects.
 """
 ## @package view_base
-# \ingroup DRAFT
+# \ingroup draftviewproviders
 # \brief Provides the viewprovider code for polyline and similar objects.
 
+## \addtogroup draftviewproviders
+# @{
 import pivy.coin as coin
 import PySide.QtCore as QtCore
 import PySide.QtGui as QtGui
@@ -36,13 +38,12 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 import DraftVecUtils
 import DraftGeomUtils
-from draftutils.messages import _msg
 
+from draftutils.messages import _msg
 from draftviewproviders.view_base import ViewProviderDraft
 
 
@@ -174,3 +175,5 @@ class ViewProviderWire(ViewProviderDraft):
 
 
 _ViewProviderWire = ViewProviderWire
+
+## @}
