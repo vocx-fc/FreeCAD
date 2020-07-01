@@ -30,11 +30,13 @@ in other modules of the workbench, and which don't require
 the graphical user interface (GUI).
 """
 ## @package utils
-# \ingroup DRAFT
+# \ingroup draftutils
 # \brief This module provides utility functions for the Draft Workbench
 
+## \addtogroup draftutils
+# @{
 import os
-from PySide import QtCore
+import PySide.QtCore as QtCore
 
 import FreeCAD as App
 import Draft_rc
@@ -1391,3 +1393,5 @@ def use_instead(function, version=""):
     else:
         _wrn(_tr(text2)
              + _tr(text3) + "'{}'.".format(function))
+
+## @}

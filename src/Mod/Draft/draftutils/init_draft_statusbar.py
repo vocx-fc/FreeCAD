@@ -26,11 +26,13 @@
 This module provide the code for the Draft Statusbar, activated by initGui
 """
 ## @package init_draft_statusbar
-# \ingroup DRAFT
+# \ingroup draftutils
 # \brief This module provides the code for the Draft Statusbar.
 
-from PySide import QtCore
-from PySide import QtGui
+## \addtogroup draftutils
+# @{
+import PySide.QtCore as QtCore
+import PySide.QtGui as QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -414,3 +416,5 @@ def hide_draft_statusbar():
         snap_widget = mw.findChild(QtGui.QToolBar,"draft_snap_widget")
         if snap_widget:
             snap_widget.hide()                
+
+## @}

@@ -31,9 +31,11 @@ the graphical user interface (GUI), as they access the view providers
 of the objects or the 3D view.
 """
 ## @package gui_utils
-# \ingroup DRAFT
+# \ingroup draftutils
 # \brief This module provides GUI utility functions for the Draft Workbench
 
+## \addtogroup draftutils
+# @{
 import math
 import os
 import six
@@ -655,3 +657,5 @@ def load_texture(filename, size=None, gui=App.GuiUp):
 
 
 loadTexture = load_texture
+
+## @}

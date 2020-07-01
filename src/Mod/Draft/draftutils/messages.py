@@ -28,8 +28,11 @@ a newline character at the end of the string, so it doesn't have to be
 added manually.
 """
 ## @package messages
-# \ingroup DRAFT
+# \ingroup draftutils
 # \brief Provide message utility functions for the Draft Workbench.
+
+## \addtogroup draftutils
+# @{
 
 import FreeCAD as App
 
@@ -52,3 +55,5 @@ def _err(text, end="\n"):
 def _log(text, end="\n"):
     """Write messages to the log file including the line ending."""
     App.Console.PrintLog(text + end)
+
+## @}

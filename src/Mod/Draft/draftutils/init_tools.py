@@ -28,9 +28,11 @@ These commands should be defined in `DraftTools`, and in the individual
 modules in `draftguitools`.
 """
 ## @package init_tools
-# \ingroup DRAFT
+# \ingroup draftutils
 # \brief This module provides lists of commands for the Draft Workbench.
 
+## \addtogroup draftutils
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 # Comment out commands that aren't ready to be used
@@ -169,3 +171,5 @@ def init_draft_menus(workbench):
     workbench.appendMenu(QT_TRANSLATE_NOOP("Draft", "&Utilities"),
                          get_draft_utility_commands()
                          + get_draft_context_commands())
+
+## @}

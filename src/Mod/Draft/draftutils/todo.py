@@ -31,16 +31,19 @@ The `ToDo` class essentially calls `QtCore.QTimer.singleShot`
 to execute the instructions stored in internal lists.
 """
 ## @package todo
-# \ingroup DRAFT
+# \ingroup draftutils
 # \brief This module provides the ToDo class for the Draft Workbench.
 
+## \addtogroup draftutils
+# @{
 import six
 import sys
 import traceback
-from PySide import QtCore
+import PySide.QtCore as QtCore
 
 import FreeCAD as App
 import FreeCADGui as Gui
+
 from draftutils.messages import _msg, _wrn, _err, _log
 
 __title__ = "FreeCAD Draft Workbench, Todo class"
@@ -284,3 +287,5 @@ class ToDo:
 # In the past, the class was in lowercase, so we provide a reference
 # to it in lowercase, to satisfy the usage of older modules.
 todo = ToDo
+
+## @}
