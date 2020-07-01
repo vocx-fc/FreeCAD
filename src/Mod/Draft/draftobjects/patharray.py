@@ -60,7 +60,7 @@ objects. Therefore, the first solution is simpler, that is, using
 a single property of type `App::PropertyLinkSub`.
 """
 ## @package patharray
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief Provides the object code for the Draft PathArray object.
 
 import FreeCAD as App
@@ -75,6 +75,9 @@ from draftobjects.draftlink import DraftLink
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
 DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
+
+## \addtogroup draftobjects
+# @{
 
 
 class PathArray(DraftLink):
@@ -617,3 +620,5 @@ def get_parameter_from_v0(edge, offset):
 
 
 getParameterFromV0 = get_parameter_from_v0
+
+## @}

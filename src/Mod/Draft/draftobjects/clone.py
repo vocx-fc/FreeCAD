@@ -23,13 +23,14 @@
 """This module provides the object code for Draft Clone.
 """
 ## @package clone
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief This module provides the object code for Draft Clone.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
 import DraftVecUtils
 
 from draftobjects.base import DraftObject
@@ -132,3 +133,5 @@ class Clone(DraftObject):
 
 
 _Clone = Clone
+
+## @}

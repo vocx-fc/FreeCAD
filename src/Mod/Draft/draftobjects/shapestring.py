@@ -23,19 +23,18 @@
 """This module provides the object code for Draft Shapestring.
 """
 ## @package shapestring
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief This module provides the object code for Draft Shapestring.
 
+## \addtogroup draftobjects
+# @{
 import sys
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 
-from PySide.QtCore import QT_TRANSLATE_NOOP
-
 from draftutils.utils import epsilon
-
 from draftutils.translate import translate
-
 from draftobjects.base import DraftObject
 
 
@@ -197,3 +196,5 @@ class ShapeString(DraftObject):
 
 
 _ShapeString = ShapeString
+
+## @}

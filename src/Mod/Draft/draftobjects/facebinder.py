@@ -23,12 +23,14 @@
 """This module provides the object code for Draft Facebinder.
 """
 ## @package facebinder
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief This module provides the object code for Draft Facebinder.
 
-import FreeCAD as App
-
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
+
+import FreeCAD as App
 
 from draftobjects.base import DraftObject
 
@@ -134,3 +136,5 @@ class Facebinder(DraftObject):
 
 
 _Facebinder = Facebinder
+
+## @}

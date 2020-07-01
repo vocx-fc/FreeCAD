@@ -23,15 +23,16 @@
 """This module provides the object code for Draft Circle.
 """
 ## @package circle
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief This module provides the object code for Draft Circle.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 
 from draftutils.utils import get_param
-
 from draftobjects.base import DraftObject
 
 
@@ -96,3 +97,5 @@ class Circle(DraftObject):
 
 
 _Circle = Circle
+
+## @}

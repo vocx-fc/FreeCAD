@@ -23,8 +23,12 @@
 """This module provides the object code for the basic Draft object.
 """
 ## @package base
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief This module provides the object code for the basic Draft object.
+
+## \addtogroup draftobjects
+# @{
+
 
 class DraftObject(object):
     """The base class for Draft objects.
@@ -153,3 +157,5 @@ class DraftObject(object):
 
 
 _DraftObject = DraftObject
+
+## @}

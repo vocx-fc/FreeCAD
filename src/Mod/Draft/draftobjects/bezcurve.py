@@ -23,15 +23,16 @@
 """This module provides the object code for Draft BezCurve.
 """
 ## @package bezcurve
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief This module provides the object code for Draft BezCurve.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 
 from draftutils.utils import get_param
-
 from draftobjects.base import DraftObject
 
 
@@ -194,3 +195,5 @@ class BezCurve(DraftObject):
 
 
 _BezCurve = BezCurve
+
+## @}

@@ -23,22 +23,20 @@
 """This module provides the object code for Draft Wire.
 """
 ## @package wire
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief This module provides the object code for Draft Wire.
 
+## \addtogroup draftobjects
+# @{
 import math
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
 import DraftGeomUtils
 import DraftVecUtils
 
-from PySide.QtCore import QT_TRANSLATE_NOOP
-
 from draftutils.utils import get_param
-
 from draftobjects.base import DraftObject
-
 
 
 class Wire(DraftObject):
@@ -249,3 +247,5 @@ class Wire(DraftObject):
 
 
 _Wire = Wire
+
+## @}

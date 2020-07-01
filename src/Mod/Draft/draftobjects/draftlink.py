@@ -31,7 +31,7 @@ on how the properties are being set, and how the code interacts with
 the arrays that use it.
 """
 ## @package draftlink
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief Provides the object code for the Draft Link object.
 
 import lazy_loader.lazy_loader as lz
@@ -45,6 +45,9 @@ from draftobjects.base import DraftObject
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
 DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
+
+## \addtogroup draftobjects
+# @{
 
 
 class DraftLink(DraftObject):
@@ -224,3 +227,5 @@ class DraftLink(DraftObject):
 
 # Alias for compatibility with old versions of v0.19
 _DraftLink = DraftLink
+
+## @}

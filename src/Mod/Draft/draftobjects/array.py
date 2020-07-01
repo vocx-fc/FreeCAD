@@ -28,9 +28,11 @@ orthogonal, polar, and circular. In the future, probably they should be
 split in separate classes so that they are easier to manage.
 """
 ## @package array
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief Provides the object code for the Draft Array object.
 
+## \addtogroup draftobjects
+# @{
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -527,3 +529,5 @@ def circ_placements(base_placement,
             placements.append(npl)
 
     return placements
+
+## @}

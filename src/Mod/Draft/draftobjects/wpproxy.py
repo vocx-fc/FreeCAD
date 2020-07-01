@@ -23,9 +23,11 @@
 """This module provides the object code for Draft WorkingPlaneProxy.
 """
 ## @package wpproxy
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief This module provides the object code for Draft WorkingPlaneProxy.
 
+## \addtogroup draftobjects
+# @{
 import FreeCAD as App
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -72,3 +74,5 @@ class WorkingPlaneProxy:
     def __setstate__(self,state):
         if state:
             self.Type = state
+
+## @}

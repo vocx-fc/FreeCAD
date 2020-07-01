@@ -24,21 +24,16 @@
 This module is obsolete, since Drawing was substituted by TechDraw.
 """
 ## @package drawingview
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief This module provides the object code for the Draft DrawingView object.
 
-import math
-
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
-
-import FreeCAD as App
-
-import DraftVecUtils
-
-from getSVG import getSVG
 
 import draftutils.utils as utils
 
+from getSVG import getSVG
 from draftobjects.base import DraftObject
 
 
@@ -131,3 +126,5 @@ class DrawingView(DraftObject):
 
 
 _DrawingView = DrawingView
+
+## @}

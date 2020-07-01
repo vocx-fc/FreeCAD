@@ -25,9 +25,11 @@
 # ***************************************************************************
 """Provide the object code for Draft Label objects."""
 ## @package label
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief Provide the object code for Draft Label objects.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -425,3 +427,6 @@ def _get_area(target, subelement):
 def _get_volume(target):
     volume = U.Quantity(target.Shape.Volume, U.Volume).UserString
     return [volume.replace("^3", "³")]
+
+
+## @}

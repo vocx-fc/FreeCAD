@@ -23,15 +23,16 @@
 """This module provides the object code for Draft BSpline.
 """
 ## @package bspline
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief This module provides the object code for Draft BSpline.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 
 from draftutils.utils import get_param
-
 from draftobjects.base import DraftObject
 
 
@@ -134,3 +135,5 @@ class BSpline(DraftObject):
 
 
 _BSpline = BSpline
+
+## @}

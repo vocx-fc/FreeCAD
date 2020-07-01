@@ -1,4 +1,4 @@
-2# ***************************************************************************
+# ***************************************************************************
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
 # *   Copyright (c) 2020 FreeCAD Developers                                 *
@@ -23,18 +23,19 @@
 """This module provides the object code for Draft Shape2dView.
 """
 ## @package shape2dview
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief This module provides the object code for Draft Shape2dView.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
 import DraftVecUtils
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
-from draftutils.translate import translate
 
+from draftutils.translate import translate
 from draftobjects.base import DraftObject
 
 
@@ -280,3 +281,5 @@ class Shape2DView(DraftObject):
 
 
 _Shape2DView = Shape2DView
+
+## @}

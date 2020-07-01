@@ -32,9 +32,11 @@ through Coin (pivy).
 - Text
 """
 ## @package draft_annotation
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief Provide the basic object code for all Draft annotation objects.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from draftutils.messages import _wrn
@@ -142,3 +144,5 @@ class DraftAnnotation(object):
         Does nothing.
         """
         return
+
+## @}

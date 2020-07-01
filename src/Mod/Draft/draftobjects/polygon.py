@@ -23,19 +23,18 @@
 """This module provides the object code for Draft Polygon.
 """
 ## @package polygon
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief This module provides the object code for Draft Polygon.
 
+## \addtogroup draftobjects
+# @{
 import math
-
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-
 import DraftGeomUtils
 
 from draftutils.utils import get_param
-
 from draftobjects.base import DraftObject
 
 
@@ -120,3 +119,5 @@ class Polygon(DraftObject):
 
 
 _Polygon = Polygon
+
+## @}

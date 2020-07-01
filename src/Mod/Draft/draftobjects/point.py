@@ -23,17 +23,17 @@
 """This module provides the object code for Draft Point.
 """
 ## @package point
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief This module provides the object code for Draft Point.
 
+## \addtogroup draftobjects
+# @{
 import math
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 
-from PySide.QtCore import QT_TRANSLATE_NOOP
-
 from draftutils.utils import get_param
-
 from draftobjects.base import DraftObject
 
 
@@ -69,3 +69,5 @@ class Point(DraftObject):
 
 
 _Point = Point
+
+## @}

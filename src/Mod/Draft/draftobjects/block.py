@@ -23,9 +23,11 @@
 """This module provides the object code for Draft Block.
 """
 ## @package block
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief This module provides the object code for Draft Block.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from draftobjects.base import DraftObject
@@ -54,3 +56,5 @@ class Block(DraftObject):
         obj.positionBySupport()
 
 _Block = Block
+
+## @}

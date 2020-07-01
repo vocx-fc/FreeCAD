@@ -23,15 +23,16 @@
 """This module provides the object code for Draft Ellipse.
 """
 ## @package ellipse
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief This module provides the object code for Draft Ellipse.
 
+## \addtogroup draftobjects
+# @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 
 from draftutils.utils import get_param
-
 from draftobjects.base import DraftObject
 
 
@@ -94,3 +95,5 @@ class Ellipse(DraftObject):
 
 
 _Ellipse = Ellipse
+
+## @}

@@ -95,9 +95,11 @@ a more generic base class, while at the same time improve the way
 the link properties are used.
 """
 ## @package dimension
-# \ingroup DRAFT
+# \ingroup draftobjects
 # \brief Provides the object code for the Draft Dimensions.
 
+## \addtogroup draftobjects
+# @{
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -659,3 +661,5 @@ def measure_two_obj_angles(link_sub_1, link_sub_2):
 
 # Alias for compatibility with v0.18 and earlier
 _AngularDimension = AngularDimension
+
+## @}
