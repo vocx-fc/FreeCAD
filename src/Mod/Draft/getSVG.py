@@ -29,6 +29,7 @@
 # @{
 import math
 import six
+import lazy_loader.lazy_loader as lz
 
 import FreeCAD
 import DraftVecUtils
@@ -37,80 +38,158 @@ import draftutils.utils as utils
 
 from FreeCAD import Vector
 
+# Delay import of module until first use because it is heavy
+Part = lz.LazyLoader("Part", globals(), "Part")
+DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
+
+param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+
 
 def getLineStyle(linestyle, scale):
-    "returns a linestyle"
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    l = None
+    """Return a linestyle scaled by a factor."""
+    style = None
+
     if linestyle == "Dashed":
-        l = p.GetString("svgDashedLine","0.09,0.05")
+        style = param.GetString("svgDashedLine", "0.09,0.05")
     elif linestyle == "Dashdot":
-        l = p.GetString("svgDashdotLine","0.09,0.05,0.02,0.05")
+        style = param.GetString("svgDashdotLine", "0.09,0.05,0.02,0.05")
     elif linestyle == "Dotted":
-        l = p.GetString("svgDottedLine","0.02,0.02")
+        style = param.GetString("svgDottedLine", "0.02,0.02")
     elif linestyle:
         if "," in linestyle:
-            l = linestyle
-    if l:
-        l = l.split(",")
+            style = linestyle
+
+    if style:
+        style = style.split(",")
         try:
             # scale dashes
-            l = ",".join([str(float(d)/scale) for d in l])
-            #print "lstyle ",l
+            style = ",".join([str(float(d)/scale) for d in style])
+            # print("lstyle ", style)
         except:
             return "none"
         else:
-            return l
+            return style
+
     return "none"
 
 
-def getProj(vec, plane):
-    if not plane: return vec
-    nx = DraftVecUtils.project(vec,plane.u)
+def getProj(vec, plane=None):
+    """Get a projection of the vector in the plane's u and v directions.
+
+    Parameters
+    ----------
+    vec: Base::Vector3
+        An arbitrary vector that will be projected on the U and V directions.
+
+    plane: WorkingPlane.Plane
+        An object of type `WorkingPlane`.
+    """
+    if not plane:
+        return vec
+
+    nx = DraftVecUtils.project(vec, plane.u)
     lx = nx.Length
-    if abs(nx.getAngle(plane.u)) > 0.1: lx = -lx
-    ny = DraftVecUtils.project(vec,plane.v)
+
+    if abs(nx.getAngle(plane.u)) > 0.1:
+        lx = -lx
+
+    ny = DraftVecUtils.project(vec, plane.v)
     ly = ny.Length
-    if abs(ny.getAngle(plane.v)) > 0.1: ly = -ly
-    #if techdraw: buggy - we now simply do it at the end
+
+    if abs(ny.getAngle(plane.v)) > 0.1:
+        ly = -ly
+
+    # if techdraw: buggy - we now simply do it at the end
     #    ly = -ly
-    return Vector(lx,ly,0)
+    return Vector(lx, ly, 0)
 
 
 def getDiscretized(edge, plane):
-    ml = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetFloat("svgDiscretization",10.0)
-    if ml == 0:
-        ml = 10
-    d = int(edge.Length/ml)
+    """Get discretization of the edge."""
+    pieces = param.GetFloat("svgDiscretization", 10.0)
+
+    if pieces == 0:
+        pieces = 10
+
+    d = int(edge.Length/pieces)
     if d == 0:
         d = 1
+
     edata = ""
-    for i in range(d+1):
-        v = getProj(edge.valueAt(edge.FirstParameter+((float(i)/d)*(edge.LastParameter-edge.FirstParameter))), plane)
+    for i in range(d + 1):
+        length = edge.LastParameter - edge.FirstParameter
+        point = edge.FirstParameter + float(i)/d * length
+        vec = edge.valueAt(point)
+        v = getProj(vec, plane)
+
         if not edata:
-            edata += 'M ' + str(v.x) +' '+ str(v.y) + ' '
+            edata += 'M ' + str(v.x) + ' ' + str(v.y) + ' '
         else:
-            edata += 'L ' + str(v.x) +' '+ str(v.y) + ' '
+            edata += 'L ' + str(v.x) + ' ' + str(v.y) + ' '
+
     return edata
 
 
 def getPattern(pat):
+    """Get an SVG pattern."""
     if pat in utils.svg_patterns():
         return utils.svg_patterns()[pat][0]
     return ''
 
 
-def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None,color=None,linespacing=None,techdraw=False,rotation=0,fillSpaces=False,override=True):
-    '''getSVG(object,[scale], [linewidth],[fontsize],[fillstyle],[direction],[linestyle],[color],[linespacing]):
-    returns a string containing a SVG representation of the given object,
-    with the given linewidth and fontsize (used if the given object contains
-    any text). You can also supply an arbitrary projection vector. the
-    scale parameter allows to scale linewidths down, so they are resolution-independant.'''
+def getSVG(obj,
+           scale=1, linewidth=0.35, fontsize=12,
+           fillstyle="shape color", direction=None, linestyle=None,
+           color=None, linespacing=None, techdraw=False, rotation=0,
+           fillSpaces=False, override=True):
+    """Return a string containing an SVG representation of the object.
 
-    import Part, DraftGeomUtils
+    Paramaeters
+    -----------
+    scale: float, optional
+        It defaults to 1.
+        It allows scaling line widths down, so they are resolution-independent.
 
-    # if this is a group, gather all the svg views of its children
-    if hasattr(obj,"isDerivedFrom"):
+    linewidth: float, optional
+        It defaults to 0.35.
+
+    fontsize: float, optional
+        It defaults to 12, which is interpreted as `pt` unit (points).
+        It is used if the given object contains any text.
+
+    fillstyle: str, optional
+        It defaults to 'shape color'.
+
+    direction: Base::Vector3, optional
+        It defaults to `None`.
+        It is an arbitrary projection vector.
+
+    linestyle: optional
+        It defaults to `None`.
+
+    color: optional
+        It defaults to `None`.
+
+    linespacing: float, optional
+        It defaults to `None`.
+
+    techdraw: bool, optional
+        It defaults to `False`.
+        If it is `True`, it sets some options for generating SVG strings
+        for displaying inside TechDraw.
+
+    rotation: float, optional
+        It defaults to 0.
+
+    fillSpaces: bool, optional
+        It defaults to `False`.
+
+    override: bool, optional
+        It defaults to `True`.
+    """
+    # If this is a group, recursively call this function to gather
+    # all the SVG strings from the contents of the group
+    if hasattr(obj, "isDerivedFrom"):
         if obj.isDerivedFrom("App::DocumentObjectGroup") or utils.get_type(obj) == "Layer":
             svg = ""
             for child in obj.Group:
