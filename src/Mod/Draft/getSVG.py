@@ -45,19 +45,19 @@ DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 
-def getLineStyle(linestyle, scale):
+def get_line_style(line_style, scale):
     """Return a linestyle scaled by a factor."""
     style = None
 
-    if linestyle == "Dashed":
+    if line_style == "Dashed":
         style = param.GetString("svgDashedLine", "0.09,0.05")
-    elif linestyle == "Dashdot":
+    elif line_style == "Dashdot":
         style = param.GetString("svgDashdotLine", "0.09,0.05,0.02,0.05")
-    elif linestyle == "Dotted":
+    elif line_style == "Dotted":
         style = param.GetString("svgDottedLine", "0.02,0.02")
-    elif linestyle:
-        if "," in linestyle:
-            style = linestyle
+    elif line_style:
+        if "," in line_style:
+            style = line_style
 
     if style:
         style = style.split(",")
@@ -71,6 +71,12 @@ def getLineStyle(linestyle, scale):
             return style
 
     return "none"
+
+
+def getLineStyle(linestyle, scale):
+    """Return a Line style. DEPRECATED. Use get_line_style."""
+    utils.use_instead("get_line_style")
+    return get_line_style(linestyle, scale)
 
 
 def getProj(vec, plane=None):
@@ -162,7 +168,8 @@ def getSVG(obj,
 
     direction: Base::Vector3, optional
         It defaults to `None`.
-        It is an arbitrary projection vector.
+        It is an arbitrary projection vector or a `WorkingPlane.Plane`
+        instance.
 
     linestyle: optional
         It defaults to `None`.
@@ -190,38 +197,50 @@ def getSVG(obj,
     # If this is a group, recursively call this function to gather
     # all the SVG strings from the contents of the group
     if hasattr(obj, "isDerivedFrom"):
-        if obj.isDerivedFrom("App::DocumentObjectGroup") or utils.get_type(obj) == "Layer":
+        if (obj.isDerivedFrom("App::DocumentObjectGroup")
+                or utils.get_type(obj) == "Layer"):
             svg = ""
             for child in obj.Group:
-                svg += getSVG(child,scale,linewidth,fontsize,fillstyle,direction,linestyle,color,linespacing,techdraw,rotation,fillSpaces,override)
+                svg += getSVG(child,
+                              scale, linewidth, fontsize,
+                              fillstyle, direction, linestyle,
+                              color, linespacing, techdraw,
+                              rotation, fillSpaces, override)
             return svg
 
     pathdata = []
     svg = ""
     linewidth = float(linewidth)/scale
     if not override:
-        if hasattr(obj,"ViewObject"):
-            if hasattr(obj.ViewObject,"LineWidth"):
-                if hasattr(obj.ViewObject.LineWidth,"Value"):
-                    lw = obj.ViewObject.LineWidth.Value
-                else:
-                    lw = obj.ViewObject.LineWidth
-                linewidth = lw*linewidth
+        if hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "LineWidth"):
+            if hasattr(obj.ViewObject.LineWidth, "Value"):
+                lw = obj.ViewObject.LineWidth.Value
+            else:
+                lw = obj.ViewObject.LineWidth
+            linewidth = lw * linewidth
+
     fontsize = (float(fontsize)/scale)/2
     if linespacing:
         linespacing = float(linespacing)/scale
     else:
         linespacing = 0.5
-    #print obj.Label," line spacing ",linespacing,"scale ",scale
-    pointratio = .75 # the number of times the dots are smaller than the arrow size
+
+    # print(obj.Label, "line spacing", linespacing, "scale", scale)
+
+    # The number of times the dots are smaller than the arrow size
+    pointratio = 0.75
     plane = None
+
     if direction:
-        if isinstance(direction,FreeCAD.Vector):
-            if direction != Vector(0,0,0):
+        if isinstance(direction, FreeCAD.Vector):
+            if direction != Vector(0, 0, 0):
                 plane = WorkingPlane.plane()
-                plane.alignToPointAndAxis_SVG(Vector(0,0,0),direction.negative().negative(),0)
-        elif isinstance(direction,WorkingPlane.plane):
+                plane.alignToPointAndAxis_SVG(Vector(0, 0, 0),
+                                              direction.negative().negative(),
+                                              0)
+        elif isinstance(direction, WorkingPlane.plane):
             plane = direction
+
     stroke = "#000000"
     if color and override:
         if "#" in color:
@@ -229,18 +248,18 @@ def getSVG(obj,
         else:
             stroke = utils.get_rgb(color)
     elif FreeCAD.GuiUp:
-        if hasattr(obj,"ViewObject"):
-            if hasattr(obj.ViewObject,"LineColor"):
+        if hasattr(obj, "ViewObject"):
+            if hasattr(obj.ViewObject, "LineColor"):
                 stroke = utils.get_rgb(obj.ViewObject.LineColor)
-            elif hasattr(obj.ViewObject,"TextColor"):
+            elif hasattr(obj.ViewObject, "TextColor"):
                 stroke = utils.get_rgb(obj.ViewObject.TextColor)
+
     lstyle = "none"
     if override:
-        lstyle = getLineStyle(linestyle, scale)
+        lstyle = get_line_style(linestyle, scale)
     else:
-        if hasattr(obj,"ViewObject"):
-            if hasattr(obj.ViewObject,"DrawStyle"):
-                lstyle = getLineStyle(obj.ViewObject.DrawStyle, scale)
+        if hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "DrawStyle"):
+            lstyle = get_line_style(obj.ViewObject.DrawStyle, scale)
 
     def getPath(edges=[],wires=[],pathname=None):
 
